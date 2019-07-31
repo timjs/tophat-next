@@ -21,36 +21,39 @@
 \usemacro{G-BasicTypes}
 
 \begin{gather*}
-  \boxed{\RelationT} \Break
-  \userule{T-ConstBool} \Quad
-  \userule{T-ConstInt} \Quad
-  \userule{T-ConstString} \Quad
-  \userule{T-Unit}\Quad
-  \userule{T-Var} \Quad
-  \userule{T-Loc} \Break
-  \userule{T-Pair} \Quad
-  \userule{T-First} \Quad
-  \userule{T-Second} \Quad
-  \userule{T-ListEmpty} \Quad
-  \userule{T-ListCons} \Break
-  \userule{T-ListHead} \Quad
-  \userule{T-ListTail}\Quad
-  \userule{T-Abs} \Quad
-  \userule{T-App} \Break
-  \userule{T-If} \Quad
-  \userule{T-Ref} \Quad
-  \userule{T-Deref} \Quad
-  \userule{T-Assign}\Break
-  \userule{T-Loc}\Quad
-  \userule{T-Edit}\Quad
-  \userule{T-Enter}\Quad
-  \userule{T-Update}\Quad
-  \userule{T-Fail}\Quad
-  \userule{T-Then}\Break
-  \userule{T-Next}\Quad
-  \userule{T-And}\Quad
-  \userule{T-Or}\Quad
-  \userule{T-Xor}
+  \boxed{\RelationT}    \Break
+  \userule{T-Bool}      \Quad
+  \userule{T-Int}       \Quad
+  \userule{T-String}    \Quad
+  \userule{T-Unit}      \Break
+  \userule{T-Var}       \Quad
+  \userule{T-Abs}       \Quad
+  \userule{T-App}       \Break
+  \userule{T-Loc}       \Quad
+  \userule{T-If}        \Break
+  \userule{T-Pair}      \Quad
+  \userule{T-First}     \Quad
+  \userule{T-Second}    \Break
+  \userule{T-Nil}       \Quad
+  \userule{T-Cons}      \Quad
+  \userule{T-Head}      \Quad
+  \userule{T-Tail}      \Break
+                        \Break
+  \userule{T-Done}      \Quad
+  \userule{T-Enter}     \Quad
+  \userule{T-Update}    \Quad
+  \userule{T-View}      \Break
+  \userule{T-And}       \Quad
+  \userule{T-Or}        \Quad
+  \userule{T-Fail}      \Break
+  \userule{T-Trans}     \Quad
+  \userule{T-Step}      \Break
+  \userule{T-Pick}      \Quad
+  \userule{T-Forever}   \Quad
+  \userule{T-Share}     \Break
+  \userule{T-Assign}    \Quad
+  \userule{T-Change}    \Quad
+  \userule{T-Watch}
 \end{gather*}
 
 \subsection{Evaluation rules}
