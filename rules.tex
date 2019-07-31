@@ -85,7 +85,7 @@
 
 \newrule{T-Ref}
   {\Gamma,\Sigma \infers e:\beta}
-  {\Gamma,\Sigma \infers \Ref e :\Reference \beta}
+  {\Gamma,\Sigma \infers \Share e :\Reference \beta}
 
 \newrule{T-Deref}
   {\Gamma,\Sigma \infers e:\Reference \beta}
@@ -103,7 +103,7 @@
 
 \newrule{T-Edit}
   {\Gamma,\Sigma \infers e : \tau}
-  {\Gamma,\Sigma \infers \Edit e : \Task \tau}
+  {\Gamma,\Sigma \infers \Update e : \Task \tau}
 
 \newrule{T-Enter}
   {}
@@ -122,31 +122,31 @@
 \newrule{T-Then}
   {\upon{\Gamma,\Sigma \infers e_1 : \Task \tau_1}
    {\Gamma,\Sigma \infers e_2 : \tau_1 \to \Task \tau_2}}
-  {\Gamma,\Sigma \infers e_1 \Then e_2 : \Task \tau_2}
+  {\Gamma,\Sigma \infers e_1 \Step e_2 : \Task \tau_2}
 
 
-\newrule{T-Next}
-  {\upon{\Gamma,\Sigma \infers e_1 : \Task \tau_1}
-   {\Gamma,\Sigma \infers e_2 : \tau_1 \to \Task \tau_2}}
-  {\Gamma,\Sigma \infers e_1 \Next e_2 : \Task \tau_2}
+% \newrule{T-Next}
+%   {\upon{\Gamma,\Sigma \infers e_1 : \Task \tau_1}
+%    {\Gamma,\Sigma \infers e_2 : \tau_1 \to \Task \tau_2}}
+%   {\Gamma,\Sigma \infers e_1 \Next e_2 : \Task \tau_2}
 
 
 \newrule{T-And}
   {\Gamma,\Sigma \infers e_1 : \Task \tau_1 \Quad
    \Gamma,\Sigma \infers e_2 : \Task \tau_2}
-  {\Gamma,\Sigma \infers e_1 \And e_2 : \Task\,(\tau_1 \times \tau_2)}
+  {\Gamma,\Sigma \infers e_1 \Pair e_2 : \Task\,(\tau_1 \times \tau_2)}
 
 
 \newrule{T-Or}
   {\upon{\Gamma,\Sigma \infers e_1 : \Task \tau}
    {\Gamma,\Sigma \infers e_2 : \Task \tau}}
-  {\Gamma,\Sigma \infers e_1 \Or e_2 : \Task \tau}
+  {\Gamma,\Sigma \infers e_1 \Choose e_2 : \Task \tau}
 
 
 \newrule{T-Xor}
   {\upon{\Gamma,\Sigma \infers e_1 : \Task \tau}
    {\Gamma,\Sigma \infers e_2 : \Task \tau}}
-  {\Gamma,\Sigma \infers e_1 \Xor e_2 : \Task \tau}
+  {\Gamma,\Sigma \infers e_1 \Pick e_2 : \Task \tau}
 
 
 %% Evaluation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -212,7 +212,7 @@
 \newrule{E-Ref}
   {e,\sigma\eval v,\sigma' \Quad
    l\not\in Dom(\sigma')}
-  {\Ref e,\sigma\eval l,\sigma'[l\mapsto v]}
+  {\Share e,\sigma\eval l,\sigma'[l\mapsto v]}
 
 \newrule{E-Deref}
   {e,\sigma\eval l,\sigma'}
@@ -225,7 +225,7 @@
 
 \newrule{E-Edit}
   {e,\sigma \eval v,\sigma'}
-  {\Edit e , \sigma\eval \Edit v,\sigma'}
+  {\Update e , \sigma\eval \Update v,\sigma'}
 
 \newrule{E-Enter}
   {}
@@ -243,27 +243,27 @@
 
 \newrule{E-Then}
   {e_1 ,\sigma\eval t_1,\sigma'}
-  {e_1 \Then e_2,\sigma\eval t_1 \Then e_2,\sigma'}
+  {e_1 \Step e_2,\sigma\eval t_1 \Step e_2,\sigma'}
 
-\newrule{E-Next}
-  {e_1 ,\sigma\eval t_1,\sigma'}
-  {e_1 \Next e_2 ,\sigma\eval t_1 \Next e_2,\sigma'}
+% \newrule{E-Next}
+%   {e_1 ,\sigma\eval t_1,\sigma'}
+%   {e_1 \Next e_2 ,\sigma\eval t_1 \Next e_2,\sigma'}
 
 
 \newrule{E-And}
   {e_1 ,\sigma\eval t_1 ,\sigma'\Quad
    e_2 ,\sigma'\eval t_2,\sigma''}
-  {e_1 \And e_2 ,\sigma\eval t_1 \And t_2,\sigma''}
+  {e_1 \Pair e_2 ,\sigma\eval t_1 \Pair t_2,\sigma''}
 
 
 \newrule{E-Or}
   {e_1 ,\sigma\eval t_1 ,\sigma'\Quad
    e_2 ,\sigma'\eval t_2,\sigma''}
-  {e_1 \Or e_2 ,\sigma\eval t_1 \Or t_2,\sigma''}
+  {e_1 \Choose e_2 ,\sigma\eval t_1 \Choose t_2,\sigma''}
 
 \newrule{E-Xor}
   {}
-  {e_1 \Xor e_2 ,\sigma\eval e_1 \Xor e_2,\sigma}
+  {e_1 \Pick e_2 ,\sigma\eval e_1 \Pick e_2,\sigma}
 
 
 %% Normalisation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -274,7 +274,7 @@
 
 \newrule{S-Edit}
   { }
-  {\Edit v,\sigma \stride \Edit v,\sigma}
+  {\Update v,\sigma \stride \Update v,\sigma}
 
 \newrule{S-Fill}
   { }
@@ -292,53 +292,53 @@
 
 \newrule{S-ThenStay}
   {t_1,\sigma \stride t_1',\sigma'}
-  {t_1 \Then e_2,\sigma \stride t_1' \Then e_2,\sigma'}
+  {t_1 \Step e_2,\sigma \stride t_1' \Step e_2,\sigma'}
   [\Value(t_1',\sigma') = \bot]
 
 \newrule{S-ThenFail}
   {t_1,\sigma \stride t_1',\sigma' \Quad
    e_2\ v_1,\sigma' \eval t_2,\sigma''}
-  {t_1 \Then e_2,\sigma \stride t_1' \Then e_2,\sigma'}
+  {t_1 \Step e_2,\sigma \stride t_1' \Step e_2,\sigma'}
   [\Value(t_1',\sigma') = v_1 \land \Failing(t_2,\sigma'')]
 
 \newrule{S-ThenCont}
   {t_1,\sigma \stride t_1',\sigma'  \Quad
    e_2\ v_1,\sigma' \eval t_2 ,\sigma''}
-  {t_1 \Then e_2,\sigma \stride t_2,\sigma''}
+  {t_1 \Step e_2,\sigma \stride t_2,\sigma''}
   [\Value(t_1',\sigma') = v_1 \land \lnot\Failing(t_2,\sigma'')]
 
-\newrule{S-Next}
-  {t_1,\sigma \stride t_1',\sigma'}
-  {t_1 \Next e_2,\sigma \stride t_1' \Next e_2,\sigma'}
+% \newrule{S-Next}
+%   {t_1,\sigma \stride t_1',\sigma'}
+%   {t_1 \Next e_2,\sigma \stride t_1' \Next e_2,\sigma'}
 
 
 \newrule{S-And}
   {t_1,\sigma  \stride t_1',\sigma'  \Quad
    t_2,\sigma' \stride t_2',\sigma''}
-  {t_1 \And t_2,\sigma \stride t_1' \And t_2',\sigma''}
+  {t_1 \Pair t_2,\sigma \stride t_1' \Pair t_2',\sigma''}
 
 
 \newrule{S-OrLeft}
   {t_1,\sigma  \stride t_1',\sigma'}
-  {t_1 \Or t_2,\sigma \stride t_1',\sigma'}
+  {t_1 \Choose t_2,\sigma \stride t_1',\sigma'}
   [\Value(t_1',\sigma') = v_1]
 
 \newrule{S-OrRight}
   {t_1,\sigma  \stride t_1',\sigma'  \Quad
    t_2,\sigma' \stride t_2',\sigma''}
-  {t_1 \Or t_2,\sigma \stride t_2',\sigma''}
+  {t_1 \Choose t_2,\sigma \stride t_2',\sigma''}
   [\Value(t_1',\sigma') = \bot \land \Value(t_2',\sigma'') = v_2]
 
 \newrule{S-OrNone}
   {t_1,\sigma  \stride t_1',\sigma'  \Quad
    t_2,\sigma' \stride t_2',\sigma''}
-  {t_1 \Or t_2,\sigma \stride t_1' \Or t_2',\sigma''}
+  {t_1 \Choose t_2,\sigma \stride t_1' \Choose t_2',\sigma''}
   [\Value(t_1',\sigma') = \bot \land \Value(t_2',\sigma'') = \bot]
 
 
 \newrule{S-Xor}
   { }
-  {e_1 \Xor e_2,\sigma \stride e_1 \Xor e_2,\sigma}
+  {e_1 \Pick e_2,\sigma \stride e_1 \Pick e_2,\sigma}
 
 \newrule{S-Eval}
     {e,\sigma \eval e',\sigma'  \Quad
@@ -376,17 +376,17 @@
 
 \newrule{H-Change}
   { }
-  {\Edit v,\sigma \xrightarrow[]{v}' \Edit v',\sigma}
+  {\Update v,\sigma \xrightarrow[]{v}' \Update v',\sigma}
   [v,v':\tau]
 
 \newrule{H-Empty}
   { }
-  {\Edit v,\sigma \handle{\Empty} \Enter \tau,\sigma,\True}
+  {\Update v,\sigma \handle{\Empty} \Enter \tau,\sigma,\True}
   [v : \tau]
 
 \newrule{H-Fill}
   { }
-  {\Enter \tau,\sigma \xrightarrow[]{v} \Edit v,\sigma}
+  {\Enter \tau,\sigma \xrightarrow[]{v} \Update v,\sigma}
   [v:\tau]
 
 \newrule{H-Update}
@@ -396,44 +396,44 @@
 
 \newrule{H-PassThen}
   {t_1,\sigma \xrightarrow[]{j} t_1',\sigma'}
-  {t_1 \Then e_2,\sigma \xrightarrow[]{j} t_1' \Then e_2,\sigma'}
+  {t_1 \Step e_2,\sigma \xrightarrow[]{j} t_1' \Step e_2,\sigma'}
 
-\newrule{H-PassNext}
-  {t_1,\sigma \xrightarrow[]{j} t_1',\sigma'}
-  {t_1 \Next e_2,\sigma \xrightarrow[]{j} t_1' \Next e_2,\sigma'}
+% \newrule{H-PassNext}
+%   {t_1,\sigma \xrightarrow[]{j} t_1',\sigma'}
+%   {t_1 \Next e_2,\sigma \xrightarrow[]{j} t_1' \Next e_2,\sigma'}
 
-\newrule{H-Next}
-  {e_2\ v_1,\sigma \normalise t_2,\sigma'}
-  {t_1 \Next e_2,\sigma \xrightarrow[]{\Continue} t_2,\sigma'}
-  [\Value{(t_1,\sigma)} = v_1 \land \neg\Failing{(t_2,\sigma')}]
+% \newrule{H-Next}
+%   {e_2\ v_1,\sigma \normalise t_2,\sigma'}
+%   {t_1 \Next e_2,\sigma \xrightarrow[]{\Continue} t_2,\sigma'}
+%   [\Value{(t_1,\sigma)} = v_1 \land \neg\Failing{(t_2,\sigma')}]
 
 
 \newrule{H-FirstAnd}
   {t_1,\sigma \xrightarrow[]{j} t_1',\sigma'}
-  {t_1 \And t_2,\sigma \xrightarrow[]{\First j} t_1' \And t_2,\sigma'}
+  {t_1 \Pair t_2,\sigma \xrightarrow[]{\First j} t_1' \Pair t_2,\sigma'}
 
 \newrule{H-SecondAnd}
   {t_2,\sigma \xrightarrow[]{j} t_2',\sigma'}
-  {t_1 \And t_2,\sigma \xrightarrow[]{\Second j} t_1 \And t_2',\sigma'}
+  {t_1 \Pair t_2,\sigma \xrightarrow[]{\Second j} t_1 \Pair t_2',\sigma'}
 
 
 \newrule{H-FirstOr}
   {t_1,\sigma \xrightarrow[]{j} t_1',\sigma'}
-  {t_1 \Or t_2,\sigma \xrightarrow[]{\First j} t_1' \Or t_2,\sigma'}
+  {t_1 \Choose t_2,\sigma \xrightarrow[]{\First j} t_1' \Choose t_2,\sigma'}
 
 \newrule{H-SecondOr}
   {t_2,\sigma \xrightarrow[]{j} t_2',\sigma' }
-  {t_1 \Or t_2,\sigma \xrightarrow[]{\Second j} t_1 \Or t_2',\sigma'}
+  {t_1 \Choose t_2,\sigma \xrightarrow[]{\Second j} t_1 \Choose t_2',\sigma'}
 
 
 \newrule{H-PickLeft}
   {e_1,\sigma \normalise t_1,\sigma'}
-  {e_1 \Xor e_2,\sigma \xrightarrow[]{\Left} t_1,\sigma'}
+  {e_1 \Pick e_2,\sigma \xrightarrow[]{\Left} t_1,\sigma'}
   [\neg\Failing(t_1,\sigma')]
 
 \newrule{H-PickRight}
   {e_2,\sigma \normalise t_2,\sigma'}
-  {e_1 \Xor e_2,\sigma \xrightarrow[]{\Right} t_2,\sigma'}
+  {e_1 \Pick e_2,\sigma \xrightarrow[]{\Right} t_2,\sigma'}
   [\neg\Failing(t_2,\sigma')]
 
 

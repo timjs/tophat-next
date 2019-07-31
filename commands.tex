@@ -14,7 +14,7 @@
 \newkeyword[Let]{let}
 \newkeyword[In]{in}
 
-\newkeyword[Ref] {ref}
+\newkeyword[Share]{share}
 
 
 \newmacro{If}[3]
@@ -71,37 +71,37 @@
 
 
 \let\And\relax
-\newoperator{Then}  {\blacktriangleright}
-\newoperator{Next}  {\vartriangleright}
-\newoperator{And}   {\Join}
-\newoperator{Or}    {\blacklozenge}
-\newoperator{Xor}   {\lozenge}
-\newoperator{Edit}  {\square}
-\newoperator{View}  {\overline{\square}}
 \newoperator{Enter} {\boxtimes}
-\newoperator{Update}{\blacksquare}
-\newoperator{Watch} {\overline{\blacksquare}}
+\newoperator{Update}{\square}
+\newoperator{View}  {\dot{\square}} %{\boxcircle} %{\overline{\square}}
+\newoperator{Pick}  {\lozenge}
+
+\newoperator{Pair}  {\Join}
+\newoperator{Done}  {\blacksquare}
+\newoperator{Choose}{\blacklozenge}
 \newoperator{Fail}  {\lightning}
-\newoperator{At}    {@}
 
-\newoperator{AndOr} {\DEPRECATED}
+\newoperator{Trans}  {\blacktriangle} %{\bullet}
+\newoperator{Step}   {\blacktriangleright}
+\newoperator{Forever}{\circlearrowleft}
 
+\newoperator{Change}{\boxplus}
+\newoperator{Watch} {\dot{\boxplus}} %{\boxbox} %{\overline{\boxplus}}
+
+\newoperator{Appoint}{@}
 
 
 %% Events %%
 
+\newvalue[First]  {F}
+\newvalue[Second] {S}
+
+\newvalue[IEnter]   {}
+\newvalue[IContinue]{C}
+\newvalue[IPick]    {P}
 
 \newvalue[Left]   {L}
 \newvalue[Right]  {R}
-
-
-\newvalue[Empty]   {E}
-\newvalue[Continue]{C}
-\newvalue[Pick]    {P}
-
-
-\newvalue[First]  {F}
-\newvalue[Second] {S}
 \newvalue[Here]   {H}
 
 

@@ -168,6 +168,15 @@
 \newmacro{highlight}[1]
   {\colorbox{lightgray}{\ensuremath{#1}}}
 
+
+
+%% Lines %%
+
+\newmacro{more}[1]
+  {\overline{#1}}
+
+
+
 %% Spacing %%
 
 \newmacro{Quad}
@@ -221,7 +230,8 @@
 
 \newmacro{powerset}[1]
   % {2^{#1}}
-  {\mathcal{P}(#1)}
+  % {\mathcal{P}(#1)}
+  {\mathbb{P}(#1)}
 
 \newmathcommand{n}{\underline{n}}
 
