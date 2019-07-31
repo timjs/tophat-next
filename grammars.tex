@@ -1,0 +1,282 @@
+% !TEX root=main.tex
+
+
+%% Language %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newmacro{G-Language}{
+  \begin{grammar}
+    Expressions
+      & e    &::= & \lambda x:\tau.\ e   & – abstraction \\
+      &      &\mid& e_1\ e_2             & – application \\
+      &      &\mid& x                    & – variable \\
+      &      &\mid& s                    & – symbol \\
+      &      &\mid& c                    & – constant \\
+    \addlinespace
+      &      &\mid& u\ e_1               & – unary operation \\
+      &      &\mid& e_1\ o\ e_2          & – binary operation \\
+      &      &\mid& \If{e_1}{e_2}{e_3}   & – conditional \\
+    \addlinespace
+      &      &\mid& \unit                & – unit \\
+      &      &\mid& \tuple{e_1, e_2}     & – pair \\
+      &      &\mid& \Fst e               & – first projection \\
+      &      &\mid& \Snd e               & – second projection \\
+    \addlinespace
+      &      &\mid& \Ref e               & – reference \\
+      &      &\mid& !e                   & – dereference \\
+      &      &\mid& e_1 := e_2           & – assignment \\
+      % &      &\mid& e_1; e_2             & – sequence \\
+      &      &\mid& l                    & – location \\
+    \addlinespace
+      &      &\mid& p                    & – pretask \\
+    \addlinespace
+    Constants
+      & c    &::= & B                    & – boolean \\
+      &      &\mid& I                    & – integer \\
+      &      &\mid& S                    & – string \\
+    \addlinespace
+    Unary operations
+      & u    &::= & \lnot                & – logical \\
+      &      &\mid& -                    & – numerical \\
+      &      &\mid& \Len                 & – sequential \\
+    \addlinespace
+    Binary operations
+      & o    &::= & \land \mid \lor                                     & – logical \\
+      &      &\mid& < \mid \le \mid \equiv \mid \nequiv \mid \ge \mid > & – equational \\
+      &      &\mid& + \mid - \mid \times \mid /                         & – numerical \\
+      &      &\mid& \pp                                                 & – sequential \\
+  \end{grammar}
+}
+
+\newmacro{G-Language-Compact}{
+  \begin{grammar}
+    \noalign{Expressions}
+    \addlinespace
+    & e &::= & \lambda x:\tau.\ e  \Mid  e_1\ e_2                  & – abstraction, application \\
+    &       & \mid  & x  \Mid  c \Mid \unit                        & – variable, constant, unit \\
+    &       & \mid  & u\ e_1 \Mid e_1\ o\ e_2                      & – unary, binary operation \\
+    &       & \mid  & \If{e_1}{e_2}{e_3}                           & – conditional \\
+    &       & \mid  & \tuple{e_1, e_2}  \Mid  \Fst e  \Mid  \Snd e & – pair, projections \\
+    &       & \mid  & [\ ]_\beta \Mid e_1 :: e_2                   & – nil, cons \\
+    &       & \mid  & \Head\ e \Mid \Tail\ e                       & – first element, list tail \\
+    &       & \mid  & \Ref e  \Mid  !e  \Mid  e_1 := e_2  \Mid  l  & – references, location \\
+    &       & \mid  & p \Mid \highlight{s}                         & – pretask, symbol \\
+    \\
+    \noalign{Constants}
+    \addlinespace
+    & c& ::= &  B  \Mid  I  \Mid  S                                & – boolean, integer, string \\
+    \\
+    \noalign{Unary Operations}
+    \addlinespace
+    & u &::= &  \lnot \Mid - \Mid \Len \Mid \Uniq                  & – not, negate, length, unique \\
+    \\
+    \noalign{Binary Operations}
+    \addlinespace
+    & o &::= & < \Mid \le \Mid \equiv \Mid \nequiv \Mid \ge \Mid > & – equational \\
+    &       & \mid  & + \Mid - \Mid \times \Mid /                  & – numerical \\
+    &       & \mid  & \pp  \Mid \in                                & – append, elementhood \\
+  \end{grammar}
+}
+
+
+\newmacro{G-Pretasks}{
+  \begin{grammar}
+    Pretasks
+      & p    &::= & \Edit e              & – valued editor \\
+      % &      &\mid& \View e              & – valued read-only editor \\
+      &      &\mid& \Enter \tau          & – unvalued editor \\
+      &      &\mid& \Update e            & – shared editor \\
+      % &      &\mid& \Watch e             & – shared read-only editor \\
+    \addlinespace
+      &      &\mid& e_1 \Then e_2        & – step \\
+      &      &\mid& e_1 \Next e_2        & – user step \\
+    \addlinespace
+      &      &\mid& e_1 \And e_2         & – composition \\
+    \addlinespace
+      &      &\mid& e_1 \Or e_2          & – choice \\
+      &      &\mid& e_1 \Xor e_2         & – user choice \\
+    \addlinespace
+      &      &\mid& \Fail                & – fail task \\
+  \end{grammar}
+}
+
+\newmacro{G-Pretasks-Compact}{
+  \begin{grammar}
+    \noalign{Pretasks}
+    \addlinespace
+      & p    &::= & \Edit e \Mid \Enter \tau \Mid \Update e            & – editors: valued, unvalued, shared \\
+      &      &\mid& e_1 \Then e_2 \Mid e_1 \Next e_2                   & – steps: internal, external \\
+      &      &\mid& \Fail \Mid e_1 \And e_2                            & – fail, composition \\
+      &      &\mid& e_1 \Or e_2 \Mid e_1 \Xor e_2                      & – choice: internal, external\\
+  \end{grammar}
+}
+
+
+\newmacro{G-Types}{
+  \begin{grammar}
+    Types
+      & \tau &::= & \tau_1 \to \tau_2    & – function type \\
+      &      &\mid& \Reference \tau      & – reference type \\
+      &      &\mid& \Task \tau           & – task type \\
+      &      &\mid& \beta                & – basic type \\
+      % &      &\mid& \alpha               & – universal type \\
+    Basic types
+      &\beta &::= & \tau_1 \times \tau_2 & – product type \\
+      &      &\mid& \text{List} \beta    & - list type\\
+      &      &\mid& \Unit                & – unit type \\
+      &      &\mid& \Bool                & – boolean type \\
+      &      &\mid& \Int                 & – integer type \\
+      &      &\mid& \String              & – string type \\
+  \end{grammar}
+}
+
+\newmacro{G-Types-Compact}{
+  \begin{grammar}
+    \noalign{Types}
+    \addlinespace
+      & \tau  &  ::= & \tau_1 \to \tau_2 \Mid \beta                      & – function, basic \\
+      &       & \mid & \Reference \tau \Mid \Task \tau                   & – reference, task \\
+      \\
+    \noalign{Basic types}
+    \addlinespace
+      & \beta &  ::= & \tau_1 \times \tau_2 \Mid \List \beta \Mid \Unit  & – product, list, unit \\
+      &       & \mid & \Bool \Mid \Int \Mid \String                      & – boolean, integer, string \\
+  \end{grammar}
+}
+
+
+\newmacro{G-Values}{
+  \begin{grammar}
+    Values
+      & v    &::= & \lambda x:\tau.\ e   & – abstraction \\
+      &      &\mid& c                    & – constant \\
+      &      &\mid& l                    & – location \\
+    \addlinespace
+      &      &\mid& s                    & – symbol \\
+      &      &\mid& u\ v                 & – symbolic unary operation \\
+      &      &\mid& v_1\ o\ v_2          & – symbolic binary operation \\
+    \addlinespace
+      &      &\mid& \tuple{v_1, v_2}     & – pair value \\
+      &      &\mid& \unit                & – unit \\
+    \addlinespace
+      &      &\mid& t                    & – task \\
+  \end{grammar}
+}
+
+\newmacro{G-Values-Compact}{
+  \begin{grammar}
+    \noalign{Values}
+    \addlinespace
+      & v &  ::= & \lambda x:\tau.\ e \Mid \tuple{v_1, v_2} \Mid \unit & – abstraction, pair, unit \\
+      &   & \mid & [\ ]_\beta \Mid v_1 :: v_2 \Mid c                   & - nil, cons, constant \\
+      &   & \mid & l \Mid t \Mid \highlight{s}                         & – location, task, symbol \\
+      &   & \mid & \highlight{u\ v \Mid v_1\ o\ v_2}                   & – unary/binary operation \\
+  \end{grammar}
+}
+
+
+\newmacro{G-Tasks}{
+  \begin{grammar}
+    Tasks
+      & t    &::= & \Edit v              & – valued editor \\
+      % &      &\mid& \View v              & – valued read-only editor \\
+      &      &\mid& \Enter \tau          & – unvalued editor \\
+      &      &\mid& \Update l            & – shared editor \\
+      % &      &\mid& \Watch l             & – shared read-only editor \\
+    \addlinespace
+      &      &\mid& t_1 \Then e_2        & – step \\
+      &      &\mid& t_1 \Next e_2        & – user step \\
+    \addlinespace
+      &      &\mid& t_1 \And t_2         & – composition \\
+    \addlinespace
+      &      &\mid& t_1 \Or t_2          & – choice \\
+      &      &\mid& e_1 \Xor e_2         & – user choice \\
+    \addlinespace
+      &      &\mid& \Fail                & – fail task \\
+  \end{grammar}
+}
+
+\newmacro{G-Tasks-Compact}{
+  \begin{grammar}
+    \noalign{Tasks}
+    \addlinespace
+      & t &  ::= & \Edit v \Mid \Enter \tau \Mid \Update l           & – editors \\
+      &   & \mid & t_1 \Then e_2 \Mid t_1 \Next e_2                  & – steps \\
+      &   & \mid & \Fail \Mid t_1 \And t_2                           & – fail, combination \\
+      &   & \mid & t_1 \Or t_2 \Mid e_1 \Xor e_2                     & – choices \\
+  \end{grammar}
+}
+
+\newmacro{G-Inputs}{
+  \begin{grammar}
+    Symbolic inputs
+      & i    & ::=& $s$                  & – symbolic action \\
+      &      &\mid& \First i             & – pass to first \\
+      &      &\mid& \Second i            & – pass to second
+  \end{grammar}
+}
+
+\newmacro{G-Inputs-Compact}{
+  \begin{grammar}
+    \noalign{Symbolic inputs}
+    \addlinespace
+      & i    & ::=& a \Mid \First i \Mid \Second i  & – symbolic action, to first, to second \\
+      \\
+    \noalign{Symbolic actions}
+    \addlinespace
+      & a  & ::=& \highlight{s}                     & – symbol \\
+      &    &\mid& \Continue \Mid \Left \Mid \Right  & – continue, go left, go right \\
+  \end{grammar}
+}
+
+\newmacro{G-CInputs}{
+  \begin{grammar}
+    Concrete inputs
+      & j    & ::=& \bar{a}              & – concrete action \\
+      &      &\mid& \First j             & – pass to first \\
+      &      &\mid& \Second j            & – pass to second \\
+    Concrete actions
+      & \bar{a} & ::=& c                    & – constant \\
+      &         &\mid& \Continue            & – continue with next task \\
+      &         &\mid& \Left                & – go left \\
+      &         &\mid& \Right               & – go right \\
+  \end{grammar}
+}
+
+\newmacro{G-CInputs-Compact}{
+  \begin{grammar}
+    \noalign{Concrete inputs}
+    \addlinespace
+      & j    & ::=& a \Mid \First j \Mid \Second j             & – action, to first, to second \\
+      \\
+    \noalign{Concrete actions}
+    \addlinespace
+      & a  & ::=& c                    & – constant \\
+      &      &\mid& \Continue  \Mid \Left \Mid \Right          & – continue, go left, go right \\
+  \end{grammar}
+}
+
+
+\newmacro{G-Predicates}{
+  \begin{grammar}
+    Predicates
+      & \phi &::= & c                    & – constant \\
+      &      &\mid& s                    & – symbol \\
+      &      &\mid& \Continue            & – continue\\
+      &      &\mid& \Left                & – go left \\
+      &      &\mid& \Right               & – go right \\
+      &      &\mid& u\ \phi              & – symbolic unary operation \\
+      &      &\mid& \phi_1\ o\ \phi_2    & – symbolic binary operation \\
+  \end{grammar}
+}
+
+\newmacro{G-Predicates-Compact}{
+  \begin{grammar}
+    \noalign{Path conditions}
+    \addlinespace
+      & \highlight{\phi} &::= & c \Mid s              & – constant, symbol\\
+      % &      &\mid& \Continue  \Mid \Left \Mid \Right          & – continue, go left, go right\\
+      &      &\mid& \unit \Mid \tuple{\phi_1, \phi_2} & – unit, pairs \\
+      &      &\mid& [\ ]_\beta \Mid \phi_1 :: \phi2   & – nil, cons \\
+      &      &\mid& u\ \phi \Mid \phi_1\ o\ \phi_2    & – symbolic unary/binary operation \\
+  \end{grammar}
+}

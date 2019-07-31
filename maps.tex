@@ -1,0 +1,67 @@
+% !TEX root=main.tex
+
+
+%% Language %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newmacro{O-Value}{
+  \begin{function}
+    \signature{\Value : \mathrm{Tasks} \times \mathrm{States} \rightharpoonup \mathrm{Values}} \\
+    \Value(\Edit v, \sigma)                &=& v \\
+    \Value(\Enter \tau, \sigma)            &=& \bot \\
+    \Value(\Update l, \sigma)              &=& \sigma(l) \\
+    \Value(\Fail, \sigma)                  &=& \bot \\
+    \Value(t_1 \Then e_2, \sigma)          &=& \bot \\
+    \Value(t_1 \Next e_2, \sigma)          &=& \bot \\
+    \Value(t_1 \And t_2, \sigma)           &=& \left\{
+      \begin{array}{ll}
+        \tuple{v_1, v_2}  & \ \when\ \Value(t_1, \sigma) = \
+        v_1 \land \Value(t_2, \sigma) = v_2 \\
+        \bot                          & \ \otherwise
+      \end{array}
+    \right. \\
+    \Value(t_1 \Or t_2, \sigma)            &=& \left\{
+      \begin{array}{ll}
+        v_1                           & \ \when\ \Value(t_1, \sigma) = v_1 \\
+        v_2                           & \ \when\ \Value(t_1, \sigma) = \bot \land \Value(t_2, \sigma) = v_2 \\
+        \obox{\tuple{v_1, v_2}}{\bot} & \ \otherwise
+      \end{array}
+    \right. \\
+    \Value(t_1 \Xor t_2, \sigma)           &=& \bot
+  \end{function}
+}
+
+\newmacro{O-Failing}{
+  \begin{function}
+    \signature{\Failing : \mathrm{Tasks} \times \mathrm{States} \to \mathrm{Booleans}} \\
+    \Failing(\Edit v,\sigma)       &=& \False \\
+    \Failing(\Enter \tau,\sigma)   &=& \False \\
+    \Failing(\Update l,\sigma)     &=& \False \\
+    \Failing(\Fail,\sigma)         &=& \True \\
+    \Failing(t_1 \Then e_2,\sigma) &=& \Failing(t_1,\sigma) \\
+    \Failing(t_1 \Next e_2,\sigma) &=& \Failing(t_1,\sigma) \\
+    \Failing(t_1 \And t_2,\sigma)  &=& \Failing(t_1,\sigma) \land \Failing(t_2,\sigma) \\
+    \Failing(t_1 \Or t_2,\sigma)   &=& \Failing(t_1,\sigma) \land \Failing(t_2,\sigma) \\
+    \Failing(e_1 \Xor e_2,\sigma)  &=& \highlight{\bigwedge \Big( \set{\Failing(t_1,\sigma_1') \mid e_1, \sigma \normalise \overline{t_1,\sigma_1'}}\ \cup} \\
+                          & & \highlight{\phantom{\bigwedge \Big(}\set{\Failing(t_2,\sigma_2') \mid e_2, \sigma \normalise \overline{t_2,\sigma_2'}} \Big)} \\
+    % \Failing(e_1 \Xor e_2,\sigma)  &=& \Failing(t_1,s_1') \land \Failing(t_2,s_2')\\
+    % &&\quad \where\ e_1,\sigma \normalise t_1,s_1' \mathbf{\ and\ } e_2,\sigma \normalise t_2,s_2'
+  \end{function}
+}
+
+
+\newmacro{O-Inputs}{
+  \begin{function}
+    \signature{\Inputs : \mathrm{Tasks} \times \mathrm{States} \to \powerset{\mathrm{Inputs}}} \\
+    \Inputs(\Edit v,\sigma)             &=& \set{v':\tau}                       \quad\where\ \Edit v : \Task\tau \\
+    \Inputs(\Enter \tau,\sigma)         &=& \set{v':\tau} \\
+    \Inputs(\Update l,\sigma)           &=& \obox{\set{v':\tau, \Empty}}{\set{v':\tau}} \quad\where\ \Update l : \Task\tau \\
+    \Inputs(\Fail,\sigma)               &=& \nothing \\
+    \Inputs(t_1 \Then e_2,\sigma)       &=& \Inputs(t_1,\sigma) \\
+    \Inputs(t_1 \Next e_2,\sigma)       &=& \Inputs(t_1,\sigma) \cup \set{\Continue \mid \Value(t_1, \sigma) = v_1 \land \\
+                                         && e_2\ v_1, \sigma \normalise t_2, \sigma',\phi \land \lnot\Failing(t_2, \sigma')} \\
+    \Inputs(t_1 \And t_2,\sigma)        &=& \set{\First\ i \mid i \in \Inputs(t_1,\sigma)} \cup \set{\Second\ i \mid i \in \Inputs(t_2,\sigma)} \\
+    \Inputs(t_1 \Or t_2,\sigma)         &=& \set{\First\ i \mid i \in \Inputs(t_1,\sigma)} \cup \set{\Second\ i \mid i \in \Inputs(t_2,\sigma)} \\
+    \Inputs(e_1 \Xor e_2,\sigma)        &=& \set{\Left \mid e_1, \sigma \normalise t_1, \sigma',\phi \land \lnot\Failing(t_1, s')} \cup\\
+                                         && \set{\Right \mid e_2, \sigma \normalise t_2, \sigma',\phi \land \lnot\Failing(t_2, s')}
+  \end{function}
+}
