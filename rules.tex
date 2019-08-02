@@ -53,7 +53,7 @@
   {\Gamma,\Sigma \infers \If{e_1}{e_2}{e_3} : \tau}
 
 
-\newrule{T-Pair}
+\newrule{T-Tuple}
     {\Gamma,\Sigma \infers e_1 : \tau_1  \Quad
      \Gamma,\Sigma \infers e_2 : \tau_2}
     {\Gamma,\Sigma \infers \tuple{e_1, e_2} : \tau_1 \times \tau_2}
@@ -107,12 +107,12 @@
   {\Gamma,\Sigma \infers \Pick \set{\more{L_i \mapsto t_i}} : \Task \tau}
 
 
-\newrule{T-And}
+\newrule{T-Pair}
   {\Gamma,\Sigma \infers e_1 : \Task \tau_1 \Quad
    \Gamma,\Sigma \infers e_2 : \Task \tau_2}
   {\Gamma,\Sigma \infers e_1 \Pair e_2 : \Task\ (\tau_1 \times \tau_2)}
 
-\newrule{T-Or}
+\newrule{T-Choose}
   {\Gamma,\Sigma \infers e_1 : \Task \tau \Quad
    \Gamma,\Sigma \infers e_2 : \Task \tau}
   {\Gamma,\Sigma \infers e_1 \Choose e_2 : \Task \tau}
@@ -159,118 +159,129 @@
 %% Evaluation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newmacro{RelationE}
-  {e,\sigma \eval v,\sigma'}
+  {e  \eval v}
 
 
 \newrule{E-Value}
   {}
-  {v,\sigma\eval v,\sigma}
-
+  {v  \eval v}
 
 \newrule{E-App}
-  {e_1,\sigma\eval \lambda x:\tau.e_1',\sigma'\Quad
-   e_2,\sigma'\eval v_2,\sigma''\Quad
-   e_1'[x\mapsto v_2],\sigma''\eval v_1,\sigma'''}
-  {e_1 e_2,\sigma \eval v_1,\sigma'''}
+  {e_1 \eval \lambda x:\tau.e_1' \Quad
+   e_2 \eval v_2 \Quad
+   [x \mapsto v_2]e_1' \eval v_1}
+  {e_1 e_2 \eval v_1}
 
 
 \newrule{E-IfTrue}
-  {e_1,\sigma\eval \True,\sigma'\Quad
-   e_2,\sigma'\eval v_2,\sigma''}
-  {\If{e_1}{e_2}{e_3},\sigma\eval v_2,\sigma''}
+  {e_1 \eval \True \Quad
+   e_2 \eval v_2}
+  {\If{e_1}{e_2}{e_3} \eval v_2}
 
 \newrule{E-IfFalse}
-  {e_1,\sigma\eval v_1,\sigma' \Quad
-   e_3,\sigma'\eval v_3,\sigma''}
-  {\If{e_1}{e_2}{e_3},\sigma\eval v_3,\sigma''}
+  {e_1 \eval v_1 \Quad
+   e_3 \eval v_3}
+  {\If{e_1}{e_2}{e_3} \eval v_3}
 
 
-\newrule{E-Pair}
-  {e_1,\sigma\eval v_1,\sigma' \Quad
-   e_2,\sigma'\eval v_2,\sigma''}
-  {\tuple{e_1,e_2},\sigma\eval\tuple{v_1,v_2},\sigma''}
+\newrule{E-Tuple}
+  {e_1 \eval v_1 \Quad
+   e_2 \eval v_2}
+  {\tuple{e_1,e_2} \eval \tuple{v_1,v_2}}
 
 \newrule{E-First}
-  {e_1,\sigma\eval v_1,\sigma'}
-  {\Fst\tuple{e_1,e_2},\sigma\eval v_1,\sigma'}
+  {e_1 \eval v_1}
+  {\Fst \tuple{e_1,e_2} \eval v_1}
 
 \newrule{E-Second}
-  {e_2,\sigma\eval v_2,\sigma'}
-  {\Snd\tuple{e_1,e_2},\sigma\eval v_2,\sigma' }
+  {e_2 \eval v_2}
+  {\Snd \tuple{e_1,e_2} \eval v_2 }
 
-%%%%%%%%%
 
 \newrule{E-Cons}
-  {e_1,\sigma\eval v_1,\sigma'\Quad
-   e_2,\sigma'\eval v_2,\sigma''}
-  {e_1 :: e_2,\sigma\eval v_1::v_2,\sigma''}
+  {e_1 \eval v_1 \Quad
+   e_2 \eval v_2}
+  {e_1 :: e_2 \eval v_1::v_2}
 
 \newrule{E-Head}
-  {e,\sigma\eval v_1::v_2,\sigma'}
-  {\Head e,\sigma\eval v_1,\sigma'}
+  {e \eval v_1::v_2}
+  {\Head e \eval v_1}
 
 \newrule{E-Tail}
-{e,\sigma\eval v_1::v_2,\sigma'}
-{\Tail e,\sigma\eval v_2,\sigma'}
-
-%%%%%%
+{e \eval v_1::v_2}
+{\Tail e \eval v_2}
 
 
-\newrule{E-Ref}
-  {e,\sigma\eval v,\sigma' \Quad
-   l\not\in Dom(\sigma')}
-  {\Share e,\sigma\eval l,\sigma'[l\mapsto v]}
 
-\newrule{E-Deref}
-  {e,\sigma\eval l,\sigma'}
-  {!e,\sigma\eval \sigma'(l),\sigma'}
-
-\newrule{E-Assign}
-  {e_1,\sigma\eval l,\sigma' \Quad
-   e_2,\sigma'\eval v_2,\sigma''}
-  {e_1:=e_2,\sigma\eval \unit,\sigma''[l\mapsto v_2]}
-
-\newrule{E-Edit}
-  {e,\sigma \eval v,\sigma'}
-  {\Update e , \sigma\eval \Update v,\sigma'}
+\newrule{E-Done}
+  {e \eval v}
+  {\Done e, \sigma \eval \Done v}
 
 \newrule{E-Enter}
   {}
-  {\Enter \tau,\sigma \eval \Enter \tau,\sigma}
+  {\Enter \beta \eval \Enter \beta}
 
 \newrule{E-Update}
-  {e,\sigma\eval l,\sigma'}
-  {\Update e ,\sigma\eval \Update l,\sigma'}
+  {e \eval v}
+  {\Update e, \sigma \eval \Update v}
 
+\newrule{E-View}
+  {e \eval v}
+  {\View e, \sigma \eval \View v}
+
+\newrule{E-Pick}
+  {}
+  {e_1 \Pick e_2 \eval e_1 \Pick e_2}
+
+
+\newrule{E-Pair}
+  {e_1 \eval t_1 \Quad
+   e_2 \eval t_2}
+  {e_1 \Pair e_2 \eval t_1 \Pair t_2}
+
+\newrule{E-Choose}
+  {e_1 \eval t_1 \Quad
+   e_2 \eval t_2}
+  {e_1 \Choose e_2 \eval t_1 \Choose t_2}
 
 \newrule{E-Fail}
   {}
-  {\Fail,\sigma \eval \Fail,\sigma}
+  {\Fail \eval \Fail}
 
 
-\newrule{E-Then}
-  {e_1 ,\sigma\eval t_1,\sigma'}
-  {e_1 \Step e_2,\sigma\eval t_1 \Step e_2,\sigma'}
+\newrule{E-Trans}
+  {e_2 \eval t_2}
+  {e_1 \Trans e_2 \eval e_1 \Trans t_2}
 
-% \newrule{E-Next}
-%   {e_1 ,\sigma\eval t_1,\sigma'}
-%   {e_1 \Next e_2 ,\sigma\eval t_1 \Next e_2,\sigma'}
+\newrule{E-Step}
+  {e_1 \eval t_1}
+  {e_1 \Step e_2 \eval t_1 \Step e_2}
 
-
-\newrule{E-And}
-  {e_1 ,\sigma\eval t_1 ,\sigma'\Quad
-   e_2 ,\sigma'\eval t_2,\sigma''}
-  {e_1 \Pair e_2 ,\sigma\eval t_1 \Pair t_2,\sigma''}
+\newrule{E-Forever}
+  {e_1 \eval t_1}
+  {\Forever e_1 \eval \Forever t_1}
 
 
-\newrule{E-Or}
-  {e_1 ,\sigma\eval t_1 ,\sigma'\Quad
-   e_2 ,\sigma'\eval t_2,\sigma''}
-  {e_1 \Choose e_2 ,\sigma\eval t_1 \Choose t_2,\sigma''}
+\newrule{E-Share}
+  {e \eval v \Quad
+   l\not\in Dom(\sigma')}
+  {\Share e \eval l[l\mapsto v]}
 
-\newrule{E-Xor}
-  {}
-  {e_1 \Pick e_2 ,\sigma\eval e_1 \Pick e_2,\sigma}
+\newrule{E-Assign}
+  {e_1 \eval l_1 \Quad
+   e_2 \eval v_2}
+  {e_1 := e_2 \eval l_1 := v_2}
+
+\newrule{E-Change}
+  {e \eval l}
+  {\Change e \eval \Change l}
+
+\newrule{E-Watch}
+  {e \eval l}
+  {\Watch e \eval \Watch l}
+
+
+
 
 
 %% Normalisation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

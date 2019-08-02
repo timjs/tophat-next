@@ -29,7 +29,7 @@
   \userule{T-App}       \Break
   \userule{T-Loc}       \Quad
   \userule{T-If}        \Break
-  \userule{T-Pair}      \Quad
+  \userule{T-Tuple}      \Quad
   \userule{T-First}     \Quad
   \userule{T-Second}    \Break
   \userule{T-Nil}       \Quad
@@ -41,8 +41,8 @@
   \userule{T-Enter}     \Quad
   \userule{T-Update}    \Quad
   \userule{T-View}      \Break
-  \userule{T-And}       \Quad
-  \userule{T-Or}        \Quad
+  \userule{T-Pair}      \Quad
+  \userule{T-Choose}    \Quad
   \userule{T-Fail}      \Break
   \userule{T-Trans}     \Quad
   \userule{T-Step}      \Break
@@ -58,28 +58,32 @@
 
 \begin{gather*}
   \boxed{\RelationE}  \Break
-  \userule{E-App}     \Quad
-  \userule{E-IfTrue}  \Quad
-  \userule{E-Ref}     \Break
-  \userule{E-IfFalse} \Quad
-  \userule{E-Deref}   \Quad
   \userule{E-Value}   \Quad
-  \userule{E-Assign}  \Quad
-  \userule{E-Pair}    \Break
+  \userule{E-App}     \Break
+  \userule{E-IfTrue}  \Quad
+  \userule{E-IfFalse} \Break
+  \userule{E-Tuple}   \Quad
   \userule{E-First}   \Quad
-  \userule{E-Second}  \Quad
+  \userule{E-Second}  \Break
   \userule{E-Cons}    \Quad
-  \userule{E-Head}    \Break
-  \userule{E-Tail}    \Quad
-  \userule{E-Edit}    \Quad
+  \userule{E-Head}    \Quad
+  \userule{E-Tail}    \Break
+                      \Break
+  \userule{E-Done}    \Quad
   \userule{E-Enter}   \Quad
   \userule{E-Update}  \Quad
-  \userule{E-Then}    \Break
-  \userule{E-Next}    \Quad
-  \userule{E-And}     \Quad
-  \userule{E-Fail}    \Quad
-  \userule{E-Or}      \Quad
-  \userule{E-Xor}
+  \userule{E-View}    \Quad
+  \userule{E-Pick}    \Break
+  \userule{E-Trans}   \Quad
+  \userule{E-Step}    \Quad
+  \userule{E-Forever} \Break
+  \userule{E-Pair}    \Quad
+  \userule{E-Choose}  \Quad
+  \userule{E-Fail}    \Break
+  \userule{E-Share}   \Quad
+  \userule{E-Assign}  \Quad
+  \userule{E-Change}  \Quad
+  \userule{E-Watch}
 \end{gather*}
 
 \subsection{Striding rules}
