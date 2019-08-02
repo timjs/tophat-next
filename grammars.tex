@@ -11,31 +11,33 @@
       &      &\mid& x                    & – variable \\
       &      &\mid& s                    & – symbol \\
       &      &\mid& l                    & – location \\
-      &      &\mid& a                    & – atom \\
+      &      &\mid& c                    & – constant \\
     \addlinespace
       &      &\mid& u\ e_1               & – unary operation \\
       &      &\mid& e_1\ o\ e_2          & – binary operation \\
       &      &\mid& \If{e_1}{e_2}{e_3}   & – conditional \\
     \addlinespace
+      &      &\mid& \unit                & – unit \\
+      &      &\mid& \tuple{e_1, e_2}     & – pair \\
       &      &\mid& \Fst e               & – first projection \\
       &      &\mid& \Snd e               & – second projection \\
+    \addlinespace
+      &      &\mid& [\ ]_\beta           & – nil \\
+      &      &\mid& e_1 :: e_2           & – cons \\
       &      &\mid& \Head e              & – list head \\
       &      &\mid& \Tail e              & – list tail \\
     \addlinespace
       &      &\mid& p                    & – pretask \\
     \addlinespace
-    Atoms
-      & a    &::= & \unit                & – unit \\
-      &      &\mid& \tuple{e_1, e_2}     & – pair \\
-      &      &\mid& [\ ]_\beta           & – nil \\
-      &      &\mid& e_1 :: e_2           & – cons \\
-      &      &\mid& c                    & – constant \\
-    \addlinespace
     Constants
       & c    &::= & B                    & – boolean \\
       &      &\mid& I                    & – integer \\
       &      &\mid& S                    & – string \\
-    \addlinespace
+  \end{grammar}
+}
+
+\newmacro{G-Operations}{
+  \begin{grammar}
     Unary operations
       & u    &::= & \lnot                & – not \\
       &      &\mid& -                    & – negate \\
@@ -53,7 +55,7 @@
 \newmacro{G-Pretasks}{
   \begin{grammar}
     Pretasks
-      & p    &::= & \Enter \tau          & – unvalued editor \\
+      & p    &::= & \Enter \beta         & – unvalued editor \\
       &      &\mid& \Update e            & – valued editor \\
       &      &\mid& \View e              & – valued read-only editor \\
       &      &\mid& \Pick \set{\more{L_i \mapsto e_i}}  & – user choice \\
@@ -90,11 +92,7 @@
       & \pi  &\mid& \Bool                & – boolean type \\
       &      &\mid& \Int                 & – integer type \\
       &      &\mid& \String              & – string type \\
-  \end{grammar}
-}
-
-\newmacro{G-BasicTypes}{
-  \begin{grammar}
+    \addlinespace
     Basic types
       & \beta &::= & \Unit                  & – unit type \\
       &       &\mid& \beta_1 \times \beta_2 & – product type \\
@@ -103,35 +101,33 @@
   \end{grammar}
 }
 
-
 \newmacro{G-Values}{
   \begin{grammar}
     Values
       & v    &::= & \lambda x:\tau.\ e   & – abstraction \\
-      &      &\mid& c                    & – constant \\
       &      &\mid& l                    & – location \\
-    % \addlinespace
       &      &\mid& s                    & – symbol \\
+      &      &\mid& b                    & – basic value \\
+    % \addlinespace
       % &      &\mid& u\ v                 & – symbolic unary operation \\
       % &      &\mid& v_1\ o\ v_2          & – symbolic binary operation \\
+      &      &\mid& t                    & – task \\
     \addlinespace
+    Basic values
+      & b    &::= & \unit                & – unit \\
       &      &\mid& \tuple{v_1, v_2}     & – pair value \\
-      &      &\mid& \unit                & – unit \\
       &      &\mid& [\ ]_\beta           & – nil \\
       &      &\mid& v_1 :: v_2           & – cons value \\
-    \addlinespace
-      % &      &\mid& u\ v                 & – unary operation \\
-      % &      &\mid& v_1\ o\ v_2          & – binary operation \\
-      &      &\mid& t                    & – task \\
+      &      &\mid& c                    & – constant \\
   \end{grammar}
 }
 
 \newmacro{G-Tasks}{
   \begin{grammar}
     Tasks
-      & t    &::= & \Enter \tau          & – unvalued editor \\
-      &      &\mid& \Update v            & – valued editor \\
-      &      &\mid& \View v              & – valued read-only editor \\
+      & t    &::= & \Enter \beta         & – unvalued editor \\
+      &      &\mid& \Update b            & – valued editor \\
+      &      &\mid& \View b              & – valued read-only editor \\
       &      &\mid& \Pick \set{\more{L_i \mapsto t_i}}  & – user choice \\
     \addlinespace
       &      &\mid& t_1 \Pair t_2        & – pairing \\
@@ -148,11 +144,10 @@
   \end{grammar}
 }
 
-
 \newmacro{G-Inputs}{
   \begin{grammar}
     Inputs
-      & i    & ::=& a                    & – enter atom \\
+      & i    & ::=& b                    & – enter basic value \\
       &      &\mid& \IContinue L         & – continue with label \\
       &      &\mid& \IPick L             & – pick label \\
       &      &\mid& \First i             & – pass to first \\
