@@ -1,8 +1,6 @@
 % !TEX root=main.tex
 
 
-%% Language %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \newmacro{O-Value}{
   \begin{function}
     \signature{\Value : \mathrm{Tasks} \times \mathrm{States} \rightharpoonup \mathrm{Basic\ values}} \\
@@ -56,13 +54,36 @@
     \Failing(\Forever t)                         &=& \Failing(t) \\
     \Failing(t_1 \Step e_2)                      &=& \Failing(t_1) \\
   \addlinespace
-    % \Value(\Share v)                             &=& \False \\
-    % \Value(l \Assign v)                          &=& \False \\
-    \Value(\Change l)                            &=& \False \\
-    \Value(\Watch l)                             &=& \False \\
+    % \Failing(\Share v)                           &=& \False \\
+    % \Failing(l \Assign v)                        &=& \False \\
+    \Failing(\Change l)                          &=& \False \\
+    \Failing(\Watch l)                           &=& \False \\
   \end{function}
 }
 
+\newmacro{O-Watching}{
+  \begin{function}
+    \signature{\Watching : \mathrm{Tasks} \to \powerset{\mathrm{Locations}}} \\
+    \Watching(\Done v)                            &=& \nothing \\
+    \Watching(\Enter \tau)                        &=& \nothing \\
+    \Watching(\Update l)                          &=& \nothing \\
+    \Watching(\View l)                            &=& \nothing \\
+    \Watching(\Pick \set{\more{L_i \mapsto t_i}}) &=& \nothing \\
+  \addlinespace
+    \Watching(t_1 \Pair t_2)                      &=& \Watching(t_1) \cup \Watching(t_2) \\
+    \Watching(t_1 \Choose t_2)                    &=& \Watching(t_1) \cup \Watching(t_2) \\
+    \Watching(\Fail)                              &=& \nothing \\
+  \addlinespace
+    \Watching(e_1 \Trans t_2)                     &=& \Watching(t_2) \\
+    \Watching(\Forever t)                         &=& \Watching(t) \\
+    \Watching(t_1 \Step e_2)                      &=& \Watching(t_1) \\
+  \addlinespace
+    % \Value(\Share v)                             &=& \nothing \\
+    % \Value(l \Assign v)                          &=& \nothing \\
+    \Value(\Change l)                            &=& \set{l} \\
+    \Value(\Watch l)                             &=& \set{l} \\
+  \end{function}
+}
 
 \newmacro{O-Inputs}{
   \begin{function}
