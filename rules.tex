@@ -156,7 +156,7 @@
 
 
 
-%% Evaluation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Evaluating %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newmacro{RelationE}
   {e  \eval v}
@@ -282,7 +282,7 @@
 
 
 
-%% Normalisation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Normalisating %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \newmacro{RelationN}
@@ -418,74 +418,78 @@
 
 
 
-%% Handling %%
+%% Handling %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \newmacro{RelationH}
-  {t,\sigma \handle{j} t',\sigma'}
+  {t,\sigma \handle{i} t',\sigma',\delta'}
 
 
-\newrule{H-Change}
+%% Edit %%
+
+\newrule{H-Enter}
   { }
-  {\Update v,\sigma \xrightarrow[]{v}' \Update v',\sigma}
-  [v,v':\tau]
-
-\newrule{H-Empty}
-  { }
-  {\Update v,\sigma \handle{\Empty} \Enter \tau,\sigma,\True}
-  [v : \tau]
-
-\newrule{H-Fill}
-  { }
-  {\Enter \tau,\sigma \xrightarrow[]{v} \Update v,\sigma}
-  [v:\tau]
+  {\Enter \tau,\sigma \handle{v'} \Update v',\sigma,\nothing}
+  [v:\beta]
 
 \newrule{H-Update}
   { }
-  {\Update l,\sigma \xrightarrow[]{v} \Update l,\sigma[l \mapsto v]}
-  [\sigma(l),v:\tau]
+  {\Update v,\sigma \handle{v'} \Update v',\sigma,\nothing}
+  [v,v':\beta]
 
-\newrule{H-PassThen}
-  {t_1,\sigma \xrightarrow[]{j} t_1',\sigma'}
-  {t_1 \Step e_2,\sigma \xrightarrow[]{j} t_1' \Step e_2,\sigma'}
-
-% \newrule{H-PassNext}
-%   {t_1,\sigma \xrightarrow[]{j} t_1',\sigma'}
-%   {t_1 \Next e_2,\sigma \xrightarrow[]{j} t_1' \Next e_2,\sigma'}
-
-% \newrule{H-Next}
-%   {e_2\ v_1,\sigma \normalise t_2,\sigma'}
-%   {t_1 \Next e_2,\sigma \xrightarrow[]{\Continue} t_2,\sigma'}
-%   [\Value{(t_1,\sigma)} = v_1 \land \neg\Failing{(t_2,\sigma')}]
+\newrule{H-Change}
+  { }
+  {\Change l,\sigma \handle{v'} \Change l,\sigma[l \mapsto v'],\set{l}}
+  [\sigma(l),v':\beta]
 
 
-\newrule{H-FirstAnd}
-  {t_1,\sigma \xrightarrow[]{j} t_1',\sigma'}
-  {t_1 \Pair t_2,\sigma \xrightarrow[]{\First j} t_1' \Pair t_2,\sigma'}
+%% Pick %%
 
-\newrule{H-SecondAnd}
-  {t_2,\sigma \xrightarrow[]{j} t_2',\sigma'}
-  {t_1 \Pair t_2,\sigma \xrightarrow[]{\Second j} t_1 \Pair t_2',\sigma'}
-
-
-\newrule{H-FirstOr}
-  {t_1,\sigma \xrightarrow[]{j} t_1',\sigma'}
-  {t_1 \Choose t_2,\sigma \xrightarrow[]{\First j} t_1' \Choose t_2,\sigma'}
-
-\newrule{H-SecondOr}
-  {t_2,\sigma \xrightarrow[]{j} t_2',\sigma' }
-  {t_1 \Choose t_2,\sigma \xrightarrow[]{\Second j} t_1 \Choose t_2',\sigma'}
+\newrule{H-Pick}
+	{ }
+	{\Pick\set{\more{L_i \mapsto t_i}},\sigma \handle{\IPick L_j} t_j,\sigma,\nothing}
+  [L_j \in \Picks(\Pick\set{\more{L_i \mapsto t_i}})]
 
 
-\newrule{H-PickLeft}
-  {e_1,\sigma \normalise t_1,\sigma'}
-  {e_1 \Pick e_2,\sigma \xrightarrow[]{\Left} t_1,\sigma'}
-  [\neg\Failing(t_1,\sigma')]
+%% Step %%
 
-\newrule{H-PickRight}
-  {e_2,\sigma \normalise t_2,\sigma'}
-  {e_1 \Pick e_2,\sigma \xrightarrow[]{\Right} t_2,\sigma'}
-  [\neg\Failing(t_2,\sigma')]
+\newrule{H-Step}
+	{e_2\ v_1 \eval t_2 \Quad
+   t_2,\sigma \handle{\IPick L_j} t_2',\sigma',\delta'}
+  {t_1 \Step e_2,\sigma \handle{\IContinue L_j} t_2',\sigma',\delta'}
+  [\Value(t_1,\sigma) = v_1]
 
+
+%% Pass %%
+
+\newrule{H-Trans}
+	{t_2,\sigma \handle{i} t_2',\sigma',\delta'}
+	{e_1 \Trans t_2,\sigma \handle{i} e_1 \Trans t_2',\sigma',\delta'}
+
+\newrule{H-Forever}
+  {t \Step \lambda\_. \Forever t,\sigma \handle{i} t',\sigma',\delta'}
+  {\Forever t,\sigma \handle{i} t',\sigma',\delta'}
+
+\newrule{H-StepPass}
+  {t_1,\sigma \handle{i} t_1',\sigma',\delta'}
+  {t_1 \Step e_2,\sigma \handle{i} t_1' \Step e_2,\sigma',\delta'}
+  [i \neq \IContinue L_j]
+
+\newrule{H-PairFirst}
+  {t_1,\sigma \handle{i} t_1',\sigma',\delta'}
+  {t_1 \Pair t_2,\sigma \handle{\First i} t_1' \Pair t_2,\sigma',\delta'}
+
+\newrule{H-PairSecond}
+  {t_2,\sigma \handle{i} t_2',\sigma',\delta'}
+  {t_1 \Pair t_2,\sigma \handle{\Second i} t_1 \Pair t_2',\sigma',\delta'}
+
+\newrule{H-ChooseFirst}
+  {t_1,\sigma \handle{i} t_1',\sigma',\delta'}
+  {t_1 \Choose t_2,\sigma \handle{\First i} t_1' \Choose t_2,\sigma',\delta'}
+
+\newrule{H-ChooseSecond}
+  {t_2,\sigma \handle{i} t_2',\sigma',\delta'}
+  {t_1 \Choose t_2,\sigma \handle{\Second i} t_1 \Choose t_2',\sigma',\delta'}
 
 
 %% Driving %%
@@ -496,6 +500,6 @@
 
 
 \newrule{I-Handle}
-  {t,\sigma \xrightarrow[]{j} t',\sigma' \Quad
+  {t,\sigma \handle{j} t',\sigma' \Quad
    t',\sigma' \normalise t'',\sigma''}
   {t,\sigma \xRightarrow[]{j} t'',\sigma''}

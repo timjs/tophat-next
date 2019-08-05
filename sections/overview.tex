@@ -2,6 +2,7 @@
 
 \section{Overview}
 
+
 \subsection{Language}
 
 \usemacro{G-Types}
@@ -13,7 +14,6 @@
 \usemacro{G-Tasks}
 
 \usemacro{G-Inputs}
-
 
 
 \subsection{Typing rules}
@@ -54,6 +54,7 @@
   \userule{T-Watch}
 \end{gather*}
 
+
 \subsection{Evaluation rules}
 
 \begin{gather*}
@@ -86,6 +87,7 @@
   \userule{E-Watch}
 \end{gather*}
 
+
 \subsection{Normalisation rules}
 
 \begin{gather*}
@@ -115,28 +117,26 @@
   \userule{N-Fail} 
 \end{gather*}
 
-\subsection{Normalisation rules}
-
-\begin{gather*}
-  \boxed{\RelationN} \Break
-  \userule{N-Done} \Quad
-  \userule{N-Repeat}
-\end{gather*}
 
 \subsection{Handling rules}
 
 \begin{gather*}
-  \boxed{\RelationH} \Break
-  \userule{H-Change} \Quad
-  \userule{H-Fill} \Quad
-  \userule{H-Update}\Break
-  \userule{H-Next} \Quad
-  \userule{H-PickLeft} \Quad
-  \userule{H-PickRight}\Quad
-  \userule{H-PassThen} \Break
-  \userule{H-PassNext} \Quad
-  \userule{H-FirstAnd} \Quad \userule{H-SecondAnd} \Quad
-  \userule{H-FirstOr}  \Quad \userule{H-SecondOr}
+  \boxed{\RelationH}       \Break
+  \userule{H-Enter}        \Quad
+  \userule{H-Update}       \Quad
+  \userule{H-Change}       \Break
+                           \Break
+  \userule{H-Pick}         \Quad
+  \userule{H-Step}         \Break
+                           \Break
+  \userule{H-Trans}        \Quad
+  \userule{H-Forever}      \Quad
+  \userule{H-StepPass}     \Break
+                           \Break
+  \userule{H-PairFirst}    \Quad
+  \userule{H-PairSecond}   \Break
+  \userule{H-ChooseFirst}  \Quad
+  \userule{H-ChooseSecond}
 \end{gather*}
 
 
