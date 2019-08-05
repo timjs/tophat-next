@@ -78,10 +78,34 @@
     \Watching(\Forever t)                         &=& \Watching(t) \\
     \Watching(t_1 \Step e_2)                      &=& \Watching(t_1) \\
   \addlinespace
-    % \Value(\Share v)                             &=& \nothing \\
-    % \Value(l \Assign v)                          &=& \nothing \\
-    \Value(\Change l)                            &=& \set{l} \\
-    \Value(\Watch l)                             &=& \set{l} \\
+    % \Watching(\Share v)                           &=& \nothing \\
+    % \Watching(l \Assign v)                        &=& \nothing \\
+    \Watching(\Change l)                          &=& \set{l} \\
+    \Watching(\Watch l)                           &=& \set{l} \\
+  \end{function}
+}
+
+\newmacro{O-Picks}{
+  \begin{function}
+    \signature{\Picks : \mathrm{Tasks} \to \powerset{\mathrm{Labels}}} \\
+    \Picks(\Done v)                            &=& \nothing \\
+    \Picks(\Enter \tau)                        &=& \nothing \\
+    \Picks(\Update l)                          &=& \nothing \\
+    \Picks(\View l)                            &=& \nothing \\
+    \Picks(\Pick \set{\more{L_i \mapsto t_i}}) &=& \set{L_i \mid \lnot\Failing(t_i)} \\
+  \addlinespace
+    \Picks(t_1 \Pair t_2)                      &=& \nothing \\
+    \Picks(t_1 \Choose t_2)                    &=& \nothing \\
+    \Picks(\Fail)                              &=& \nothing \\
+  \addlinespace
+    \Picks(e_1 \Trans t_2)                     &=& \Picks(t_2) \\
+    \Picks(\Forever t)                         &=& \Picks(t) \\
+    \Picks(t_1 \Step e_2)                      &=& \Picks(t_1) \\
+  \addlinespace
+    % \Picks(\Share v)                             &=& \nothing \\
+    % \Picks(l \Assign v)                          &=& \nothing \\
+    \Picks(\Change l)                          &=& \nothing \\
+    \Picks(\Watch l)                           &=& \nothing \\
   \end{function}
 }
 
