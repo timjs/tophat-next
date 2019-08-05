@@ -492,14 +492,28 @@
   {t_1 \Choose t_2,\sigma \handle{\Second i} t_1 \Choose t_2',\sigma',\delta'}
 
 
-%% Driving %%
+%% Interaction %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newmacro{RelationS}
+  {t,\sigma,\delta \stabilise t',\sigma'}
+
+\newrule{S-Done}
+  {t,\sigma \normalise t',\sigma',\delta'}
+  {t,\sigma,\delta \stabilise t',\sigma'}
+  [(\delta \cup \delta') \cap \Watching(t') = \nothing]
+
+\newrule{S-Loop}
+  {t,\sigma \normalise t',\sigma',\delta' \Quad
+   t',\sigma',\delta' \stabilise t'',\sigma''}
+  {t,\sigma,\delta \stabilise t'',\sigma''}
+  [(\delta \cup \delta') \cap \Watching(t') \neq \nothing]
+
 
 \newmacro{RelationI}
-  {t,\sigma \drive{j} t',\sigma'}
-
+  {t,\sigma \interact{i} t',\sigma'}
 
 
 \newrule{I-Handle}
-  {t,\sigma \handle{j} t',\sigma' \Quad
-   t',\sigma' \normalise t'',\sigma''}
-  {t,\sigma \xRightarrow[]{j} t'',\sigma''}
+  {t,\sigma \handle{i} t',\sigma',\delta' \Quad
+   t',\sigma',\delta' \stabilise t'',\sigma''}
+  {t,\sigma \interact{i} t'',\sigma''}
