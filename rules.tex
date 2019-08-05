@@ -258,19 +258,18 @@
   {e_1 \Step e_2 \eval t_1 \Step e_2}
 
 \newrule{E-Forever}
-  {e_1 \eval t_1}
-  {\Forever e_1 \eval \Forever t_1}
+  {e \eval t}
+  {\Forever e \eval \Forever t}
 
 
 \newrule{E-Share}
-  {e \eval v \Quad
-   l\not\in Dom(\sigma')}
-  {\Share e \eval l[l\mapsto v]}
+  {e \eval v}
+  {\Share e \eval \Share v}
 
 \newrule{E-Assign}
-  {e_1 \eval l_1 \Quad
-   e_2 \eval v_2}
-  {e_1 := e_2 \eval l_1 := v_2}
+  {e_1 \eval l \Quad
+   e_2 \eval v}
+  {e_1 := e_2 \eval l := v}
 
 \newrule{E-Change}
   {e \eval l}
@@ -494,18 +493,18 @@
 
 %% Interaction %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newmacro{RelationS}
-  {t,\sigma,\delta \stabilise t',\sigma'}
+\newmacro{RelationF}
+  {t,\sigma,\delta \fix t',\sigma'}
 
-\newrule{S-Done}
+\newrule{F-Done}
   {t,\sigma \normalise t',\sigma',\delta'}
-  {t,\sigma,\delta \stabilise t',\sigma'}
+  {t,\sigma,\delta \fix t',\sigma'}
   [(\delta \cup \delta') \cap \Watching(t') = \nothing]
 
-\newrule{S-Loop}
+\newrule{F-Loop}
   {t,\sigma \normalise t',\sigma',\delta' \Quad
-   t',\sigma',\delta' \stabilise t'',\sigma''}
-  {t,\sigma,\delta \stabilise t'',\sigma''}
+   t',\sigma',\delta' \fix t'',\sigma''}
+  {t,\sigma,\delta \fix t'',\sigma''}
   [(\delta \cup \delta') \cap \Watching(t') \neq \nothing]
 
 
@@ -515,5 +514,5 @@
 
 \newrule{I-Handle}
   {t,\sigma \handle{i} t',\sigma',\delta' \Quad
-   t',\sigma',\delta' \stabilise t'',\sigma''}
+   t',\sigma',\delta' \fix t'',\sigma''}
   {t,\sigma \interact{i} t'',\sigma''}

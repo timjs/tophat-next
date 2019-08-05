@@ -14,8 +14,6 @@
 \newkeyword[Let]{let}
 \newkeyword[In]{in}
 
-\newkeyword[Share]{share}
-
 
 \newmacro{If}[3]
   {\IF #1 \THEN #2 \ELSE #3}
@@ -86,6 +84,7 @@
 \newoperator{Step}   {\blacktriangleright}
 \newoperator{Forever}{\circlearrowleft}
 
+\newkeyword[Share]{ref}
 \newoperator{Change}{\boxplus}
 \newoperator{Watch} {\dot{\boxplus}} %{\boxbox} %{\overline{\boxplus}}
 
@@ -119,7 +118,7 @@
   {\;\Downarrow\;}
 \newmacro{handle}[1]
   {\mathrel{\;\xrightarrow{#1}\;}}
-\newmathcommand{stabilise}[rel]
+\newmathcommand{fix}[rel]
   {\;\Updownarrow\;}
 \newmacro{interact}[1]
   {\mathrel{\;\xRightarrow{#1}\;}}
