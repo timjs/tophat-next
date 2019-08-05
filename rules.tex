@@ -282,102 +282,134 @@
 
 
 
-
-
 %% Normalisation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newmacro{RelationS}
-  {t,\sigma \stride t',\sigma'}
+
+\newmacro{RelationN}
+  {t,\sigma \normalise t',\sigma',\delta'}
 
 
-\newrule{S-Edit}
-  { }
-  {\Update v,\sigma \stride \Update v,\sigma}
+%% Step %%
 
-\newrule{S-Fill}
-  { }
-  {\Enter \tau,\sigma \stride \Enter \tau,\sigma}
-
-\newrule{S-Update}
-  { }
-  {\Update l,\sigma \stride \Update l,\sigma}
-
-
-\newrule{S-Fail}
-  { }
-  {\Fail,\sigma \stride \Fail,\sigma}
-
-
-\newrule{S-ThenStay}
-  {t_1,\sigma \stride t_1',\sigma'}
-  {t_1 \Step e_2,\sigma \stride t_1' \Step e_2,\sigma'}
+\newrule{N-StepNone}
+  {t_1,\sigma \normalise t_1',\sigma',\delta'}
+  {t_1 \Step e_2,\sigma \normalise t_1' \Step e_2,\sigma',\delta'}
   [\Value(t_1',\sigma') = \bot]
 
-\newrule{S-ThenFail}
-  {t_1,\sigma \stride t_1',\sigma' \Quad
-   e_2\ v_1,\sigma' \eval t_2,\sigma''}
-  {t_1 \Step e_2,\sigma \stride t_1' \Step e_2,\sigma'}
-  [\Value(t_1',\sigma') = v_1 \land \Failing(t_2,\sigma'')]
+\newrule{N-StepFail}
+  {t_1,\sigma \normalise t_1',\sigma',\delta' \Quad
+   e_2\ v_1 \eval t_2}
+  {t_1 \Step e_2,\sigma \normalise t_1' \Step e_2,\sigma',\delta'}
+  [\Value(t_1',\sigma') = v_1 \land \Failing(t_2)]
 
-\newrule{S-ThenCont}
-  {t_1,\sigma \stride t_1',\sigma'  \Quad
-   e_2\ v_1,\sigma' \eval t_2 ,\sigma''}
-  {t_1 \Step e_2,\sigma \stride t_2,\sigma''}
-  [\Value(t_1',\sigma') = v_1 \land \lnot\Failing(t_2,\sigma'')]
+\newrule{N-StepWait}
+  {t_1,\sigma \normalise t_1',\sigma',\delta' \Quad
+   e_2\ v_1 \eval t_2}
+  {t_1 \Step e_2,\sigma \normalise t_1' \Step e_2,\sigma',\delta'}
+  [\Value(t_1',\sigma') = v_1 \land \lnot\Failing(t_2) \land \Picks(t_2) \neq \nothing]
 
-% \newrule{S-Next}
-%   {t_1,\sigma \stride t_1',\sigma'}
-%   {t_1 \Next e_2,\sigma \stride t_1' \Next e_2,\sigma'}
-
-
-\newrule{S-And}
-  {t_1,\sigma  \stride t_1',\sigma'  \Quad
-   t_2,\sigma' \stride t_2',\sigma''}
-  {t_1 \Pair t_2,\sigma \stride t_1' \Pair t_2',\sigma''}
+\newrule{N-StepCont}
+  {t_1,\sigma \normalise t_1',\sigma',\delta' \Quad
+   e_2\ v_1 \eval t_2 \Quad
+   t_2,\sigma' \normalise t_2',\sigma'',\delta''}
+  {t_1 \Step e_2,\sigma \normalise t_2',\sigma'',\delta''}
+  [\Value(t_1',\sigma') = v_1 \land \lnot\Failing(t_2) \land \Picks(t_2) = \nothing]
 
 
-\newrule{S-OrLeft}
-  {t_1,\sigma  \stride t_1',\sigma'}
-  {t_1 \Choose t_2,\sigma \stride t_1',\sigma'}
+%% Choose %%
+
+\newrule{N-ChooseLeft}
+  {t_1,\sigma  \normalise t_1',\sigma',\delta'}
+  {t_1 \Choose t_2,\sigma \normalise t_1',\sigma',\delta'}
   [\Value(t_1',\sigma') = v_1]
 
-\newrule{S-OrRight}
-  {t_1,\sigma  \stride t_1',\sigma'  \Quad
-   t_2,\sigma' \stride t_2',\sigma''}
-  {t_1 \Choose t_2,\sigma \stride t_2',\sigma''}
+\newrule{N-ChooseRight}
+  {t_1,\sigma  \normalise t_1',\sigma',\delta'  \Quad
+   t_2,\sigma' \normalise t_2',\sigma'',\delta''}
+  {t_1 \Choose t_2,\sigma \normalise t_2',\sigma'',\delta'\cup\delta''}
   [\Value(t_1',\sigma') = \bot \land \Value(t_2',\sigma'') = v_2]
 
-\newrule{S-OrNone}
-  {t_1,\sigma  \stride t_1',\sigma'  \Quad
-   t_2,\sigma' \stride t_2',\sigma''}
-  {t_1 \Choose t_2,\sigma \stride t_1' \Choose t_2',\sigma''}
+\newrule{N-ChooseNone}
+  {t_1,\sigma  \normalise t_1',\sigma',\delta'  \Quad
+   t_2,\sigma' \normalise t_2',\sigma'',\delta''}
+  {t_1 \Choose t_2,\sigma \normalise t_1' \Choose t_2',\sigma'',\delta'\cup\delta''}
   [\Value(t_1',\sigma') = \bot \land \Value(t_2',\sigma'') = \bot]
 
 
-\newrule{S-Xor}
-  { }
-  {e_1 \Pick e_2,\sigma \stride e_1 \Pick e_2,\sigma}
+%% Evaluate %%
 
-\newrule{S-Eval}
-    {e,\sigma \eval e',\sigma'  \Quad
-     e',\sigma' \stride e'',\sigma''}
-    {e,\sigma \stride e'',\sigma''}
-    [e \neq e']
+\newrule{N-Trans}
+	{t_2,\sigma \normalise t_2',\sigma',\delta'}
+	{e_1 \Trans t_2,\sigma \normalise e_1 \Trans t_2',\sigma',\delta'}
+
+\newrule{N-Forever}
+	{t \Step \lambda\_. \Forever t,\sigma \normalise t',\sigma',\delta'}
+	{\Forever t,\sigma \normalise t',\sigma',\delta'}
+
+\newrule{N-Pair}
+	{t_1,\sigma \normalise t_1',\sigma',\delta' \Quad
+	 t_2,\sigma \normalise t_2',\sigma',\delta''}
+	{t_1 \Pair t_2,\sigma \normalise t_1 \Pair t_2',\sigma',\delta'\cup\delta''}
 
 
-%% Normalisation %%
 
-\newmacro{RelationN}
-  {e,\sigma \normalise t,\sigma'}
+%% Internal %%
 
+\newrule{N-Share}
+	{l \not\in \mathrm{dom}(\sigma)}
+	{\Share v,\sigma \normalise \Done l,[l \mapsto v]\sigma,\nothing}
+
+\newrule{N-Assign}
+	{}
+	{l := v,\sigma \normalise \Done \Unit,[l \mapsto v]\sigma,\set{l}}
+
+
+%% Ready %%
 
 \newrule{N-Done}
+  { }
+  {\Done v,\sigma \normalise \Done v,\sigma,\nothing}
+
+\newrule{N-Enter}
+  { }
+  {\Enter v,\sigma \normalise \Enter v,\sigma,\nothing}
+
+\newrule{N-Update}
+  { }
+  {\Update v,\sigma \normalise \Update v,\sigma,\nothing}
+
+\newrule{N-View}
+  { }
+  {\View v,\sigma \normalise \View v,\sigma,\nothing}
+
+\newrule{N-Pick}
+  { }
+  {\Pick \set{\more{L_i \mapsto t_i}},\sigma \normalise \Pick \set{\more{L_i \mapsto t_i}},\sigma,\nothing}
+
+\newrule{N-Change}
+  { }
+  {\Change v,\sigma \normalise \Change v,\sigma,\nothing}
+
+\newrule{N-Watch}
+  { }
+  {\Watch v,\sigma \normalise \Watch v,\sigma,\nothing}
+
+\newrule{N-Fail}
+  { }
+  {\Fail,\sigma \normalise \Fail,\sigma,\nothing}
+
+
+
+
+
+
+\newrule{N-Done-Old}
     {e,\sigma \eval t,\sigma' \Quad
      t,\sigma' \stride t',\sigma''}
     {e,\sigma \normalise t,\sigma'}
     [\sigma'=\sigma'' \land t=t']
 
-\newrule{N-Repeat}
+\newrule{N-Repeat-Old}
     {e,\sigma \eval t,\sigma'  \Quad
      t,\sigma' \stride t',\sigma''  \Quad
      t',\sigma'' \normalise t'',\sigma'''}
