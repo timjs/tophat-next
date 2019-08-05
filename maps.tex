@@ -6,54 +6,60 @@
 \newmacro{O-Value}{
   \begin{function}
     \signature{\Value : \mathrm{Tasks} \times \mathrm{States} \rightharpoonup \mathrm{Basic\ values}} \\
-    \Value(\Done v, \sigma)                &=& v \\
-    \Value(\Enter \tau, \sigma)            &=& \bot \\
-    \Value(\Update v, \sigma)              &=& v \\
-    \Value(\View v, \sigma)                &=& v \\
+    \Value(\Done v, \sigma)                            &=& v \\
+    \Value(\Enter \tau, \sigma)                        &=& \bot \\
+    \Value(\Update v, \sigma)                          &=& v \\
+    \Value(\View v, \sigma)                            &=& v \\
     \Value(\Pick \set{\more{L_i \mapsto t_i}}, \sigma) &=& \bot \\
   \addlinespace
-    \Value(t_1 \Pair t_2, \sigma)          &=& \left\{
+    \Value(t_1 \Pair t_2, \sigma)                      &=& \left\{
       \begin{array}{ll}
-        \tuple{v_1, v_2}  & \ \when\ \Value(t_1, \sigma) = \
+        \tuple{v_1, v_2}                               & \ \when\ \Value(t_1, \sigma) = \
         v_1 \land \Value(t_2, \sigma) = v_2 \\
-        \bot                          & \ \otherwise
+        \bot                                           & \ \otherwise
       \end{array}
     \right. \\
-    \Value(t_1 \Choose t_2, \sigma)        &=& \left\{
+    \Value(t_1 \Choose t_2, \sigma)                    &=& \left\{
       \begin{array}{ll}
-        v_1                           & \ \when\ \Value(t_1, \sigma) = v_1 \\
-        v_2                           & \ \when\ \Value(t_1, \sigma) = \bot \land \Value(t_2, \sigma) = v_2 \\
-        \obox{\tuple{v_1, v_2}}{\bot} & \ \otherwise
+        v_1                                            & \ \when\ \Value(t_1, \sigma) = v_1 \\
+        v_2                                            & \ \when\ \Value(t_1, \sigma) = \bot \land \Value(t_2, \sigma) = v_2 \\
+        \obox{\tuple{v_1, v_2}}{\bot}                  & \ \otherwise
       \end{array}
     \right. \\
-    \Value(\Fail, \sigma)                  &=& \bot \\
+    \Value(\Fail, \sigma)                              &=& \bot \\
   \addlinespace
-    \Value(e_1 \Trans t_2, \sigma)         &=& v_2' \quad\when \Value(t_2) = v_2 \land e_1\ v_2 \eval v_2' \\
-    \Value(\Forever t, \sigma)             &=& \bot \\
-    \Value(t_1 \Step e_2, \sigma)          &=& \bot \\
+    \Value(e_1 \Trans t_2, \sigma)                     &=& v_2' \quad\when \Value(t_2) = v_2 \land e_1\ v_2 \eval v_2' \\
+    \Value(\Forever t, \sigma)                         &=& \bot \\
+    \Value(t_1 \Step e_2, \sigma)                      &=& \bot \\
   \addlinespace
-    \Value(\Share v, \sigma)               &=& \bot \\
-    \Value(l \Assign v, \sigma)            &=& \unit \\
-    \Value(\Change l, \sigma)              &=& \sigma(l) \\
-    \Value(\Watch l, \sigma)               &=& \sigma(l) \\
+    % \Value(\Share v, \sigma)                           &=& \bot \\
+    % \Value(l \Assign v, \sigma)                        &=& \unit \\
+    \Value(\Change l, \sigma)                          &=& \sigma(l) \\
+    \Value(\Watch l, \sigma)                           &=& \sigma(l) \\
   \end{function}
 }
 
 \newmacro{O-Failing}{
   \begin{function}
-    \signature{\Failing : \mathrm{Tasks} \times \mathrm{States} \to \mathrm{Booleans}} \\
-    \Failing(\Edit v,\sigma)       &=& \False \\
-    \Failing(\Enter \tau,\sigma)   &=& \False \\
-    \Failing(\Update l,\sigma)     &=& \False \\
-    \Failing(\Fail,\sigma)         &=& \True \\
-    \Failing(t_1 \Step e_2,\sigma) &=& \Failing(t_1,\sigma) \\
-    \Failing(t_1 \Next e_2,\sigma) &=& \Failing(t_1,\sigma) \\
-    \Failing(t_1 \And t_2,\sigma)  &=& \Failing(t_1,\sigma) \land \Failing(t_2,\sigma) \\
-    \Failing(t_1 \Or t_2,\sigma)   &=& \Failing(t_1,\sigma) \land \Failing(t_2,\sigma) \\
-    \Failing(e_1 \Xor e_2,\sigma)  &=& \highlight{\bigwedge \Big( \set{\Failing(t_1,\sigma_1') \mid e_1, \sigma \normalise \overline{t_1,\sigma_1'}}\ \cup} \\
-                          & & \highlight{\phantom{\bigwedge \Big(}\set{\Failing(t_2,\sigma_2') \mid e_2, \sigma \normalise \overline{t_2,\sigma_2'}} \Big)} \\
-    % \Failing(e_1 \Xor e_2,\sigma)  &=& \Failing(t_1,s_1') \land \Failing(t_2,s_2')\\
-    % &&\quad \where\ e_1,\sigma \normalise t_1,s_1' \mathbf{\ and\ } e_2,\sigma \normalise t_2,s_2'
+    \signature{\Failing : \mathrm{Tasks} \to \mathrm{Booleans}} \\
+    \Failing(\Done v)                            &=& \False \\
+    \Failing(\Enter \tau)                        &=& \False \\
+    \Failing(\Update l)                          &=& \False \\
+    \Failing(\View l)                            &=& \False \\
+    \Failing(\Pick \set{\more{L_i \mapsto t_i}}) &=& \bigwedge \set{\Failing(t_i) \mid \text{for each $i$}} \\
+  \addlinespace
+    \Failing(t_1 \Pair t_2)                      &=& \Failing(t_1) \land \Failing(t_2) \\
+    \Failing(t_1 \Choose t_2)                    &=& \Failing(t_1) \land \Failing(t_2) \\
+    \Failing(\Fail)                              &=& \True \\
+  \addlinespace
+    \Failing(e_1 \Trans t_2)                     &=& \Failing(t_2) \\
+    \Failing(\Forever t)                         &=& \Failing(t) \\
+    \Failing(t_1 \Step e_2)                      &=& \Failing(t_1) \\
+  \addlinespace
+    % \Value(\Share v)                             &=& \False \\
+    % \Value(l \Assign v)                          &=& \False \\
+    \Value(\Change l)                            &=& \False \\
+    \Value(\Watch l)                             &=& \False \\
   \end{function}
 }
 
@@ -68,8 +74,8 @@
     \Inputs(t_1 \Step e_2,\sigma)       &=& \Inputs(t_1,\sigma) \\
     \Inputs(t_1 \Next e_2,\sigma)       &=& \Inputs(t_1,\sigma) \cup \set{\Continue \mid \Value(t_1, \sigma) = v_1 \land \\
                                          && e_2\ v_1, \sigma \normalise t_2, \sigma',\phi \land \lnot\Failing(t_2, \sigma')} \\
-    \Inputs(t_1 \And t_2,\sigma)        &=& \set{\First\ i \mid i \in \Inputs(t_1,\sigma)} \cup \set{\Second\ i \mid i \in \Inputs(t_2,\sigma)} \\
-    \Inputs(t_1 \Or t_2,\sigma)         &=& \set{\First\ i \mid i \in \Inputs(t_1,\sigma)} \cup \set{\Second\ i \mid i \in \Inputs(t_2,\sigma)} \\
+    \Inputs(t_1 \Pair t_2,\sigma)        &=& \set{\First\ i \mid i \in \Inputs(t_1,\sigma)} \cup \set{\Second\ i \mid i \in \Inputs(t_2,\sigma)} \\
+    \Inputs(t_1 \Choose t_2,\sigma)         &=& \set{\First\ i \mid i \in \Inputs(t_1,\sigma)} \cup \set{\Second\ i \mid i \in \Inputs(t_2,\sigma)} \\
     \Inputs(e_1 \Xor e_2,\sigma)        &=& \set{\Left \mid e_1, \sigma \normalise t_1, \sigma',\phi \land \lnot\Failing(t_1, s')} \cup\\
                                          && \set{\Right \mid e_2, \sigma \normalise t_2, \sigma',\phi \land \lnot\Failing(t_2, s')}
   \end{function}
