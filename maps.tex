@@ -4,34 +4,34 @@
 \newmacro{O-Value}{
   \begin{function}
     \signature{\Value : \mathrm{Tasks} \times \mathrm{States} \rightharpoonup \mathrm{Basic\ values}} \\
-    \Value(\Done v, \sigma)                            &=& v \\
+    \Value(\Done b, \sigma)                            &=& b \\
     \Value(\Enter \tau, \sigma)                        &=& \bot \\
-    \Value(\Update v, \sigma)                          &=& v \\
-    \Value(\View v, \sigma)                            &=& v \\
+    \Value(\Update b, \sigma)                          &=& b \\
+    \Value(\View b, \sigma)                            &=& b \\
     \Value(\Pick \set{\more{L_i \mapsto t_i}}, \sigma) &=& \bot \\
   \addlinespace
     \Value(t_1 \Pair t_2, \sigma)                      &=& \left\{
       \begin{array}{ll}
-        \tuple{v_1, v_2}                               & \ \when\ \Value(t_1, \sigma) = \
-        v_1 \land \Value(t_2, \sigma) = v_2 \\
+        \tuple{b_1, b_2}                               & \ \when\ \Value(t_1, \sigma) = \
+        b_1 \land \Value(t_2, \sigma) = b_2 \\
         \bot                                           & \ \otherwise
       \end{array}
     \right. \\
     \Value(t_1 \Choose t_2, \sigma)                    &=& \left\{
       \begin{array}{ll}
-        v_1                                            & \ \when\ \Value(t_1, \sigma) = v_1 \\
-        v_2                                            & \ \when\ \Value(t_1, \sigma) = \bot \land \Value(t_2, \sigma) = v_2 \\
-        \obox{\tuple{v_1, v_2}}{\bot}                  & \ \otherwise
+        b_1                                            & \ \when\ \Value(t_1, \sigma) = b_1 \\
+        b_2                                            & \ \when\ \Value(t_1, \sigma) = \bot \land \Value(t_2, \sigma) = b_2 \\
+        \obox{\tuple{b_1, b_2}}{\bot}                  & \ \otherwise
       \end{array}
     \right. \\
     \Value(\Fail, \sigma)                              &=& \bot \\
   \addlinespace
-    \Value(e_1 \Trans t_2, \sigma)                     &=& v_2' \quad\when \Value(t_2) = v_2 \land e_1\ v_2 \eval v_2' \\
+    \Value(e_1 \Trans t_2, \sigma)                     &=& b_2' \quad\when \Value(t_2) = b_2 \land e_1\ b_2 \eval b_2' \\
     \Value(\Forever t, \sigma)                         &=& \bot \\
     \Value(t_1 \Step e_2, \sigma)                      &=& \bot \\
   \addlinespace
-    % \Value(\Share v, \sigma)                           &=& \bot \\
-    % \Value(l \Assign v, \sigma)                        &=& \unit \\
+    % \Value(\Share b, \sigma)                           &=& \bot \\
+    % \Value(l \Assign b, \sigma)                        &=& \unit \\
     \Value(\Change l, \sigma)                          &=& \sigma(l) \\
     \Value(\Watch l, \sigma)                           &=& \sigma(l) \\
   \end{function}
@@ -40,10 +40,10 @@
 \newmacro{O-Failing}{
   \begin{function}
     \signature{\Failing : \mathrm{Tasks} \to \mathrm{Booleans}} \\
-    \Failing(\Done v)                            &=& \False \\
-    \Failing(\Enter \tau)                        &=& \False \\
-    \Failing(\Update l)                          &=& \False \\
-    \Failing(\View l)                            &=& \False \\
+    % \Failing(\Done b)                            &=& \False \\
+    % \Failing(\Enter \tau)                        &=& \False \\
+    % \Failing(\Update b)                          &=& \False \\
+    % \Failing(\View b)                            &=& \False \\
     \Failing(\Pick \set{\more{L_i \mapsto t_i}}) &=& \bigwedge \set{\Failing(t_i) \mid \text{for each $i$}} \\
   \addlinespace
     \Failing(t_1 \Pair t_2)                      &=& \Failing(t_1) \land \Failing(t_2) \\
@@ -53,75 +53,86 @@
     \Failing(e_1 \Trans t_2)                     &=& \Failing(t_2) \\
     \Failing(\Forever t)                         &=& \Failing(t) \\
     \Failing(t_1 \Step e_2)                      &=& \Failing(t_1) \\
+  % \addlinespace
+    % \Failing(\Share b)                           &=& \False \\
+    % \Failing(l \Assign b)                        &=& \False \\
+    % \Failing(\Change l)                          &=& \False \\
+    % \Failing(\Watch l)                           &=& \False \\
   \addlinespace
-    % \Failing(\Share v)                           &=& \False \\
-    % \Failing(l \Assign v)                        &=& \False \\
-    \Failing(\Change l)                          &=& \False \\
-    \Failing(\Watch l)                           &=& \False \\
+    \Failing(\_)                                 &=& \False \\
   \end{function}
 }
 
 \newmacro{O-Watching}{
   \begin{function}
     \signature{\Watching : \mathrm{Tasks} \to \powerset{\mathrm{Locations}}} \\
-    \Watching(\Done v)                            &=& \nothing \\
-    \Watching(\Enter \tau)                        &=& \nothing \\
-    \Watching(\Update l)                          &=& \nothing \\
-    \Watching(\View l)                            &=& \nothing \\
-    \Watching(\Pick \set{\more{L_i \mapsto t_i}}) &=& \nothing \\
-  \addlinespace
+    % \Watching(\Done b)                            &=& \nothing \\
+    % \Watching(\Enter \tau)                        &=& \nothing \\
+    % \Watching(\Update b)                          &=& \nothing \\
+    % \Watching(\View b)                            &=& \nothing \\
+    % \Watching(\Pick \set{\more{L_i \mapsto t_i}}) &=& \nothing \\
+  % \addlinespace
     \Watching(t_1 \Pair t_2)                      &=& \Watching(t_1) \cup \Watching(t_2) \\
     \Watching(t_1 \Choose t_2)                    &=& \Watching(t_1) \cup \Watching(t_2) \\
-    \Watching(\Fail)                              &=& \nothing \\
+    % \Watching(\Fail)                              &=& \nothing \\
   \addlinespace
     \Watching(e_1 \Trans t_2)                     &=& \Watching(t_2) \\
     \Watching(\Forever t)                         &=& \Watching(t) \\
     \Watching(t_1 \Step e_2)                      &=& \Watching(t_1) \\
   \addlinespace
-    % \Watching(\Share v)                           &=& \nothing \\
-    % \Watching(l \Assign v)                        &=& \nothing \\
+    % \Watching(\Share b)                           &=& \nothing \\
+    % \Watching(l \Assign b)                        &=& \nothing \\
     \Watching(\Change l)                          &=& \set{l} \\
     \Watching(\Watch l)                           &=& \set{l} \\
+  \addlinespace
+    \Watching(\_)                                 &=& \nothing \\
   \end{function}
 }
 
 \newmacro{O-Picks}{
   \begin{function}
     \signature{\Picks : \mathrm{Tasks} \to \powerset{\mathrm{Labels}}} \\
-    \Picks(\Done v)                            &=& \nothing \\
-    \Picks(\Enter \tau)                        &=& \nothing \\
-    \Picks(\Update l)                          &=& \nothing \\
-    \Picks(\View l)                            &=& \nothing \\
+    % \Picks(\Done b)                            &=& \nothing \\
+    % \Picks(\Enter \tau)                        &=& \nothing \\
+    % \Picks(\Update b)                          &=& \nothing \\
+    % \Picks(\View b)                            &=& \nothing \\
     \Picks(\Pick \set{\more{L_i \mapsto t_i}}) &=& \set{L_i \mid \lnot\Failing(t_i)} \\
   \addlinespace
-    \Picks(t_1 \Pair t_2)                      &=& \nothing \\
-    \Picks(t_1 \Choose t_2)                    &=& \nothing \\
-    \Picks(\Fail)                              &=& \nothing \\
-  \addlinespace
+    % \Picks(t_1 \Pair t_2)                      &=& \nothing \\
+    % \Picks(t_1 \Choose t_2)                    &=& \nothing \\
+    % \Picks(\Fail)                              &=& \nothing \\
+  % \addlinespace
     \Picks(e_1 \Trans t_2)                     &=& \Picks(t_2) \\
     \Picks(\Forever t)                         &=& \Picks(t) \\
     \Picks(t_1 \Step e_2)                      &=& \Picks(t_1) \\
+  % \addlinespace
+    % \Picks(\Share b)                             &=& \nothing \\
+    % \Picks(l \Assign b)                          &=& \nothing \\
+    % \Picks(\Change l)                          &=& \nothing \\
+    % \Picks(\Watch l)                           &=& \nothing \\
   \addlinespace
-    % \Picks(\Share v)                             &=& \nothing \\
-    % \Picks(l \Assign v)                          &=& \nothing \\
-    \Picks(\Change l)                          &=& \nothing \\
-    \Picks(\Watch l)                           &=& \nothing \\
+    \Picks(\_)                                 &=& \nothing \\
   \end{function}
 }
 
 \newmacro{O-Inputs}{
   \begin{function}
     \signature{\Inputs : \mathrm{Tasks} \times \mathrm{States} \to \powerset{\mathrm{Inputs}}} \\
-    \Inputs(\Edit v,\sigma)             &=& \set{v':\tau}                       \quad\where\ \Edit v : \Task\tau \\
-    \Inputs(\Enter \tau,\sigma)         &=& \set{v':\tau} \\
-    \Inputs(\Update l,\sigma)           &=& \obox{\set{v':\tau, \Empty}}{\set{v':\tau}} \quad\where\ \Update l : \Task\tau \\
-    \Inputs(\Fail,\sigma)               &=& \nothing \\
-    \Inputs(t_1 \Step e_2,\sigma)       &=& \Inputs(t_1,\sigma) \\
-    \Inputs(t_1 \Next e_2,\sigma)       &=& \Inputs(t_1,\sigma) \cup \set{\Continue \mid \Value(t_1, \sigma) = v_1 \land \\
-                                         && e_2\ v_1, \sigma \normalise t_2, \sigma',\phi \land \lnot\Failing(t_2, \sigma')} \\
-    \Inputs(t_1 \Pair t_2,\sigma)        &=& \set{\First\ i \mid i \in \Inputs(t_1,\sigma)} \cup \set{\Second\ i \mid i \in \Inputs(t_2,\sigma)} \\
-    \Inputs(t_1 \Choose t_2,\sigma)         &=& \set{\First\ i \mid i \in \Inputs(t_1,\sigma)} \cup \set{\Second\ i \mid i \in \Inputs(t_2,\sigma)} \\
-    \Inputs(e_1 \Xor e_2,\sigma)        &=& \set{\Left \mid e_1, \sigma \normalise t_1, \sigma',\phi \land \lnot\Failing(t_1, s')} \cup\\
-                                         && \set{\Right \mid e_2, \sigma \normalise t_2, \sigma',\phi \land \lnot\Failing(t_2, s')}
+    \Inputs(\Done b,\sigma)                           &=& \set{b':\tau} \quad\where\ \Done b : \Task\tau \\
+    \Inputs(\Enter \tau,\sigma)                       &=& \set{b':\tau} \\
+    \Inputs(\Update b,\sigma)                         &=& \set{b':\tau} \quad\where\ \Update b : \Task\tau \\
+    \Inputs(\View b,\sigma)                           &=& \set{b':\tau} \quad\where\ \View b : \Task\tau \\
+    \Inputs(\Pick\set{\more{L_i \mapsto t_i}},\sigma) &=& \set{\IPick L_i \mid L_i \in \Picks(\Pick\set{\more{L_i \mapsto t_i}})} \\
+  \addlinespace
+    \Inputs(t_1 \Pair t_2,\sigma)                     &=& \set{\First\ i \mid i \in \Inputs(t_1,\sigma)} \cup \set{\Second\ i \mid i \in \Inputs(t_2,\sigma)} \\
+    \Inputs(t_1 \Choose t_2,\sigma)                   &=& \set{\First\ i \mid i \in \Inputs(t_1,\sigma)} \cup \set{\Second\ i \mid i \in \Inputs(t_2,\sigma)} \\
+    \Inputs(\Fail,\sigma)                             &=& \nothing \\
+  \addlinespace
+    \Inputs(e_1 \Trans t_2,\sigma)                    &=& \Inputs(t_2,\sigma) \\
+    \Inputs(\Forever t)                               &=& \Inputs(t,\sigma) \\
+    \Inputs(t_1 \Step e_2,\sigma)                     &=& \Inputs(t_1,\sigma) \cup \set{\IContinue L_i \mid L_i \in \Picks(t_2), e_2\ b_1 \eval t_2, \Value(t_1,\sigma) = b_1} \\
+  \addlinespace
+    \Inputs(\Change l,\sigma)                         &=& {\set{b':\tau}} \quad\where\ \Change l : \Task\tau \\
+    \Inputs(\Watch l,\sigma)                          &=& \nothing \\
   \end{function}
 }
