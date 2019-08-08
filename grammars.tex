@@ -22,7 +22,7 @@
       &      &\mid& \Fst e               & – first projection \\
       &      &\mid& \Snd e               & – second projection \\
     \addlinespace
-      &      &\mid& [\ ]_\beta           & – nil \\
+      &      &\mid& [\ ]_\tau            & – nil \\
       &      &\mid& e_1 :: e_2           & – cons \\
       &      &\mid& \Head e              & – list head \\
       &      &\mid& \Tail e              & – list tail \\
@@ -105,9 +105,15 @@
   \begin{grammar}
     Values
       & v    &::= & \lambda x:\tau.\ e   & – abstraction \\
-      &      &\mid& l                    & – location \\
       &      &\mid& s                    & – symbol \\
-      &      &\mid& b                    & – basic value \\
+      &      &\mid& l                    & – location \\
+    \addlinespace
+      &      &\mid& \unit                & – unit \\
+      &      &\mid& \tuple{v_1, v_2}     & – pair value \\
+      &      &\mid& [\ ]_\beta           & – nil \\
+      &      &\mid& v_1 :: v_2           & – cons value \\
+      &      &\mid& c                    & – basic value \\
+    \addlinespace
     % \addlinespace
       % &      &\mid& u\ v                 & – symbolic unary operation \\
       % &      &\mid& v_1\ o\ v_2          & – symbolic binary operation \\
@@ -115,9 +121,9 @@
     \addlinespace
     Basic values
       & b    &::= & \unit                & – unit \\
-      &      &\mid& \tuple{v_1, v_2}     & – pair value \\
+      &      &\mid& \tuple{b_1, b_2}     & – pair value \\
       &      &\mid& [\ ]_\beta           & – nil \\
-      &      &\mid& v_1 :: v_2           & – cons value \\
+      &      &\mid& b_1 :: b_2           & – cons value \\
       &      &\mid& c                    & – constant \\
   \end{grammar}
 }

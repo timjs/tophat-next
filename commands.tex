@@ -75,7 +75,7 @@
 \newoperator{View}  {\dot{\square}} %{\boxcircle} %{\overline{\square}}
 \newoperator{Pick}  {\lozenge}
 
-\newoperator{Pair}  {\Join}
+\newoperator{Pair}  {\raisebox{0.05ex}{\scalebox{0.9}{$\blacktriangleright\!\!\blacktriangleleft$}}}
 \newoperator{Done}  {\blacksquare}
 \newoperator{Choose}{\blacklozenge}
 \newoperator{Fail}  {\lightning}
@@ -118,11 +118,20 @@
 \newmathcommand{normalise}[rel]
   {\;\Downarrow\;}
 \newmacro{handle}[1]
-  {\mathrel{\;\xrightarrow{#1}\;}}
+  {\;\xrightarrow{#1}\;}
+  % {\;\overset{#1}{\rightarrow}\;}
 \newmathcommand{fix}[rel]
   {\;\Updownarrow\;}
 \newmacro{interact}[1]
-  {\mathrel{\;\xRightarrow{#1}\;}}
+  {\;\xRightarrow{#1}\;}
+  % {\;\overset{#1}{\Rightarrow}\;}
+\newmacro{extract}
+  % {\;\underset{#1}{\leadsto}\;}
+  {\;\leadsto\;}
+\newmacro{simulate}
+  % {\;\leadsto\makebox[0pt]{\raisebox{+0.5ex}{$\leadsto$}}\;}
+  % {\;\underset{#1}{\raisebox{-0.25ex}{$\leadsto$}\mathllap{\raisebox{+0.25ex}{$\leadsto$}}}\;}
+  {\;\mathrel{\raisebox{-0.25ex}{$\leadsto$}\mathllap{\raisebox{+0.25ex}{$\leadsto$}}}\;}
 
 \newmathcommand{Simulate}[it]
   {simulate}

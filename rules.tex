@@ -215,7 +215,7 @@
 
 \newrule{E-Done}
   {e \eval v}
-  {\Done e, \sigma \eval \Done v}
+  {\Done e \eval \Done v}
 
 \newrule{E-Enter}
   {}
@@ -223,15 +223,16 @@
 
 \newrule{E-Update}
   {e \eval v}
-  {\Update e, \sigma \eval \Update v}
+  {\Update e \eval \Update v}
 
 \newrule{E-View}
   {e \eval v}
-  {\View e, \sigma \eval \View v}
+  {\View e \eval \View v}
 
 \newrule{E-Pick}
-  {}
-  {e_1 \Pick e_2 \eval e_1 \Pick e_2}
+  {\text{for each $i$} \Quad
+   e_i \eval t_i}
+  {\Pick\set{\more{L_i \mapsto e_i}} \eval \Pick\set{\more{L_i \mapsto t_i}}}
 
 
 \newrule{E-Pair}
@@ -243,10 +244,6 @@
   {e_1 \eval t_1 \Quad
    e_2 \eval t_2}
   {e_1 \Choose e_2 \eval t_1 \Choose t_2}
-
-\newrule{E-Fail}
-  {}
-  {\Fail \eval \Fail}
 
 
 \newrule{E-Trans}
@@ -311,7 +308,7 @@
   {t_1,\sigma \normalise t_1',\sigma',\delta' \Quad
    e_2\ v_1 \eval t_2 \Quad
    t_2,\sigma' \normalise t_2',\sigma'',\delta''}
-  {t_1 \Step e_2,\sigma \normalise t_2',\sigma'',\delta''}
+  {t_1 \Step e_2,\sigma \normalise t_2',\sigma'',\delta'\cup\delta''}
   [\Value(t_1',\sigma') = v_1 \land \lnot\Failing(t_2) \land \Picks(t_2) = \nothing]
 
 
@@ -356,11 +353,11 @@
 
 \newrule{N-Share}
 	{l \not\in \mathrm{dom}(\sigma)}
-	{\Share v,\sigma \normalise \Done l,[l \mapsto v]\sigma,\nothing}
+	{\Share b,\sigma \normalise \Done l,[l \mapsto b]\sigma,\nothing}
 
 \newrule{N-Assign}
 	{}
-	{l := v,\sigma \normalise \Done \Unit,[l \mapsto v]\sigma,\set{l}}
+	{l := b,\sigma \normalise \Done \Unit,[l \mapsto b]\sigma,\set{l}}
 
 
 %% Ready %%
@@ -371,15 +368,15 @@
 
 \newrule{N-Enter}
   { }
-  {\Enter v,\sigma \normalise \Enter v,\sigma,\nothing}
+  {\Enter \beta,\sigma \normalise \Enter \beta,\sigma,\nothing}
 
 \newrule{N-Update}
   { }
-  {\Update v,\sigma \normalise \Update v,\sigma,\nothing}
+  {\Update b,\sigma \normalise \Update b,\sigma,\nothing}
 
 \newrule{N-View}
   { }
-  {\View v,\sigma \normalise \View v,\sigma,\nothing}
+  {\View b,\sigma \normalise \View b,\sigma,\nothing}
 
 \newrule{N-Pick}
   { }
@@ -387,11 +384,11 @@
 
 \newrule{N-Change}
   { }
-  {\Change v,\sigma \normalise \Change v,\sigma,\nothing}
+  {\Change l,\sigma \normalise \Change l,\sigma,\nothing}
 
 \newrule{N-Watch}
   { }
-  {\Watch v,\sigma \normalise \Watch v,\sigma,\nothing}
+  {\Watch l,\sigma \normalise \Watch l,\sigma,\nothing}
 
 \newrule{N-Fail}
   { }
@@ -428,18 +425,18 @@
 
 \newrule{H-Enter}
   { }
-  {\Enter \tau,\sigma \handle{v'} \Update v',\sigma,\nothing}
-  [v:\beta]
+  {\Enter \beta,\sigma \handle{b'} \Update b',\sigma,\nothing}
+  [b:\beta]
 
 \newrule{H-Update}
   { }
-  {\Update v,\sigma \handle{v'} \Update v',\sigma,\nothing}
-  [v,v':\beta]
+  {\Update b,\sigma \handle{b'} \Update b',\sigma,\nothing}
+  [b,b':\beta]
 
 \newrule{H-Change}
   { }
-  {\Change l,\sigma \handle{v'} \Change l,\sigma[l \mapsto v'],\set{l}}
-  [\sigma(l),v':\beta]
+  {\Change l,\sigma \handle{b'} \Change l,\sigma[l \mapsto b'],\set{l}}
+  [\sigma(l),b':\beta]
 
 
 %% Pick %%
@@ -516,3 +513,13 @@
   {t,\sigma \handle{i} t',\sigma',\delta' \Quad
    t',\sigma',\delta' \fix t'',\sigma''}
   {t,\sigma \interact{i} t'',\sigma''}
+
+
+%% Simulations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newmacro{RelationX}
+  {t,\sigma \extract \more{t',\sigma',\delta',j,\phi'}}
+
+\newmacro{RelationS}
+  {t,\sigma \simulate \more{t',\sigma',j,\phi'}}
+
