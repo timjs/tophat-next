@@ -28,8 +28,12 @@
 
 
 \newrule{T-Var}
-  {x:\tau\in\Gamma}
+  {x : \tau \in \Gamma}
   {\Gamma,\Sigma \infers x : \tau}
+
+\newrule{T-Sym}
+  {s : \beta \in \Gamma}
+  {\Gamma,\Sigma \infers s : \beta}
 
 \newrule{T-Loc}
   {\Sigma(l) = \beta}
@@ -357,7 +361,7 @@
 
 \newrule{N-Assign}
 	{}
-	{l := b,\sigma \normalise \Done \Unit,[l \mapsto b]\sigma,\set{l}}
+	{l := b,\sigma \normalise \Done \unit,[l \mapsto b]\sigma,\set{l}}
 
 
 %% Ready %%
@@ -449,7 +453,7 @@
 
 %% Step %%
 
-\newrule{H-Step}
+\newrule{H-Cont}
 	{e_2\ v_1 \eval t_2 \Quad
    t_2,\sigma \handle{\IPick L_j} t_2',\sigma',\delta'}
   {t_1 \Step e_2,\sigma \handle{\IContinue L_j} t_2',\sigma',\delta'}
@@ -466,7 +470,7 @@
   {t \Step \lambda\_. \Forever t,\sigma \handle{i} t',\sigma',\delta'}
   {\Forever t,\sigma \handle{i} t',\sigma',\delta'}
 
-\newrule{H-StepPass}
+\newrule{H-Step}
   {t_1,\sigma \handle{i} t_1',\sigma',\delta'}
   {t_1 \Step e_2,\sigma \handle{i} t_1' \Step e_2,\sigma',\delta'}
   [i \neq \IContinue L_j]
@@ -518,8 +522,8 @@
 %% Simulations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newmacro{RelationX}
-  {t,\sigma \extract \more{t',\sigma',\delta',j,\phi'}}
+  {t,\sigma \extract \more{t',\sigma',\delta',j',\phi'}}
 
 \newmacro{RelationS}
-  {t,\sigma \simulate \more{t',\sigma',j,\phi'}}
+  {t,\sigma \simulate \more{t',\sigma',j',\phi'}}
 

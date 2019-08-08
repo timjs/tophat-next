@@ -4,12 +4,12 @@
 \newmacro{O-Value}{
   \begin{function}
     \signature{\Value : \mathrm{Tasks} \times \mathrm{States} \rightharpoonup \mathrm{Values}} \\
-    \Value(\Done v, \sigma)                            &=& v \\
     \Value(\Enter \beta, \sigma)                       &=& \bot \\
     \Value(\Update b, \sigma)                          &=& b \\
     \Value(\View b, \sigma)                            &=& b \\
     \Value(\Pick \set{\more{L_i \mapsto t_i}}, \sigma) &=& \bot \\
   \addlinespace
+    \Value(\Done v, \sigma)                            &=& v \\
     \Value(t_1 \Pair t_2, \sigma)                      &=& \left\{
       \begin{array}{ll}
         \tuple{v_1, v_2}                               & \ \when\ \Value(t_1, \sigma) = v_1 \land \Value(t_2, \sigma) = v_2 \\
@@ -39,12 +39,12 @@
 \newmacro{O-Failing}{
   \begin{function}
     \signature{\Failing : \mathrm{Tasks} \to \mathrm{Booleans}} \\
-    % \Failing(\Done b)                            &=& \False \\
     % \Failing(\Enter \beta)                       &=& \False \\
     % \Failing(\Update b)                          &=& \False \\
     % \Failing(\View b)                            &=& \False \\
     \Failing(\Pick \set{\more{L_i \mapsto t_i}}) &=& \bigwedge \set{\Failing(t_i) \mid \text{for each $i$}} \\
   \addlinespace
+    % \Failing(\Done b)                            &=& \False \\
     \Failing(t_1 \Pair t_2)                      &=& \Failing(t_1) \land \Failing(t_2) \\
     \Failing(t_1 \Choose t_2)                    &=& \Failing(t_1) \land \Failing(t_2) \\
     \Failing(\Fail)                              &=& \True \\
@@ -65,12 +65,12 @@
 \newmacro{O-Watching}{
   \begin{function}
     \signature{\Watching : \mathrm{Tasks} \to \powerset{\mathrm{Locations}}} \\
-    % \Watching(\Done b)                            &=& \nothing \\
     % \Watching(\Enter \beta)                       &=& \nothing \\
     % \Watching(\Update b)                          &=& \nothing \\
     % \Watching(\View b)                            &=& \nothing \\
     % \Watching(\Pick \set{\more{L_i \mapsto t_i}}) &=& \nothing \\
   % \addlinespace
+    % \Watching(\Done b)                            &=& \nothing \\
     \Watching(t_1 \Pair t_2)                      &=& \Watching(t_1) \cup \Watching(t_2) \\
     \Watching(t_1 \Choose t_2)                    &=& \Watching(t_1) \cup \Watching(t_2) \\
     % \Watching(\Fail)                              &=& \nothing \\
@@ -91,12 +91,12 @@
 \newmacro{O-Picks}{
   \begin{function}
     \signature{\Picks : \mathrm{Tasks} \to \powerset{\mathrm{Labels}}} \\
-    % \Picks(\Done b)                            &=& \nothing \\
     % \Picks(\Enter \beta)                       &=& \nothing \\
     % \Picks(\Update b)                          &=& \nothing \\
     % \Picks(\View b)                            &=& \nothing \\
     \Picks(\Pick \set{\more{L_i \mapsto t_i}}) &=& \set{L_i \mid \lnot\Failing(t_i)} \\
   \addlinespace
+    % \Picks(\Done b)                            &=& \nothing \\
     % \Picks(t_1 \Pair t_2)                      &=& \nothing \\
     % \Picks(t_1 \Choose t_2)                    &=& \nothing \\
     % \Picks(\Fail)                              &=& \nothing \\
@@ -117,12 +117,12 @@
 \newmacro{O-Inputs}{
   \begin{function}
     \signature{\Inputs : \mathrm{Tasks} \times \mathrm{States} \to \powerset{\mathrm{Inputs}}} \\
-    \Inputs(\Done v,\sigma)                           &=& \nothing \\
     \Inputs(\Enter \beta,\sigma)                      &=& \set{b':\beta} \\
     \Inputs(\Update b,\sigma)                         &=& \set{b':\beta} \quad\where\ \Update b : \Task\beta \\
     \Inputs(\View b,\sigma)                           &=& \nothing \\
     \Inputs(\Pick\set{\more{L_i \mapsto t_i}},\sigma) &=& \set{\IPick L_i \mid L_i \in \Picks(\Pick\set{\more{L_i \mapsto t_i}})} \\
   \addlinespace
+    \Inputs(\Done v,\sigma)                           &=& \nothing \\
     \Inputs(t_1 \Pair t_2,\sigma)                     &=& \set{\First\ i \mid i \in \Inputs(t_1,\sigma)} \cup \set{\Second\ i \mid i \in \Inputs(t_2,\sigma)} \\
     \Inputs(t_1 \Choose t_2,\sigma)                   &=& \set{\First\ i \mid i \in \Inputs(t_1,\sigma)} \cup \set{\Second\ i \mid i \in \Inputs(t_2,\sigma)} \\
     \Inputs(\Fail,\sigma)                             &=& \nothing \\
