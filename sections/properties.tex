@@ -26,6 +26,15 @@
   \label{thm:pres-norm}
 \end{theorem}
 
+\begin{theorem}[Type preservation under fixing]
+  % For all well typed expressions $e$ and states $\sigma$,
+  For all expressions $t$ and states $\sigma$
+  such that $\Gamma,\Sigma \infers t:\Task\tau$ and $\Gamma,\Sigma \infers \sigma$,
+  if $t,\sigma,\delta \fix t',\sigma'$,
+  then $\Gamma,\Sigma \infers t':\Task\tau$ and $\Gamma,\Sigma \infers \sigma'$.
+  \label{thm:pres-norm}
+\end{theorem}
+
 \noindent
 Where $\Gamma,\Sigma \infers \sigma$ means that for all $l\in \sigma$, it holds that
 $\Gamma,\Sigma\infers \sigma(l):\Sigma(l)$.
@@ -34,7 +43,16 @@ $\Gamma,\Sigma\infers \sigma(l):\Sigma(l)$.
   % For all well typed expressions $e$, states $\sigma$, and inputs $i$,
   For all expressions $e$, states $\sigma$ and inputs $i$
   such that $\Gamma,\Sigma \infers e:\Task\tau$ and $\Gamma,\Sigma \infers \sigma$,
-  if $ e,\sigma \handle{i} e',\sigma'$,
+  if $ e,\sigma \handle{i} e',\sigma',\delta'$,
+  then $\Gamma,\Sigma\infers e':\Task\tau$ and $\Gamma,\Sigma\infers \sigma'$.
+  \label{thm:pres-handle}
+\end{theorem}
+
+\begin{theorem}[Type preservation under interaction]
+  % For all well typed expressions $e$, states $\sigma$, and inputs $i$,
+  For all expressions $e$, states $\sigma$ and inputs $i$
+  such that $\Gamma,\Sigma \infers e:\Task\tau$ and $\Gamma,\Sigma \infers \sigma$,
+  if $ e,\sigma \interact{i} e',\sigma'$,
   then $\Gamma,\Sigma\infers e':\Task\tau$ and $\Gamma,\Sigma\infers \sigma'$.
   \label{thm:pres-handle}
 \end{theorem}
