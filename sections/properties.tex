@@ -7,29 +7,28 @@
 \subsection{Type preservation}
 \label{sub:preservation}
 
-We show that the following three preservation Theorems hold.
-
 \begin{theorem}[Type preservation under evaluation]
-  % For all well typed expressions $e$ and states $\sigma$,
-  For all expressions $e$ and states $\sigma$
-  such that $\Gamma,\Sigma \infers e:\tau$ and $\Gamma,\Sigma \infers \sigma$,
-  if $e,\sigma \evaluate e',\sigma'$,
-  then $\Gamma,\Sigma \infers e':\tau$ and $\Gamma,\Sigma \infers \sigma'$.
+  For all expressions $e$
+  such that $\Gamma,\Sigma \infers e:\tau$,
+  if $e\eval v$,
+  then $\Gamma,\Sigma \infers v:\tau$.
   \label{thm:pres-eval}
+\end{theorem}
+
+
+
+\begin{theorem}[Type preservation under normalisation]
+  % For all well typed expressions $e$ and states $\sigma$,
+  For all expressions $t$ and states $\sigma$
+  such that $\Gamma,\Sigma \infers t:\Task\tau$ and $\Gamma,\Sigma \infers \sigma$,
+  if $t,\sigma \normalise t',\sigma',\delta'$,
+  then $\Gamma,\Sigma \infers t':\Task\tau$ and $\Gamma,\Sigma \infers \sigma'$.
+  \label{thm:pres-norm}
 \end{theorem}
 
 \noindent
 Where $\Gamma,\Sigma \infers \sigma$ means that for all $l\in \sigma$, it holds that
 $\Gamma,\Sigma\infers \sigma(l):\Sigma(l)$.
-
-\begin{theorem}[Type preservation under normalisation]
-  % For all well typed expressions $e$ and states $\sigma$,
-  For all expressions $e$ and states $\sigma$
-  such that $\Gamma,\Sigma \infers e:\Task\tau$ and $\Gamma,\Sigma \infers \sigma$,
-  if $e,\sigma \normalise e',\sigma'$,
-  then $\Gamma,\Sigma \infers e':\Task\tau$ and $\Gamma,\Sigma \infers \sigma'$.
-  \label{thm:pres-norm}
-\end{theorem}
 
 \begin{theorem}[Type preservation under handling]
   % For all well typed expressions $e$, states $\sigma$, and inputs $i$,
