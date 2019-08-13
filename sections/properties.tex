@@ -77,6 +77,14 @@ Where a well typed expression $e$ means that $\Gamma,\Sigma\infers e:\tau$ for
 some type $\tau$, and a well typed state means that $\Sigma\infers \sigma$.
 
 
+\subsection{Fixing semantics is big-step}
+
+\begin{lemma}
+    For all well typed expressions $t$ and states $\sigma$,
+    $t,\sigma,\delta\fix t',\sigma'$ and $t',\sigma'\normalise t'',\sigma''$,
+    we have $t'=t''$ and $\sigma'=\sigma''$.
+\end{lemma}
+
 \subsection{Soundness and Completeness of Inputs}
 
 In order to validate the function that calculates all possible inputs $\Inputs$,
