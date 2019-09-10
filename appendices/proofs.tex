@@ -9,56 +9,78 @@
 
   \case
     {$e=v,e_1 e_2,\If{e_1}{e_2}{e_3},\tuple{e_1, e_2},\Fst\tuple{e_1, e_2},\Snd\tuple{e_1, e_2}, e_1 :: e_2, \Head e, \Tail e,\Share e, e_1 := e_2$}
-    {Preservation has been proven for these cases by Pierce~\cite{books/Pierce02TAPL}.}
+    {Preservation has been proven for these cases by \citet{DBLP:books/daglib/0005958}.}
 
-  % \case
-  %   {$\userule{E-Edit}$}
-  %   {Given that $\Gamma,\Sigma\infers\Edit e:\Task \tau$ and $\Gamma,\Sigma\infers s$,\refrule{T-Edit} gives us that $\Gamma,\Sigma\infers e:\tau$.
-  %   The induction hypothesis gives us that $e,s\evaluate v,s'$ also preserves, and thus $\Gamma,\Sigma\infers v:\tau$ and $\Gamma,\Sigma\infers s'$.
-  %   Therefore $\Gamma,\Sigma\infers\Edit v:\Task\tau$.}
-  %
-  % \case
-  %   {$\userule{E-Enter}$}
-  %   {Evaluation does not alter $e$ and $s$, therefore this case holds trivially.}
-  %
-  % \case
-  %   {$\userule{E-Update}$}
-  %   {Given that $\Gamma,\Sigma\infers \Edit e:\Task \tau$ and $\Gamma,\Sigma\infers s$, \refrule{T-Update} gives us that $\Gamma,\Sigma\infers e:\Ref \tau$.
-  %   The induction hypothesis gives us that $e,s\evaluate l,s'$ also preserves, and thus $\Gamma,\Sigma\infers l:\Ref\tau$ and $\Gamma,\Sigma\infers s'$.
-  %   Therefore $\Gamma,\Sigma\infers\Update l:\Task\tau$.}
-  %
-  % \case
-  %   {$\userule{E-Fail}$}
-  %   {Evaluation does not alter $e$ and $s$, therefore this case holds trivially.}
-  %
-  % \case
-  %   {$\userule{E-Then}$}
+
+  \case
+    {$\userule{E-Enter}$}
+    {Evaluation does not alter the expression, therefore this case holds trivially.}
+
+  \case
+     {$\userule{E-Update}$}
+     {Given that $\Gamma,\Sigma\infers\Update e:\Task \tau$,\refrule{T-Update} gives us that $\Gamma,\Sigma\infers e:\tau$.
+     The induction hypothesis gives us that $e\eval v$ also preserves, and thus $\Gamma,\Sigma\infers v:\tau$.
+     Therefore $\Gamma,\Sigma\infers\Update v:\Task\tau$.}
+
+
+
+  \case
+     {$\userule{E-View}$}
+     {Given that $\Gamma,\Sigma\infers \View e:\Task \tau$, \refrule{T-View} gives us that $\Gamma,\Sigma\infers e:\tau$.
+     The induction hypothesis gives us that $e\eval v$ also preserves, and thus $\Gamma,\Sigma\infers v:\tau$.
+     Therefore $\Gamma,\Sigma\infers\View v:\Task\tau$.}
+
+  \case
+    {$\userule{E-Pick}$}
+    {Given that $\Gamma,\Sigma\infers \Pick\set{\more{L_i \mapsto e_i}} :\Task \tau$, \refrule{T-Pick} gives us that for each $i$ $\Gamma\Sigma\infers e_i:\Task\tau$.
+    The induction hypothesis gives us that for each $i$ $e_i\eval t_i$ also preserves, and thus for each $i$ $\Gamma,\Sigma\infers t_i:\Task\tau$.
+    Therefore $\Gamma,\Sigma\infers \Pick\set{\more{L_i \mapsto t_i}} :\Task \tau$.}
+
+  \case
+    {$\userule{E-Trans}$}
+    {}
+
+
+  \case
+     {$\userule{E-Step}$}{}
   %   {Given that $\Gamma,\Sigma\infers e_1\Then e_2:\Task \tau$ and $\Gamma,\Sigma\infers s$, \refrule{T-Then} gives us that $\Gamma,\Sigma\infers e_1:\Task\tau_1$ and $\Gamma,\Sigma\infers e_2:\tau_1 \to \Task \tau$.
   %   By the induction hypothesis, we know that $e_1,s\evaluate t_1,s'$ preserves and thus $\Gamma,\Sigma\infers t_1:\Task\tau_1$ and $\Gamma,\Sigma\infers s'$.
   %   Therefore $\Gamma,\Sigma\infers t_1\Then e_2:\Task\tau$.}
-  %
-  % \case
-  %   {$\userule{E-Next}$}
-  %   {Given that $\Gamma,\Sigma\infers e_1\Next e_2:\Task \tau$ and $\Gamma,\Sigma\infers s$, \refrule{T-Next} gives us that $\Gamma,\Sigma\infers e_1:\Task\tau_1$ and $\Gamma,\Sigma\infers e_2:\tau_1 \to \Task \tau$.
-  %   By the induction hypothesis, we know that $e_1,s\evaluate t_1,s'$ preserves and thus $\Gamma,\Sigma\infers t_1:\Task\tau_1$ and $\Gamma,\Sigma\infers s'$.
-  %   Therefore $\Gamma,\Sigma\infers t_1\Next e_2:\Task\tau$.}
-  %
-  % \case
-  %   {$\userule{E-And}$}
-  %   {Given that $\Gamma,\Sigma\infers e_1\And e_2:\Task(\tau_1\times\tau_2)$ and $\Gamma,\Sigma\infers s$, \refrule{T-And} gives us that $\Gamma,\Sigma\infers e_1:\Task\tau_1$ and $\Gamma,\Sigma\infers e_2:\Task\tau_2$.
-  %   By the induction hypothesis, we know that both $e_1,s\evaluate t_1,s'$ and $e_2,s'\evaluate t_2,s''$ preserve and thus $\Gamma,\Sigma\infers t_1:\Task\tau_1$, $\Gamma,\Sigma\infers s'$, $\Gamma,\Sigma\infers t_2:\Task\tau_2$ and $\Gamma,\Sigma\infers s''$.
-  %   Therefore $\Gamma,\Sigma\infers t_1\And t_2:\Task(\tau_1\times\tau_2)$.}
-  %
-  % \case
-  %   {$\userule{E-Or}$}
-  %   {Given that $\Gamma,\Sigma\infers e_1\Or e_2:\Task\tau$ and $\Gamma,\Sigma\infers s$, \refrule{T-Or} gives us that $\Gamma,\Sigma\infers e_1:\Task\tau$ and $\Gamma,\Sigma\infers e_2:\Task\tau$.
-  %   By the induction hypothesis, we have that both $e_1,s\evaluate t_1,s'$ and $e_2,s'\evaluate t_2,s''$ preserve and thus $\Gamma,\Sigma\infers t_1:\Task\tau$, $\Gamma,\Sigma\infers s'$, $\Gamma,\Sigma\infers t_2:\Task\tau$ and $\Gamma,\Sigma\infers s''$.
-  %   Therefore $\Gamma,\Sigma\infers t_1\Or t_2:\Task\tau$.}
-  %
-  % \case
-  %   {$\userule{E-Xor}$}
-  %   {Evaluation does not alter $e$ and $s$, therefore this case holds trivially.}
-  %
-  % % \noindent\textbf{Case} $\userule{E-Appoint}$
-  % %     Given that $\Gamma,\Sigma\infers u \At e:\Task\tau$ and $\Sigma\infers s$, the induction hypothesis gives us that $e,s\evaluate t,s'$ also preserves, and therefore by \refrule{T-Appoint} $\Gamma,\Sigma\infers u \At t:\Task\tau$.
+
+  \case
+    {$\userule{E-Forever}$}
+    {}
+
+  \case
+    {$\userule{E-Done}$}
+    {}
+
+  \case
+    {$\userule{E-Pair}$}{}
+    %   {Given that $\Gamma,\Sigma\infers e_1\And e_2:\Task(\tau_1\times\tau_2)$ and $\Gamma,\Sigma\infers s$, \refrule{T-And} gives us that $\Gamma,\Sigma\infers e_1:\Task\tau_1$ and $\Gamma,\Sigma\infers e_2:\Task\tau_2$.
+    %   By the induction hypothesis, we know that both $e_1,s\evaluate t_1,s'$ and $e_2,s'\evaluate t_2,s''$ preserve and thus $\Gamma,\Sigma\infers t_1:\Task\tau_1$, $\Gamma,\Sigma\infers s'$, $\Gamma,\Sigma\infers t_2:\Task\tau_2$ and $\Gamma,\Sigma\infers s''$.
+    %   Therefore $\Gamma,\Sigma\infers t_1\And t_2:\Task(\tau_1\times\tau_2)$.}
+
+
+  \case
+     {$\userule{E-Choose}$}
+     {Given that $\Gamma,\Sigma\infers e_1\Choose e_2:\Task\tau$, \refrule{T-Choose} gives us that $\Gamma,\Sigma\infers e_1:\Task\tau$ and $\Gamma,\Sigma\infers e_2:\Task\tau$.
+     By the induction hypothesis, we have that both $e_1\eval t_1$ and $e_2\eval t_2$ preserve and thus $\Gamma,\Sigma\infers t_1:\Task\tau$ and $\Gamma,\Sigma\infers t_2:\Task\tau$.
+     Therefore $\Gamma,\Sigma\infers t_1\Choose t_2:\Task\tau$.}
+
+  \case
+    {$\userule{E-Share}$}
+    {}
+
+  \case
+    {$\userule{E-Assign}$}
+    {}
+
+  \case
+    {$\userule{E-Change}$}
+    {}
+
+  \case
+    {$\userule{E-Watch}$}
+    {}
 \end{proof}
