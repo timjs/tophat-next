@@ -32,24 +32,28 @@
 
   \case
     {$\userule{E-Pick}$}
-    {Given that $\Gamma,\Sigma\infers \Pick\set{\more{L_i \mapsto e_i}} :\Task \tau$, \refrule{T-Pick} gives us that for each $i$ $\Gamma\Sigma\infers e_i:\Task\tau$.
+    {Given that $\Gamma,\Sigma\infers \Pick\set{\more{L_i \mapsto e_i}} :\Task \tau$, \refrule{T-Pick} gives us that for each $i$ $\Gamma,\Sigma\infers e_i:\Task\tau$.
     The induction hypothesis gives us that for each $i$ $e_i\eval t_i$ also preserves, and thus for each $i$ $\Gamma,\Sigma\infers t_i:\Task\tau$.
     Therefore $\Gamma,\Sigma\infers \Pick\set{\more{L_i \mapsto t_i}} :\Task \tau$.}
 
   \case
     {$\userule{E-Trans}$}
-    {}
+    {Given that $\Gamma,\Sigma\infers e_1\Trans e_2:Task\tau_2$, \refrule{T-Trans} gives us that $\Gamma,\Sigma\infers e_1:\tau_1\to\tau_2$ and $\Gamma,\Sigma\infers e_2:\Task \tau_1$.
+    The induction hypothesis gives us that $e_2\eval t_2$ also preserves, and thus $\Gamma,\Sigma\infers t_2:\Task\tau_1$.
+    Therefore $\Gamma,\Sigma\infers e_1\Trans t_2:\Task\tau_2$.}
 
 
   \case
      {$\userule{E-Step}$}{}
-  %   {Given that $\Gamma,\Sigma\infers e_1\Then e_2:\Task \tau$ and $\Gamma,\Sigma\infers s$, \refrule{T-Then} gives us that $\Gamma,\Sigma\infers e_1:\Task\tau_1$ and $\Gamma,\Sigma\infers e_2:\tau_1 \to \Task \tau$.
-  %   By the induction hypothesis, we know that $e_1,s\evaluate t_1,s'$ preserves and thus $\Gamma,\Sigma\infers t_1:\Task\tau_1$ and $\Gamma,\Sigma\infers s'$.
-  %   Therefore $\Gamma,\Sigma\infers t_1\Then e_2:\Task\tau$.}
+     {Given that $\Gamma,\Sigma\infers e_1\Step e_2:Task\tau_2$, \refrule{T-Step} gives us that $\Gamma,\Sigma\infers e_1:\Task\tau_1$ and $\Gamma,\Sigma\infers e_2:\tau_1\to\Task \tau_2$.
+     The induction hypothesis gives us that $e_1\eval t_1$ also preserves, and thus $\Gamma,\Sigma\infers t_1:\Task\tau_1$.
+     Therefore $\Gamma,\Sigma\infers t_1\Step e_2:\Task\tau_2$.}
 
   \case
     {$\userule{E-Forever}$}
-    {}
+    {Given that $\Gamma,\Sigma\infers \Forever e : \Task \Void$, \refrule{T-Forever} gives us that $\Gamma,\Sigma\infers e:\Task \tau$.
+    The induction hypothesis gives us that $e\eval t$ also preverves, and thus $\Gamma,\Sigma\infers t:\Task \tau$.
+    Therefore $\Gamma,\Sigma\infers \Forever t : \Task \Void$\todo{somehting strange is going on here. Type information is deleted, and therefore, forever always preserves (since result type is void)}}
 
   \case
     {$\userule{E-Done}$}
