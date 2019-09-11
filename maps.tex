@@ -25,7 +25,7 @@
     \right. \\
     \Value(\Fail, \sigma)                              &=& \bot \\
   \addlinespace
-    \Value(e_1 \Trans t_2, \sigma)                     &=& v_2' \quad\when \Value(t_2) = v_2 \land e_1\ v_2 \eval v_2' \\
+    \Value(e_1 \Trans t_2, \sigma)                     &=& v_2' \quad\when \Value(t_2,\sigma) = v_2 \land e_1\ v_2 \eval v_2' \\
     \Value(t_1 \Step e_2, \sigma)                      &=& \bot \\
     \Value(\Forever t, \sigma)                         &=& \bot \\
   \addlinespace
