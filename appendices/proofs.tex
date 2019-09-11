@@ -52,18 +52,20 @@
   \case
     {$\userule{E-Forever}$}
     {Given that $\Gamma,\Sigma\infers \Forever e : \Task \Void$, \refrule{T-Forever} gives us that $\Gamma,\Sigma\infers e:\Task \tau$.
-    The induction hypothesis gives us that $e\eval t$ also preverves, and thus $\Gamma,\Sigma\infers t:\Task \tau$.
-    Therefore $\Gamma,\Sigma\infers \Forever t : \Task \Void$\todo{somehting strange is going on here. Type information is deleted, and therefore, forever always preserves (since result type is void)}}
+    The induction hypothesis gives us that $e\eval t$ also preserves, and thus $\Gamma,\Sigma\infers t:\Task \tau$.
+    Therefore $\Gamma,\Sigma\infers \Forever t : \Task \Void$\todo{something strange is going on here. Type information is deleted, and therefore, forever always preserves (since result type is void)}}
 
   \case
     {$\userule{E-Done}$}
-    {}
+    {Given that $\Gamma,\Sigma\infers\Done e :\Task\tau$, \refrule{T-Done} gives us that $\Gamma,\Sigma \infers e:\tau$.
+    The induction hypothesis gives us that $e\eval v$ also preverves, and thus $\Gamma,\Sigma\infers v:\tau$.
+    Therefore $\Gamma,\Sigma\infers \Done v : \Task \tau$.}
 
   \case
-    {$\userule{E-Pair}$}{}
-    %   {Given that $\Gamma,\Sigma\infers e_1\And e_2:\Task(\tau_1\times\tau_2)$ and $\Gamma,\Sigma\infers s$, \refrule{T-And} gives us that $\Gamma,\Sigma\infers e_1:\Task\tau_1$ and $\Gamma,\Sigma\infers e_2:\Task\tau_2$.
-    %   By the induction hypothesis, we know that both $e_1,s\evaluate t_1,s'$ and $e_2,s'\evaluate t_2,s''$ preserve and thus $\Gamma,\Sigma\infers t_1:\Task\tau_1$, $\Gamma,\Sigma\infers s'$, $\Gamma,\Sigma\infers t_2:\Task\tau_2$ and $\Gamma,\Sigma\infers s''$.
-    %   Therefore $\Gamma,\Sigma\infers t_1\And t_2:\Task(\tau_1\times\tau_2)$.}
+    {$\userule{E-Pair}$}
+    {Give that $\Gamma,\Sigma\infers e_1\Pair e_2:\Task(\tau_1\times\tau_2)$, \refrule{T-Pair} gives us that $\Gamma,\Sigma\infers e_1:\Task\tau_1$ and $\Gamma,\Sigma\infers e_2:\Task\tau_2$.
+    By the induction hypothesis, we know that both $e_1\eval t_1$ and $e_2\eval t_2$ preserve and thus $\Gamma,\Sigma\infers t_1:\Task\tau_1$ and $\Gamma,\Sigma\infers t_2:\Task\tau_2$.
+    Therefore $\Gamma,\Sigma\infers t_1\Pair t_2:\Task(\tau_1\times\tau_2)$.}
 
 
   \case
@@ -74,17 +76,25 @@
 
   \case
     {$\userule{E-Share}$}
-    {}
+    {Given that $\Gamma,\Sigma\infers \Share e : \Task\ (\Reference \beta)$, \refrule{T_Share} gives us that $\Gamma,\Sigma\infers e:\beta$.
+    By the induction hypothesis, we have that $e\eval v$ also preserves and thus $\Gamma,\Sigma\infers v:\beta$.
+    Therefore $\Gamma,\Sigma\infers \Share v:\Task \beta$.}
 
   \case
     {$\userule{E-Assign}$}
-    {}
+    {Given that $\Gamma,\Sigma\infers e_1 := e_2 :\Task \Unit$, \refrule{T-Share} gives us that $\Gamma,\Sigma\infers e_1:\Reference \beta$ and $\Gamma,\Sigma\infers e_2:\beta$.
+    By the induction hypothesis, we have that $e_1\eval l$ and $e_2\eval v$ also preserve and thus $\Gamma,\Sigma\infers l:\Reference \beta$ and $\Gamma,\Sigma\infers v:\beta$.
+    Therefore $\Gamma,\Sigma\infers l:=v:\Task \Unit$.\todo{again, type is being erased} }
 
   \case
     {$\userule{E-Change}$}
-    {}
+    {Given that $\Gamma,\Sigma\infers \Change e :\Task \beta$, \refrule{T-Change} gives us that $\Gamma,\Sigma\infers e:\Reference \beta$.
+    By the induction hypothesis, we have that $e\eval l$ also preserves and thus $\Gamma,\Sigma\infers l:\Reference \beta$.
+    Therefore $\Gamma,\Sigma\infers \Change l:\Task\beta$.}
 
   \case
     {$\userule{E-Watch}$}
-    {}
+    {Given that $\Gamma,\Sigma\infers \Watch e :\Task \beta$, \refrule{T-Watch} gives us that $\Gamma,\Sigma\infers e:\Reference \beta$.
+    By the induction hypothesis, we have that $e\eval l$ also preserves and thus $\Gamma,\Sigma\infers l:\Reference \beta$.
+    Therefore $\Gamma,\Sigma\infers \Watch l:\Task\beta$.}
 \end{proof}
