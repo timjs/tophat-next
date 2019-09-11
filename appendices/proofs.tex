@@ -100,8 +100,43 @@
 \end{proof}
 
 
+\subsection{\cref{lem:pres-value}}
+
+\begin{lemma}[Type preservation under value function]
+  For all expressions $t$ and states $\sigma$
+  such that $\Gamma,\Sigma \infers t:\Task\tau$ and $\Gamma,\Sigma \infers \sigma$,
+  if $\Value(t,\sigma)=v$,
+  then $\Gamma,\Sigma \infers v:\tau$.
+  \label{lem:pres-value}
+\end{lemma}
+
+\begin{proof}
+  We prove \cref{lem:pres-value} by induction on $t$:
+
+  \case{$\Enter\beta$}{Since $\Value(\Enter \beta, \sigma)= \bot$, this case holds trivially.}
+  \case{$\Update b$}{Given that $\Gamma,\Sigma\infers \Update b : \Task\beta$, and by definition of $\Value$, we have $\Value(\Update b,\sigma) = b$. Then by \refrule{T-Update} we have $\Gamma,\Sigma\infers b:\beta$.}
+  \case{$\View b$}{Given that $\Gamma,\Sigma\infers \View b : \Task\beta$, and by definition of $\Value$, we have $\Value(\View b,\sigma) = b$. Then by \refrule{T-View} we have $\Gamma,\Sigma\infers b:\beta$.}
+  \case{$\Pick \set{\more{L_i \mapsto t_i}}$}{Since $\Value(\Pick \set{\more{L_i \mapsto t_i}}, \sigma) = \bot$, this case holds trivially.}
+  \case{$\Done v$}{Given that $\Gamma,\Sigma\infers \Done v : \Task\tau$, and by definition of $\Value$, we have $\Value(\Done v,\sigma) = v$. Then by \refrule{T-Done} we have $\Gamma,\Sigma\infers v:\tau$.}
+  \case{$t_1 \Pair t_2$}{Given that $\Gamma,\Sigma\infers t_1\Pair t_2: \Task\ (\tau_1 \times \tau_2)$, then \refrule{T-Pair} gives us that $\Gamma,\Sigma\infers t_1:\Task\tau_1$ and $\Gamma,\Sigma\infers t_2:\Task\tau_2$.
+  By definition of $\Value$, we have $\Value(t_1\Pair t_2,\sigma) = \tuple{v_1,v_2}$ provided that $\Value(t_1,\sigma) = v_1$ and $\Value(t_2,\sigma) =t_2$.
+  Then by applying the induction hypothesis, we obtain that $\Gamma,\Sigma\infers v_1:\tau_1$ and $\Gamma,\Sigma\infers v_2:\tau_2$.
+  From this, using \refrule{T-Tuple}, we conclude that $\Gamma,\Sigma\infers\tuple{v_1,v_2}:\tau_1\times\tau_2$.
+  }
+  \case{$t_1 \Choose t_2$}{\todo{}}
+  \case{$\Fail$}{Since $\Value(\Fail, \sigma)=\bot$, this case holds trivially.}
+  \case{$e_1 \Trans t_2$}{Given that $\Gamma,\Sigma\infers e_1\Trans t_2 : \Task\tau_2$, and by definition of $\Value$, we have $\Value(e_1\Trans t_2,\sigma) = v_2$ provided that $\Value(t_2,\sigma)=v_2$ and $e_1 v_2\eval v_2'$.\todo{}}
+  \case{$t_1 \Step e_2$}{Since $\Value(t_1 \Step e_2, \sigma) = \bot$, this case holds trivially.}
+  \case{$\Forever t$}{Since $\Value(\Forever t, \sigma) = \bot$, this case holds trivially.}
+  \case{$\Change l$}{Given that $\Gamma,\Sigma\infers \Change l : \Task\tau$, and by definition of $\Value$, we have $\Value(\Change l,\sigma) = \sigma(l)$.\todo{}}
+  \case{$\Watch l$}{Given that $\Gamma,\Sigma\infers \Watch l : \Task\beta$, and by definition of $\Value$, we have $\Value(\Watch l,\sigma) = \sigma(l)$.\todo{}}
+
+\end{proof}
+
+
 \subsection{\cref{thm:pres-norm}}
 
+\begin{proof}
 We prove \cref{thm:pres-norm} by induction on $e$:
 
 \case
@@ -184,3 +219,7 @@ We prove \cref{thm:pres-norm} by induction on $e$:
   {$\userule{F-Loop}$}
   {Given that $\Gamma,\Sigma\infers t :\Task\tau$ and $\Gamma,\Sigma\infers \sigma$, we obtain by \cref{thm:pres-norm} that $t,\sigma\normalise t',\sigma',\delta'$ preserves. Therefore $\Gamma,\Sigma\infers t':\Task\tau$ and $\Gamma,\Sigma\infers\sigma'$.
   By application of the induction hypothesis, we obtain that $t',\sigma',\delta'\fix t'',\sigma''$ also preserves, and thus $\Gamma,\Sigma\infers t'':\Task\tau$ and $\Gamma,\Sigma\infers\sigma''$, which is exactly what we need to show in this case.}
+\end{proof}
+
+\subsection{\cref{thm:pres-handle}}
+\subsection{\cref{thm:pres-interaction}}
