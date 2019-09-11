@@ -43,16 +43,14 @@ Since we are making use of the value function, we require this additional lemma.
 \end{theorem}
 
 \begin{theorem}[Type preservation under handling]
-  % For all well typed expressions $e$, states $\sigma$, and inputs $i$,
-  For all expressions $e$, states $\sigma$ and inputs $i$
-  such that $\Gamma,\Sigma \infers e:\Task\tau$ and $\Gamma,\Sigma \infers \sigma$,
-  if $ e,\sigma \handle{i} e',\sigma',\delta'$,
-  then $\Gamma,\Sigma\infers e':\Task\tau$ and $\Gamma,\Sigma\infers \sigma'$.
+  For all expressions $t$, states $\sigma$ and inputs $i$
+  such that $\Gamma,\Sigma \infers t:\Task\tau$ and $\Gamma,\Sigma \infers \sigma$,
+  if $ t,\sigma \handle{i} t',\sigma',\delta'$,
+  then $\Gamma,\Sigma\infers t':\Task\tau$ and $\Gamma,\Sigma\infers \sigma'$.
   \label{thm:pres-handle}
 \end{theorem}
 
 \begin{theorem}[Type preservation under interaction]
-  % For all well typed expressions $e$, states $\sigma$, and inputs $i$,
   For all expressions $e$, states $\sigma$ and inputs $i$
   such that $\Gamma,\Sigma \infers e:\Task\tau$ and $\Gamma,\Sigma \infers \sigma$,
   if $ e,\sigma \interact{i} e',\sigma'$,

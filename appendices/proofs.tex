@@ -222,4 +222,69 @@ We prove \cref{thm:pres-norm} by induction on $e$:
 \end{proof}
 
 \subsection{\cref{thm:pres-handle}}
+
+\begin{proof}
+  We prove \cref{thm:pres-handle} by induction over $t$:
+
+\case
+  {$\userule{H-Enter}$}
+  {Given that $\Gamma,\Sigma\infers \Enter \beta :\Task\beta$, $\Gamma,\Sigma\infers\sigma$ and $\Gamma,\Sigma\infers b':\beta$, we immediately obtain that $\Gamma,\Sigma\infers\Update b':\Task\beta$ from \refrule{T-Update}. }
+
+\case
+  {$\userule{H-Update}$}
+  {Given that $\Gamma,\Sigma\infers \Update b :\Task\beta$, $\Gamma,\Sigma\infers\sigma$ and $\Gamma,\Sigma\infers b':\beta$, we immediately obtain that $\Gamma,\Sigma\infers\Update b':\Task\beta$ from \refrule{T-Update}.}
+
+\case
+  {$\userule{H-Change}$}
+  {\todo{}}
+
+\case
+  {$\userule{H-Pick}$}
+  {Given that $\Gamma,\Sigma\infers \Pick\set{\more{L_i \mapsto t_i}} :\Task\tau$ and $\Gamma,\Sigma\infers\sigma$, \refrule{T-Pick} gives us that for each $i$ $\Gamma,\Sigma\infers t_i:\Task\tau$.
+  It now immediately holds that $\Gamma,\Sigma\infers t_j:\Task\tau$, which we needed to prove.}
+
+\case
+  {$\userule{H-Cont}$}
+  {}
+
+\case
+  {$\userule{H-Trans}$}
+  {}
+
+\case
+  {$\userule{H-Step}$}
+  {}
+
+\case
+  {$\userule{H-Forever}$}
+  {}
+
+\case
+  {$\userule{H-PairFirst}$}
+  {}
+
+\case
+  {$\userule{H-PairSecond}$}
+  {}
+
+\case
+  {$\userule{H-ChooseFirst}$}
+  {}
+
+\case
+  {$\userule{H-ChooseSecond}$}
+  {}
+
+
+\end{proof}
+
 \subsection{\cref{thm:pres-interaction}}
+
+\begin{proof}
+  $\userule{I-Handle}$
+
+  Provided that $\Gamma,\Sigma\infers t:\Task\tau$ and $\Gamma,\Sigma\infers \sigma$,  \cref{thm:pres-handle} gives us that $t,\sigma\handle{i}t',\sigma',\delta'$ preserves.
+  Therefore $\Gamma,\Sigma\infers t':\Task\tau$ and $\Gamma,\Sigma\infers \sigma'$.
+  \cref{thm-pres-normalise} gives us that $t',\sigma',\delta'\normalise t'',\sigma''$ preserves and therefore $\Gamma,\Sigma\infers t'':\Task\tau$ and $\Gamma,\Sigma\infers \sigma''$, which proves this theorem.
+
+\end{proof}
