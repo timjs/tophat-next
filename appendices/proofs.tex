@@ -98,3 +98,77 @@
     By the induction hypothesis, we have that $e\eval l$ also preserves and thus $\Gamma,\Sigma\infers l:\Reference \beta$.
     Therefore $\Gamma,\Sigma\infers \Watch l:\Task\beta$.}
 \end{proof}
+
+
+\subsection{\cref{thm:pres-norm}}
+
+We prove \cref{thm:pres-norm} by induction on $e$:
+
+\case
+  {$\userule{N-Done}$,$\userule{N-Enter}$,$\userule{N-Update}$,$\userule{N-View}$,$\userule{N-Pick}$,$\userule{N-Change}$,$\userule{N-Watch}$,$\userule{N-Fail}$}
+  {In these cases, the expression and state remain unaltered, and therefore the lemma holds trivially.}
+
+\case
+  {$\userule{N-StepNone}$,$\userule{N-StepFail}$,$\userule{N-StepWait}$}
+  {The proof of these three cases is identical, namely as follows.\\
+  Given that $\Gamma,\Sigma\infers t_1\Step e_2:\Task\tau_2$ and $\Gamma,\Sigma\infers \sigma$, \refrule{T-Step} gives us that $\Gamma,\Sigma\infers t_1:\Task\tau_1$ and $\Gamma,\Sigma\infers e_2:\tau_1\to\Task \tau_2$.
+  The induction hypothesis gives us that $t_1,\sigma\normalise t_1',\sigma',\delta'$ also preserves, and thus $\Gamma,\Sigma\infers t_1':\Task\tau_1$ and $\Gamma,\Sigma\infers\sigma'$.
+  Therefore $\Gamma,\Sigma\infers t_1'\Step e_2:\Task\tau_2$.}
+
+\case
+  {$\userule{N-StepCont}$}
+  {Given that $\Gamma,\Sigma\infers t_1\Step e_2:\Task\tau_2$ and $\Gamma,\Sigma\infers \sigma$, \refrule{T-Step} gives us that $\Gamma,\Sigma\infers t_1:\Task\tau_1$ and $\Gamma,\Sigma\infers e_2:\tau_1\to\Task \tau_2$.
+  The induction hypothesis gives us that $t_1,\sigma\normalise t_1',\sigma',\delta'$ also preserves, and thus $\Gamma,\Sigma\infers t_1':\Task\tau_1$ and $\Gamma,\Sigma\infers\sigma'$.
+  \cref{lem:pres-value} gives us that $\Value{t_1',\sigma'}=v_1$ preserves, and therefore $\Gamma,\Sigma\infers v_1:\tau_1$.
+  \refrule{T-App} gives us that $\Gamma,\Sigma\infers e_2 v_1 : \Task\tau_2$.
+  From \cref{thm:pres-eval} we get that $\Gamma,\Sigma\infers t_2:\Task\tau_1$.
+  Then by applying the induction hypothesis a second time, we get that $t_1\sigma'\normalise t_2',\sigma'',\delta''$ also preserves and thus $\Gamma,\Sigma\infers t_2':\Task\tau_1$ and $\Gamma,\Sigma\infers \sigma''$, which is exactly what we needed to show.}
+
+\case
+  {$\userule{N-ChooseLeft}$}
+  {Given that $\Gamma,\Sigma\infers t_1 \Choose t_2 : \Task \tau$ and $\Gamma,\Sigma\infers\sigma$, \refrule{T-Choose} gives us that $\Gamma,\Sigma\infers t_1:\Task\tau$.
+  The induction hypothesis gives us that $t_1,\sigma\normalise t_1',\sigma',\delta'$ also preserves,
+  and thus $\Gamma,\Sigma\infers t_1':\Task\tau$ and $\Gamma,\Sigma\infers \sigma'$, which is exactly what we needed to show.}
+
+\case
+  {$\userule{N-ChooseRight}$}
+  {Given that $\Gamma,\Sigma\infers t_1 \Choose t_2 : \Task \tau$ and $\Gamma,\Sigma\infers\sigma$, \refrule{T-Choose} gives us that $\Gamma,\Sigma\infers t_1:\Task\tau$ and $\Gamma,\Sigma\infers t_2:\Task \tau$.
+  The induction hypothesis gives us that $t_1,\sigma\normalise t_1',\sigma',\delta'$ also preserves,
+  and thus $\Gamma,\Sigma\infers t_1':\Task\tau$ and $\Gamma,\Sigma\infers \sigma'$.
+  A second application of the induction hypothesis gives us that $t_2,\sigma'\normalise t_2',\sigma'',\delta''$ also preserves, and thus $\Gamma,\Sigma\infers t_2':\Task\tau$ and $\Gamma,\Sigma\infers\sigma''$, which is exactly what we needed to show.}
+
+\case
+  {$\userule{N-ChooseNone}$}
+  {Given that $\Gamma,\Sigma\infers t_1 \Choose t_2 : \Task \tau$ and $\Gamma,\Sigma\infers\sigma$, \refrule{T-Choose} gives us that $\Gamma,\Sigma\infers t_1:\Task\tau$ and $\Gamma,\Sigma\infers t_2:\Task \tau$.
+  The induction hypothesis gives us that $t_1,\sigma\normalise t_1',\sigma',\delta'$ also preserves,
+  and thus $\Gamma,\Sigma\infers t_1':\Task\tau$ and $\Gamma,\Sigma\infers \sigma'$.
+  A second application of the induction hypothesis gives us that $t_2,\sigma'\normalise t_2',\sigma'',\delta''$ also preserves, and thus $\Gamma,\Sigma\infers t_2':\Task\tau$ and $\Gamma,\Sigma\infers\sigma''$.
+  Therefore $\Gamma,\Sigma\infers t_1'\Choose t_2':\Task\tau$.}
+
+\case
+  {$\userule{N-Trans}$}
+  {Given that $\Gamma,\Sigma\infers e_1\Trans t_2:\Task\tau_2$ and $\Gamma,\Sigma\infers\sigma$, \refrule{T-Trans} gives us that $\Gamma,\Sigma\infers e_1:\tau_1\to \tau_2$ and $\Gamma,\Sigma\infers t_2:\Task\tau_1$.
+  The induction hypothesis gives us that $t_2,\sigma\normalise t_2',\sigma',\delta'$ also preserves, and thus $\Gamma,\Sigma\infers t_2':\Task\tau_1$ and $\Gamma,\Sigma\infers\sigma'$.
+  Therefore $\Gamma,\Sigma\infers e_1\Trans t_2':\Task\tau_2$.}
+
+\case
+  {$\userule{N-Forever}$}
+  {\todo{Not sure what to do here, since $t'$ is NOT smaller, so can we apply induction?}}
+
+\case
+  {$\userule{N-Pair}$}
+  {Given that $\Gamma,\Sigma\infers t_1\Pair t_2:\Task (\tau_1\times\tau_2)$ and $\Gamma,\Sigma\infers\sigma$, \refrule{T-Pair} gives us that $\Gamma,\Sigma\infers t_1:\Task \tau_1$ and $\Gamma,\Sigma\infers t_2:\Task \tau_2$.
+  The induction hypothesis gives us that $t_1,\sigma\normalise t_1',\sigma',\delta'$ also preserves,
+  and thus $\Gamma,\Sigma\infers t_1'$ and $\Gamma,\Sigma\infers \sigma'$.
+  A second application of the induction hypothesis gives us that $t_2,\sigma'\normalise t_2',\sigma'',\delta''$ also preserves, and thus $\Gamma,\Sigma\infers t_2':\Task\tau_2$ and $\Gamma,\Sigma\infers \sigma''$.
+  Therefore $\Gamma,\Sigma\infers t_1'\Pair t_2':\Task (\tau_1\times\tau_2)$.}
+
+\case
+  {$\userule{N-Share}$}
+  {Given that $\Gamma,\Sigma\infers \Share b:\Task\ (\Reference \beta)$ and $\Gamma,\Sigma\infers\sigma$.
+  ?????? \todo{fix}
+  }
+
+\case
+  {$\userule{N-Assign}$}
+  {}
