@@ -105,11 +105,11 @@
 We prove \cref{thm:pres-norm} by induction on $e$:
 
 \case
-  {$\userule{N-Done}$,$\userule{N-Enter}$,$\userule{N-Update}$,$\userule{N-View}$,$\userule{N-Pick}$,$\userule{N-Change}$,$\userule{N-Watch}$,$\userule{N-Fail}$}
+  {$\userule{N-Done}$,$\userule{N-Enter}$,$\userule{N-Update}$,$\userule{N-View}$,\\$\userule{N-Pick}$,$\userule{N-Change}$,$\userule{N-Watch}$,$\userule{N-Fail}$}
   {In these cases, the expression and state remain unaltered, and therefore the lemma holds trivially.}
 
 \case
-  {$\userule{N-StepNone}$,$\userule{N-StepFail}$,$\userule{N-StepWait}$}
+  {$\userule{N-StepNone}$,$\userule{N-StepFail}$,\\$\userule{N-StepWait}$}
   {The proof of these three cases is identical, namely as follows.\\
   Given that $\Gamma,\Sigma\infers t_1\Step e_2:\Task\tau_2$ and $\Gamma,\Sigma\infers \sigma$, \refrule{T-Step} gives us that $\Gamma,\Sigma\infers t_1:\Task\tau_1$ and $\Gamma,\Sigma\infers e_2:\tau_1\to\Task \tau_2$.
   The induction hypothesis gives us that $t_1,\sigma\normalise t_1',\sigma',\delta'$ also preserves, and thus $\Gamma,\Sigma\infers t_1':\Task\tau_1$ and $\Gamma,\Sigma\infers\sigma'$.
@@ -172,3 +172,15 @@ We prove \cref{thm:pres-norm} by induction on $e$:
 \case
   {$\userule{N-Assign}$}
   {}
+
+
+\subsection{\cref{thm:pres-fix}}
+
+\case
+  {$\userule{F-Done}$}
+  {Given that $\Gamma,\Sigma\infers t :\Task\tau$ and $\Gamma,\Sigma\infers \sigma$, we obtain by \cref{thm:pres-norm} that $t,\sigma\normalise t',\sigma',\delta'$ preserves. Therefore $\Gamma,\Sigma\infers t':\Task\tau$ and $\Gamma,\Sigma\infers\sigma'$, which is exactly what we need to show in this case.}
+
+\case
+  {$\userule{F-Loop}$}
+  {Given that $\Gamma,\Sigma\infers t :\Task\tau$ and $\Gamma,\Sigma\infers \sigma$, we obtain by \cref{thm:pres-norm} that $t,\sigma\normalise t',\sigma',\delta'$ preserves. Therefore $\Gamma,\Sigma\infers t':\Task\tau$ and $\Gamma,\Sigma\infers\sigma'$.
+  By application of the induction hypothesis, we obtain that $t',\sigma',\delta'\fix t'',\sigma''$ also preserves, and thus $\Gamma,\Sigma\infers t'':\Task\tau$ and $\Gamma,\Sigma\infers\sigma''$, which is exactly what we need to show in this case.}

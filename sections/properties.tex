@@ -38,17 +38,12 @@ Since we are making use of the value function, we require this additional lemma.
 
 
 \begin{theorem}[Type preservation under fixing]
-  % For all well typed expressions $e$ and states $\sigma$,
   For all expressions $t$ and states $\sigma$
   such that $\Gamma,\Sigma \infers t:\Task\tau$ and $\Gamma,\Sigma \infers \sigma$,
   if $t,\sigma,\delta \fix t',\sigma'$,
   then $\Gamma,\Sigma \infers t':\Task\tau$ and $\Gamma,\Sigma \infers \sigma'$.
-  \label{thm:pres-norm}
+  \label{thm:pres-fix}
 \end{theorem}
-
-\noindent
-Where $\Gamma,\Sigma \infers \sigma$ means that for all $l\in \sigma$, it holds that
-$\Gamma,\Sigma\infers \sigma(l):\Sigma(l)$.
 
 \begin{theorem}[Type preservation under handling]
   % For all well typed expressions $e$, states $\sigma$, and inputs $i$,
@@ -65,7 +60,7 @@ $\Gamma,\Sigma\infers \sigma(l):\Sigma(l)$.
   such that $\Gamma,\Sigma \infers e:\Task\tau$ and $\Gamma,\Sigma \infers \sigma$,
   if $ e,\sigma \interact{i} e',\sigma'$,
   then $\Gamma,\Sigma\infers e':\Task\tau$ and $\Gamma,\Sigma\infers \sigma'$.
-  \label{thm:pres-handle}
+  \label{thm:pres-interaction}
 \end{theorem}
 
 \subsection{Progress}
