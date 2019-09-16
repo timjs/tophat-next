@@ -288,3 +288,45 @@ We prove \cref{thm:pres-norm} by induction on $e$:
   \cref{thm-pres-normalise} gives us that $t',\sigma',\delta'\normalise t'',\sigma''$ preserves and therefore $\Gamma,\Sigma\infers t'':\Task\tau$ and $\Gamma,\Sigma\infers \sigma''$, which proves this theorem.
 
 \end{proof}
+
+\subsection{\cref{thm:prog-interaction}}
+
+
+\subsection{\cref{lem:failing}}
+
+\begin{proof}
+    We prove \cref{lem:failing} by induction over $t$:
+
+\case
+  {$\Pick \set{\more{L_i \mapsto t_i}}$}
+  {}
+
+\case
+  {$t_1 \Pair t_2$}
+  {}
+
+\case
+  {$t_1 \Choose t_2$}
+  {}
+
+\case
+  {$\Fail$}
+  {}
+
+\case
+  {$e_1 \Trans t_2$}
+  {}
+
+\case
+  {$t_1 \Step e_2$}
+  {}
+
+\case
+  {$\Forever t$}
+  {}
+  
+\case
+  {otherwise}
+  {\fixme{This catch-all is problematic how can we possibly prove this case?}}
+
+\end{proof}

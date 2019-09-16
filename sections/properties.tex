@@ -29,10 +29,6 @@
 Where $\Gamma,\Sigma \infers \sigma$ means that for all $l\in \sigma$, it holds that
 $\Gamma,\Sigma\infers \sigma(l):\Sigma(l)$.
 
-Since we are making use of the value function, we require this additional lemma.
-
-
-
 
 \begin{theorem}[Type preservation under fixing]
   For all expressions $t$ and states $\sigma$
@@ -63,20 +59,27 @@ Since we are making use of the value function, we require this additional lemma.
 A well-typed term of a task type is guaranteed to progress after normalisation,
 unless it is failing.
 
-We define what we mean with progress in \cref{thm:prog-norm}.
+We define what we mean with progress in \cref{thm:prog-interaction}.
 \begin{theorem}[Progress under handling]
-  For all well typed expressions $e$ and states $\sigma$,
-  % For all expressions $e$ and states $\sigma$
-  % such that $\Gamma,\Sigma \infers e:\Task\tau$ and $\Sigma \infers \sigma$,
-  if $e,\sigma \normalise e',\sigma'$,
-  then either $\Failing(e', \sigma')$
-  or there exist $e''$, $\sigma''$, and $i$ such that $e',\sigma'\handle{i} e'',\sigma''$.
-  \label{thm:prog-norm}
+  %For all well typed expressions $e$ and states $\sigma$,
+  For all expressions $t$ and states $\sigma$
+  such that $\Gamma,\Sigma \infers t:\Task\tau$ and $\Sigma \infers \sigma$,
+  if $t,\sigma \normalise t',\sigma'$,
+  then either $\Failing(t', \sigma')$
+  or there exist $t''$, $\sigma''$, and $i$ such that $t',\sigma'\interact{i} t'',\sigma''$.
+  \label{thm:prog-interaction}
 \end{theorem}
 
-Where a well typed expression $e$ means that $\Gamma,\Sigma\infers e:\tau$ for
-some type $\tau$, and a well typed state means that $\Sigma\infers \sigma$.
+%Where a well typed expression $e$ means that $\Gamma,\Sigma\infers e:\tau$ for
+%some type $\tau$, and a well typed state means that $\Sigma\infers \sigma$.
 
+
+\begin{lemma}[Failing means no interaction possible]
+  For all expressions $t$
+  such that $\Gamma,\Sigma\infers t:\Task\tau$,
+  we have $\Failing(t)$ if and only if there exists no input $i$ such that $t,\sigma\interact{i} t',\sigma'$, for all $\sigma$ with $\Gamma,\Sigma\infers\sigma$ and a certain $t'$ and $\sigma'$.
+  \label{lem:failing}
+\end{lemma}
 
 \subsection{Fixing semantics is big-step}
 
