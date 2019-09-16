@@ -299,32 +299,44 @@ We prove \cref{thm:pres-norm} by induction on $e$:
 
 \case
   {$\Pick \set{\more{L_i \mapsto t_i}}$}
-  {}
+  {By definition, $\Failing(\Pick \set{\more{L_i \mapsto t_i}}) = \bigwedge \set{\Failing(t_i) \mid \text{for each $i$}}$.
+  One handling rule applies, namely \refrule{H-Pick}. To calculate which interation is possible, the $\Picks$ function is utilised. $\Picks(\Pick \set{\more{L_i \mapsto t_i}}) = \set{L_i \mid \lnot\Failing(t_i)}$.
+  From this we can directly conclude that if $\Failing(\Pick \set{\more{L_i \mapsto t_i}})$, then $\Picks(\Pick \set{\more{L_i \mapsto t_i}}) =\emptyset$, and therefore, no input can be handled.}
 
 \case
   {$t_1 \Pair t_2$}
-  {}
+  {By definition, $\Failing(t_1 \Pair t_2) = \Failing(t_1) \land \Failing(t_2)$. Two handling rules apply to $t_1 \Pair t_2$, namely \refrule{H-PairFirst}, provided that $t_1,\sigma\handle{i}t_1',\sigma',\delta'$ and \refrule{H-PairSecond}, provided that $t_2,\sigma\handle{i}t_2',\sigma',\delta'$.
+  By application of the induction hypothesis, we have that $\Failing(t_1)\iff \neg\exists i . t_1,\sigma\handle{i}t_1',\sigma',\delta'$ and $\Failing(t_2)\iff \neg\exists i . t_2,\sigma\handle{i}t_2',\sigma',\delta'$.
+  From this we can conclude that if and only if $\Failing(t_1 \Pair t_2)$, there exists no input $i$ such that $t_1 \Pair t_2,\sigma\interact{i} t',\sigma'$.}
 
 \case
   {$t_1 \Choose t_2$}
-  {}
+  {By definition, $\Failing(t_1 \Choose t_2) = \Failing(t_1) \land \Failing(t_2)$. Two handling rules apply to $t_1 \Pair t_2$, namely \refrule{H-ChooseFirst}, provided that $t_1,\sigma\handle{i}t_1',\sigma',\delta'$ and \refrule{H-ChooseSecond}, provided that $t_2,\sigma\handle{i}t_2',\sigma',\delta'$.
+  By application of the induction hypothesis, we have that $\Failing(t_1)\iff \neg\exists i . t_1,\sigma\handle{i}t_1',\sigma',\delta'$ and $\Failing(t_2)\iff \neg\exists i . t_2,\sigma\handle{i}t_2',\sigma',\delta'$.
+  From this we can conclude that if and only if $\Failing(t_1 \Choose t_2)$, there exists no input $i$ such that $t_1 \Pair t_2,\sigma\interact{i} t',\sigma'$.}
 
 \case
   {$\Fail$}
-  {}
+  {By definition, $\Failing(\Fail)= \True$. Since there is no handling rule that applies, we also have that there exists no input $i$ such that $\Fail,\sigma\interact{i} t',\sigma'$.}
 
 \case
   {$e_1 \Trans t_2$}
-  {}
+  {By definition, $\Failing(e_1 \Trans t_2)= \Failing(t_2)$.
+  The handling rule that applies to this case is \refrule{H-Trans}, provided that $t_2,\sigma\handle{i}t_2',\sigma',\delta'$.
+  By application of the induction hypothesis, we can immediately conclude that the lemma holds in this case.}
 
 \case
   {$t_1 \Step e_2$}
-  {}
+  {By definition, $\Failing(t_1 \Step e_2)= \Failing(t_1)$.
+  The handling rule that applies to this case is \refrule{H-Step}, provided that $t_1,\sigma\handle{i}t_1',\sigma',\delta'$.
+  By application of the induction hypothesis, we can immediately conclude that the lemma holds in this case.}
 
 \case
   {$\Forever t$}
-  {}
-  
+  {By definition, $\Failing(\Forever t)=\Failing(t)$.
+  The handling rule that applies to this case is \refrule{H-Forever}, provided that $t\Step \lambda\_.\Forever t,\sigma\handle{i},t',\sigma',\delta'$. Looking at \refrule{H-Step}, we see that the premise of \refrule{H-Forever} only holds if $t,\sigma\handle{i}t',\sigma',\delta'$.
+  At this point, we can apply the induction hypothesis, and conclude that this case holds.}
+
 \case
   {otherwise}
   {\fixme{This catch-all is problematic how can we possibly prove this case?}}
