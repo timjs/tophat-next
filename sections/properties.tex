@@ -27,7 +27,7 @@
 
 \noindent
 Where $\Gamma,\Sigma \infers \sigma$ means that for all $l\in \sigma$, it holds that
-$\Gamma,\Sigma\infers \sigma(l):\Sigma(l)$.
+$\Gamma,\Sigma\infers \sigma(l):\Sigma(l)$.\fixme{can we remove $\Gamma$ from this relation? I think so...}
 
 
 \begin{theorem}[Type preservation under fixing]
@@ -63,7 +63,7 @@ We define what we mean with progress in \cref{thm:prog-interaction}.
 \begin{theorem}[Progress under handling]
   %For all well typed expressions $e$ and states $\sigma$,
   For all expressions $t$ and states $\sigma$
-  such that $\Gamma,\Sigma \infers t:\Task\tau$ and $\Sigma \infers \sigma$,
+  such that $\Gamma,\Sigma \infers t:\Task\tau$ and $\Gamma\Sigma \infers \sigma$,
   if $t,\sigma \normalise t',\sigma'$,
   then either $\Failing(t', \sigma')$
   or there exist $t''$, $\sigma''$, and $i$ such that $t',\sigma'\interact{i} t'',\sigma''$.
@@ -81,6 +81,17 @@ We define what we mean with progress in \cref{thm:prog-interaction}.
   \label{lem:failing}
 \end{lemma}
 
+
+\begin{proof}
+  Given $\Gamma,\Sigma\infers t:\Task\tau$ and $\Gamma,\Sigma\infers\sigma$ and after normalisation $t,\sigma\normalise t',\sigma'$, we find ourselves in either one of the following situations:
+
+  There exists an $i$ such that $t',\sigma'\interact{i} t'',\sigma''$.
+
+  There does not exist an $i$ such that $t',\sigma'\interact{i} t'',\sigma''$. In this case, we
+  know that $\Failing(t',\sigma')$ must be true, by \cref{lem:failing}.
+
+\end{proof}
+
 \subsection{Fixing semantics is big-step}
 
 \begin{lemma}
@@ -88,7 +99,7 @@ We define what we mean with progress in \cref{thm:prog-interaction}.
     $t,\sigma,\delta\fix t',\sigma'$ and $t',\sigma'\normalise t'',\sigma''$,
     we have $t'=t''$ and $\sigma'=\sigma''$.
 \end{lemma}
-
+\fixme{I'm not sure that this property is interesting or needed...}
 \subsection{Soundness and Completeness of Inputs}
 
 In order to validate the function that calculates all possible inputs $\Inputs$,
@@ -98,10 +109,9 @@ and by complete we mean that the set of possible inputs contains all inputs that
 \Cref{thm:safety-i} expresses exactly this property.
 
 \begin{theorem}[Inputs function is sound and complete]
-  For all well typed expressions $e$, states $\sigma$, and inputs $i$,
-  % For all expressions $e$, states $\sigma$, and inputs $i$
-  % such that $\Gamma,\Sigma \infers e:\tau$ and $\Sigma \infers \sigma$,
-  we have that $i \in \Inputs{(e,\sigma)}$ if and only if $e,\sigma \handle{i} e',\sigma'$.
+  For all tasks $t$, states $\sigma$, and inputs $i$
+  such that $\Gamma,\Sigma \infers t:\Task\tau$ and $\Gamma,\Sigma \infers \sigma$,
+  we have that $i \in \Inputs{(t,\sigma)}$ if and only if $t,\sigma \interact{i} t',\sigma'$.
   \label{thm:safety-i}
 \end{theorem}
 
