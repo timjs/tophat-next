@@ -123,9 +123,19 @@
   Then by applying the induction hypothesis, we obtain that $\Gamma,\Sigma\infers v_1:\tau_1$ and $\Gamma,\Sigma\infers v_2:\tau_2$.
   From this, using \refrule{T-Tuple}, we conclude that $\Gamma,\Sigma\infers\tuple{v_1,v_2}:\tau_1\times\tau_2$.
   }
-  \case{$t_1 \Choose t_2$}{\todo{}}
+
+  \case{$t_1 \Choose t_2$}{Given that $\Gamma,\Sigma\infers t_1\Choose t_2:\Task\tau$, then \refrule{T-Choose} gives us that $\Gamma,\Sigma\infers t_1:\Task\tau$ and $\Gamma,\Sigma\infers t_2:\Task\tau$.
+  By definition of $\Value$, we have $\Value(t_1\Choose t_2)=v_1$ provided that $\Value(t_1,\sigma)=v_1$.
+  Otherwise $\Value(t_1\Choose t_2)=v_2$ provided that $\Value(t_1,\sigma)=\bot$ and $\Value(t_2,\sigma)=v_2$.
+  In both cases we can apply the induction hypothesis to obtain that $\Gamma,\Sigma\infers v_1:\tau_1$ and $\Gamma,\Sigma\infers v_2:\tau_2$.}
+
+
   \case{$\Fail$}{Since $\Value(\Fail, \sigma)=\bot$, this case holds trivially.}
-  \case{$e_1 \Trans t_2$}{Given that $\Gamma,\Sigma\infers e_1\Trans t_2 : \Task\tau_2$, and by definition of $\Value$, we have $\Value(e_1\Trans t_2,\sigma) = v_2$ provided that $\Value(t_2,\sigma)=v_2$ and $e_1 v_2\eval v_2'$.\todo{}}
+  \case{$e_1 \Trans t_2$}{Given that $\Gamma,\Sigma\infers e_1\Trans t_2 : \Task\tau_2$, and by definition of $\Value$, we have $\Value(e_1\Trans t_2,\sigma) = v_2$ provided that $\Value(t_2,\sigma)=v_2$ and $e_1 v_2\eval v_2'$.
+  By \refrule{T-Trans}, we have $\Gamma,\Sigma\infers e_1:\tau_1\to\tau_2$ and $\Gamma,\Sigma\infers t_2:\Task\tau_1$.
+  By induction hypothesis, $\Gamma,\Sigma\infers v_2:\tau_1$. Then by \refrule{T-App} we have $\Gamma,\Sigma\infers e_1v_2:\tau_2$ and then \cref{lem:pres-eval} gives us what we needed to show in this case, namely $\Gamma,\Sigma\infers v_2':\tau_2$.}
+
+
   \case{$t_1 \Step e_2$}{Since $\Value(t_1 \Step e_2, \sigma) = \bot$, this case holds trivially.}
   \case{$\Forever t$}{Since $\Value(\Forever t, \sigma) = \bot$, this case holds trivially.}
   \case{$\Change l$}{Given that $\Gamma,\Sigma\infers \Change l : \Task\tau$, and by definition of $\Value$, we have $\Value(\Change l,\sigma) = \sigma(l)$.\todo{}}
