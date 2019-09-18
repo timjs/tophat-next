@@ -183,7 +183,7 @@
   {\If{e_1}{e_2}{e_3} \eval v_2}
 
 \newrule{E-IfFalse}
-  {e_1 \eval v_1 \Quad
+  {e_1 \eval \False \Quad
    e_3 \eval v_3}
   {\If{e_1}{e_2}{e_3} \eval v_3}
 
@@ -348,8 +348,8 @@
 
 \newrule{N-Pair}
 	{t_1,\sigma \normalise t_1',\sigma',\delta' \Quad
-	 t_2,\sigma \normalise t_2',\sigma',\delta''}
-	{t_1 \Pair t_2,\sigma \normalise t_1 \Pair t_2',\sigma',\delta'\cup\delta''}
+	 t_2,\sigma' \normalise t_2',\sigma'',\delta''}
+	{t_1 \Pair t_2,\sigma \normalise t_1 \Pair t_2',\sigma'',\delta'\cup\delta''}
 
 
 
@@ -526,4 +526,3 @@
 
 \newmacro{RelationS}
   {t,\sigma \simulate \more{t',\sigma',j',\phi'}}
-
