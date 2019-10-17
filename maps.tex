@@ -94,7 +94,7 @@
     % \Picks(\Enter \beta)                       &=& \nothing \\
     % \Picks(\Update b)                          &=& \nothing \\
     % \Picks(\View b)                            &=& \nothing \\
-    \Picks(\Pick \set{\more{L_i \mapsto t_i}}) &=& \set{L_i \mid \lnot\Failing(t_i)} \\
+    \Picks(\Pick \set{\more{L_i \mapsto t_i}}) &=& \set{L^n_i \mid \lnot\Failing(t_i), i \in I} \\
   \addlinespace
     % \Picks(\Done b)                            &=& \nothing \\
     % \Picks(t_1 \Pair t_2)                      &=& \nothing \\
@@ -117,21 +117,21 @@
 \newmacro{O-Inputs}{
   \begin{function}
     \signature{\Inputs : \mathrm{Tasks} \times \mathrm{States} \to \powerset{\mathrm{Inputs}}} \\
-    \Inputs(\Enter \beta,\sigma)                      &=& \set{b':\beta} \\
-    \Inputs(\Update b,\sigma)                         &=& \set{b':\beta} \quad\where\ \Update b : \Task\beta \\
+    \Inputs(\Enter \beta,\sigma)                      &=& \set{\IEnter b' \mid b':\beta} \\
+    \Inputs(\Update b,\sigma)                         &=& \set{\IEnter b' \mid b':\beta} \quad\where\ \Update b : \Task\beta \\
     \Inputs(\View b,\sigma)                           &=& \nothing \\
     \Inputs(\Pick\set{\more{L_i \mapsto t_i}},\sigma) &=& \set{\IPick L_i \mid L_i \in \Picks(\Pick\set{\more{L_i \mapsto t_i}})} \\
   \addlinespace
     \Inputs(\Done v,\sigma)                           &=& \nothing \\
-    \Inputs(t_1 \Pair t_2,\sigma)                     &=& \set{\First\ i \mid i \in \Inputs(t_1,\sigma)} \cup \set{\Second\ i \mid i \in \Inputs(t_2,\sigma)} \\
-    \Inputs(t_1 \Choose t_2,\sigma)                   &=& \set{\First\ i \mid i \in \Inputs(t_1,\sigma)} \cup \set{\Second\ i \mid i \in \Inputs(t_2,\sigma)} \\
+    \Inputs(t_1 \Pair t_2,\sigma)                     &=& \Inputs(t_1, \sigma) \cup \Inputs(t_2, \sigma) \\
+    \Inputs(t_1 \Choose t_2,\sigma)                   &=& \Inputs(t_1, \sigma) \cup \Inputs(t_2, \sigma) \\
     \Inputs(\Fail,\sigma)                             &=& \nothing \\
   \addlinespace
     \Inputs(e_1 \Trans t_2,\sigma)                    &=& \Inputs(t_2,\sigma) \\
-    \Inputs(t_1 \Step e_2,\sigma)                     &=& \Inputs(t_1,\sigma) \cup \set{\IContinue L_i \mid \Value(t_1,\sigma) = v_1, e_2\ v_1 \eval t_2, L_i \in \Picks(t_2) } \\
+    \Inputs(t_1 \Step e_2,\sigma)                     &=& \Inputs(t_1,\sigma) \cup \set{\IContinue L_i \mid \Value(t_1,\sigma) = v_1, e_2\ v_1 \eval t_2, L^n_i \in \Picks(t_2) } \\
     \Inputs(\Forever t)                               &=& \Inputs(t,\sigma) \\
   \addlinespace
-    \Inputs(\Change l,\sigma)                         &=& {\set{b':\beta}} \quad\where\ \Change l : \Task\beta \\
+    \Inputs(\Change l,\sigma)                         &=& \set{\IEnter b' \mid b':\beta} \quad\where\ \Change l : \Task\beta \\
     \Inputs(\Watch l,\sigma)                          &=& \nothing \\
   \end{function}
 }
