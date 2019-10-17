@@ -123,7 +123,7 @@
 
 \newrule{T-Fail}
   {}
-  {\Gamma,\Sigma \infers \Fail : \Task \tau}
+  {\Gamma,\Sigma \infers \Fail : \Task \tau'}
 
 
 \newrule{T-Trans}
@@ -138,7 +138,7 @@
 
 \newrule{T-Forever}
   {\Gamma,\Sigma \infers e : \Task \tau}
-  {\Gamma,\Sigma \infers \Forever e : \Task \Void}
+  {\Gamma,\Sigma \infers \Forever e : \Task \tau'}
 
 
 \newrule{T-Share}
