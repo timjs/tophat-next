@@ -26,7 +26,7 @@
     t \Pair \Done \unit
       &\cong& t
       & \text{(right identity)} \\
-    t_1 \Pair\ (t_2 \Pair t_3)
+    \Assoc \Trans t_1 \Pair\ (t_2 \Pair t_3)
       &\cong& (t_1 \Pair t_2) \Pair t_3
       & \text{(associativity)} \\
     (\lambda \tuple{x_1, x_2}. \tuple{e_1\ x_1, e_2\ x_2}) \Trans\ (t_1 \Pair t_2)
@@ -55,10 +55,10 @@
       & \text{(distributivity)} \\
     & & & \\
     t_0 \Pair\ (t_1 \Choose t_2)
-      &\cong& (t_0 \Choose t_1) \Pair\ (t_0 \Choose t_2)
+      &\not\cong& (t_0 \Choose t_1) \Pair\ (t_0 \Choose t_2)
       & \text{(left pair distributivity)} \\
     (t_1 \Choose t_2) \Pair t_0
-      &\cong& (t_1 \Choose t_0) \Pair\ (t_2 \Choose t_0)
+      &\not\cong& (t_1 \Choose t_0) \Pair\ (t_2 \Choose t_0)
       & \text{(right pair distributivity)} \\
     & & & \\
     t_0 \Step \lambda x. (t_1 \Choose t_2)
