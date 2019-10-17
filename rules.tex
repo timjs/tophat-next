@@ -41,7 +41,7 @@
 
 
 \newrule{T-Abs}
-  {\Gamma[x:\tau_1] ,\Sigma \infers e:\tau_2}
+  {\Gamma \cdot x:\tau_1,\Sigma \infers e:\tau_2}
   {\Gamma,\Sigma \infers \lambda x : \tau_1 . e :\tau_1 \to \tau_2}
 
 \newrule{T-App}
@@ -63,12 +63,12 @@
     {\Gamma,\Sigma \infers \tuple{e_1, e_2} : \tau_1 \times \tau_2}
 
 \newrule{T-First}
-  {\Gamma,\Sigma \infers e_1 : \tau}
-  {\Gamma,\Sigma \infers \Fst\ \tuple{e_1,e_2} : \tau}
+  {\Gamma,\Sigma \infers e : \tau_1 \times \tau_2}
+  {\Gamma,\Sigma \infers \Fst\ e : \tau_1}
 
   \newrule{T-Second}
-    {\Gamma,\Sigma \infers e_2 : \tau}
-    {\Gamma,\Sigma \infers \Snd\ \tuple{e_1,e_2} : \tau}
+    {\Gamma,\Sigma \infers e : \tau_1 \times \tau_2}
+    {\Gamma,\Sigma \infers \Snd\ e : \tau_2}
 
 
 \newrule{T-Nil}
