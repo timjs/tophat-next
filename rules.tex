@@ -422,24 +422,24 @@
 
 
 \newmacro{RelationH}
-  {t,\sigma \handle{i} t',\sigma',\delta'}
+  {t,\sigma \handle{a} t',\sigma',\delta'}
 
 
 %% Edit %%
 
 \newrule{H-Enter}
   { }
-  {\Enter \beta,\sigma \handle{b'} \Update b',\sigma,\nothing}
+  {\Enter \beta,\sigma \handle{\IEnter b'} \Update b',\sigma,\nothing}
   [b':\beta]
 
 \newrule{H-Update}
   { }
-  {\Update b,\sigma \handle{b'} \Update b',\sigma,\nothing}
+  {\Update b,\sigma \handle{\IEnter b'} \Update b',\sigma,\nothing}
   [b,b':\beta]
 
 \newrule{H-Change}
   { }
-  {\Change l,\sigma \handle{b'} \Change l,\sigma[l \mapsto b'],\set{l}}
+  {\Change l,\sigma \handle{\IEnter b'} \Change l,\sigma[l \mapsto b'],\set{l}}
   [\sigma(l),b':\beta]
 
 
@@ -463,33 +463,33 @@
 %% Pass %%
 
 \newrule{H-Trans}
-	{t_2,\sigma \handle{i} t_2',\sigma',\delta'}
-	{e_1 \Trans t_2,\sigma \handle{i} e_1 \Trans t_2',\sigma',\delta'}
+	{t_2,\sigma \handle{a} t_2',\sigma',\delta'}
+	{e_1 \Trans t_2,\sigma \handle{a} e_1 \Trans t_2',\sigma',\delta'}
 
 \newrule{H-Forever}
-  {t \Step \lambda\_. \Forever t,\sigma \handle{i} t',\sigma',\delta'}
-  {\Forever t,\sigma \handle{i} t',\sigma',\delta'}
+  {t \Step \lambda\_. \Forever t,\sigma \handle{a} t',\sigma',\delta'}
+  {\Forever t,\sigma \handle{a} t',\sigma',\delta'}
 
 \newrule{H-Step}
-  {t_1,\sigma \handle{i} t_1',\sigma',\delta'}
-  {t_1 \Step e_2,\sigma \handle{i} t_1' \Step e_2,\sigma',\delta'}
-  [i \neq \IContinue L_j]
+  {t_1,\sigma \handle{a} t_1',\sigma',\delta'}
+  {t_1 \Step e_2,\sigma \handle{a} t_1' \Step e_2,\sigma',\delta'}
+  [a \neq \IContinue L_j]
 
 \newrule{H-PairFirst}
-  {t_1,\sigma \handle{i} t_1',\sigma',\delta'}
-  {t_1 \Pair t_2,\sigma \handle{\First i} t_1' \Pair t_2,\sigma',\delta'}
+  {t_1,\sigma \handle{a} t_1',\sigma',\delta'}
+  {t_1 \Pair t_2,\sigma \handle{a} t_1' \Pair t_2,\sigma',\delta'}
 
 \newrule{H-PairSecond}
-  {t_2,\sigma \handle{i} t_2',\sigma',\delta'}
-  {t_1 \Pair t_2,\sigma \handle{\Second i} t_1 \Pair t_2',\sigma',\delta'}
+  {t_2,\sigma \handle{a} t_2',\sigma',\delta'}
+  {t_1 \Pair t_2,\sigma \handle{a} t_1 \Pair t_2',\sigma',\delta'}
 
 \newrule{H-ChooseFirst}
-  {t_1,\sigma \handle{i} t_1',\sigma',\delta'}
-  {t_1 \Choose t_2,\sigma \handle{\First i} t_1' \Choose t_2,\sigma',\delta'}
+  {t_1,\sigma \handle{a} t_1',\sigma',\delta'}
+  {t_1 \Choose t_2,\sigma \handle{a} t_1' \Choose t_2,\sigma',\delta'}
 
 \newrule{H-ChooseSecond}
-  {t_2,\sigma \handle{i} t_2',\sigma',\delta'}
-  {t_1 \Choose t_2,\sigma \handle{\Second i} t_1 \Choose t_2',\sigma',\delta'}
+  {t_2,\sigma \handle{a} t_2',\sigma',\delta'}
+  {t_1 \Choose t_2,\sigma \handle{a} t_1 \Choose t_2',\sigma',\delta'}
 
 
 %% Interaction %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -510,13 +510,13 @@
 
 
 \newmacro{RelationI}
-  {t,\sigma \interact{i} t',\sigma'}
+  {t,\sigma \interact{a} t',\sigma'}
 
 
 \newrule{I-Handle}
-  {t,\sigma \handle{i} t',\sigma',\delta' \Quad
+  {t,\sigma \handle{a} t',\sigma',\delta' \Quad
    t',\sigma',\delta' \fix t'',\sigma''}
-  {t,\sigma \interact{i} t'',\sigma''}
+  {t,\sigma \interact{a} t'',\sigma''}
 
 
 %% Simulations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

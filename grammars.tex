@@ -150,20 +150,16 @@
   \end{grammar}
 }
 
-\newmacro{G-Inputs}{
+\newmacro{G-Actions}{
   \begin{grammar}
-    Inputs
-      & i    & ::=& b                    & – enter basic value \\
+    Actions
+      & a    & ::=& \IEnter b            & – enter basic value \\
       &      &\mid& \IContinue L         & – continue with label \\
       &      &\mid& \IPick L             & – pick label \\
-      &      &\mid& \First i             & – pass to first \\
-      &      &\mid& \Second i            & – pass to second \\
-    Symbolic inputs
-      & j    & ::=& s                    & – enter symbol \\
+    Symbolic actions
+      & \tilde{a}& ::=& s                & – enter symbol \\
       &      &\mid& \IContinue L         & – continue with label \\
       &      &\mid& \IPick L             & – pick label \\
-      &      &\mid& \First j             & – pass to first \\
-      &      &\mid& \Second j            & – pass to second \\
   \end{grammar}
 }
 

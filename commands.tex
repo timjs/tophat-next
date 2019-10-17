@@ -70,12 +70,14 @@
 \newmacro{TOPHAT}
   {$\widehat{\text{\smallcaps{top}}}$\xspace}
 
+\newmacro{Unique}
+  {\ensuremath{^n}}
 
 \let\And\relax
-\newoperator{Enter} {\boxtimes}
-\newoperator{Update}{\square}
-\newoperator{View}  {\dot{\square}} %{\boxcircle} %{\overline{\square}}
-\newoperator{Pick}  {\lozenge}
+\newoperator{Enter} {\boxtimes\Unique}
+\newoperator{Update}{\square\Unique}
+\newoperator{View}  {\square\kern-1.32ex\circ} %{\ocircle} %{\square\kern-1.35ex\circ\} %{\boxcircle} %{\overline{\square}}
+\newoperator{Pick}  {\lozenge\Unique}
 
 \newoperator{Pair}  {\raisebox{0.05ex}{\scalebox{0.9}{$\blacktriangleright\!\!\blacktriangleleft$}}}
 \newoperator{Done}  {\blacksquare}
@@ -88,24 +90,17 @@
 
 \newkeyword[Share]{ref}
 \newoperator{Assign}{:=}
-\newoperator{Change}{\boxplus}
-\newoperator{Watch} {\dot{\boxplus}} %{\boxbox} %{\overline{\boxplus}}
+\newoperator{Change}{\boxplus\Unique}
+\newoperator{Watch} {\boxplus\kern-1.32ex\circ} %{\oplus} %{\dot{\boxplus}} %{\boxbox} %{\overline{\boxplus}}
 
 \newoperator{Appoint}{@}
 
 
 %% Events %%
 
-\newvalue[First]  {F}
-\newvalue[Second] {S}
-
-\newvalue[IEnter]   {}
-\newvalue[IContinue]{C}
-\newvalue[IPick]    {P}
-
-\newvalue[Left]   {L}
-\newvalue[Right]  {R}
-\newvalue[Here]   {H}
+\newvalue[IEnter]   {E\Unique}
+\newvalue[IContinue]{C\Unique}
+\newvalue[IPick]    {P\Unique}
 
 
 
