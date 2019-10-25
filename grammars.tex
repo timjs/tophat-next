@@ -58,7 +58,6 @@
       & p    &::= & \Enter \beta         & – unvalued editor \\
       &      &\mid& \Update e            & – valued editor \\
       &      &\mid& \View e              & – valued read-only editor \\
-      &      &\mid& \Pick \set{\more{L_i \mapsto e_i}}  & – user choice \\
     \addlinespace
       &      &\mid& e_1 \Pair e_2        & – pairing \\
       &      &\mid& \Done e              & – internal value \\
@@ -76,6 +75,23 @@
   \end{grammar}
 }
 
+\newmacro{G-Derived}{
+  \begin{equations}
+      \Pair \set{\more{e_i}}
+        &:=& e_1 \Pair\ (e_2 \Pair\ (\ldots \Pair e_n)) & for $n \ge 2$ \\
+      \Choose \set{\more{e_i}}
+        &:=& e_1 \Choose\ (e_2 \Choose\ (\ldots \Choose e_n)) & for $n \ge 2$ \\
+    \addlinespace
+      \When \set{\more{e_i' \mapsto e_i}}
+        &:=& \If{e_1'}{e_1}{\ldots \If{e_n'}{e_n}{\Fail}}  &\\
+      \Pick \set{\more{S_i \mapsto e_i}}
+        &:=& \Enter\Label\set{\more{S_i}} \Step \lambda x. \When \set{\more{x \equiv S_i \mapsto e_i}}  &\\
+      \Pick \set{\more{S_i \shortmid e_i' \mapsto e_i}}
+        &:=& \Pick \set{\more{S_i \mapsto \If{e_i'}{e_i}{\Fail}}}  &\\
+        &\cong& \Enter\Label\set{\more{S_i}} \Step \lambda x. \When \set{\more{x \equiv S_i \land e_i' \mapsto e_i}}  &\\
+  \end{equations}
+}
+
 \newmacro{G-Types}{
   \begin{grammar}
     Types
@@ -89,9 +105,10 @@
       &      &\mid& \pi                  & – primitive type \\
     \addlinespace
     Primitive types
-      & \pi  &\mid& \Bool                & – boolean type \\
+      & \pi  &::= & \Bool                & – boolean type \\
       &      &\mid& \Int                 & – integer type \\
       &      &\mid& \String              & – string type \\
+      &      &\mid& \Label\set{\more{S_i}} & – label type \\
     \addlinespace
     Basic types
       & \beta &::= & \Unit                  & – unit type \\
@@ -134,7 +151,6 @@
       & t    &::= & \Enter \beta         & – unvalued editor \\
       &      &\mid& \Update b            & – valued editor \\
       &      &\mid& \View b              & – valued read-only editor \\
-      &      &\mid& \Pick \set{\more{L_i \mapsto t_i}}  & – user choice \\
     \addlinespace
       &      &\mid& t_1 \Pair t_2        & – pairing \\
       &      &\mid& \Done v              & – internal value \\
@@ -154,12 +170,12 @@
   \begin{grammar}
     Inputs
       & i    & ::=& \IEnter b            & – enter basic value \\
-      &      &\mid& \IContinue L         & – continue with label \\
-      &      &\mid& \IPick L             & – pick label \\
+      &      &\mid& \IContinue S         & – continue with label \\
+      &      &\mid& \IPick S             & – pick label \\
     Symbolic inputs
       & \tilde{i}& ::=& \IEnter s        & – enter symbol \\
-      &      &\mid& \IContinue L         & – continue with label \\
-      &      &\mid& \IPick L             & – pick label \\
+      &      &\mid& \IContinue S         & – continue with label \\
+      &      &\mid& \IPick S             & – pick label \\
   \end{grammar}
 }
 

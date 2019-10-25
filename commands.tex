@@ -55,6 +55,7 @@
 \newtype{Nat}
 \newtype{Int}
 \newtype{String}
+\newtype{Label}
 \newtype[Reference]{Ref}
 \newtype{Task}
 \newtype{Maybe}
@@ -76,15 +77,14 @@
 \let\And\relax
 \newoperator{Enter} {\boxtimes\Unique}
 \newoperator{Update}{\square\Unique}
-\newoperator{View}  {\square\kern-1.32ex\circ} %{\ocircle} %{\square\kern-1.35ex\circ\} %{\boxcircle} %{\overline{\square}}
-\newoperator{Pick}  {\lozenge\Unique}
+\newoperator{View}  {\square\kern-1.32ex\circ} %{\ocircle} %{\boxcircle} %{\overline{\square}}
 
 \newoperator{Pair}  {\raisebox{0.05ex}{\scalebox{0.9}{$\blacktriangleright\!\!\blacktriangleleft$}}}
 \newoperator{Done}  {\blacksquare}
-\newoperator{Choose}{\blacklozenge}
+\newoperator{Choose}{\raisebox{0.05ex}{\scalebox{0.9}{$\blacktriangleleft\kern-0.42ex\blacktriangleright$}}}
 \newoperator{Fail}  {\lightning}
 
-\newoperator{Trans}  {\blacktriangle} %{\bullet}
+\newoperator{Trans}  {\bullet}
 \newoperator{Step}   {\blacktriangleright}
 \newoperator{Forever}{\circlearrowleft}
 
@@ -94,6 +94,9 @@
 \newoperator{Watch} {\boxplus\kern-1.32ex\circ} %{\oplus} %{\dot{\boxplus}} %{\boxbox} %{\overline{\boxplus}}
 
 \newoperator{Appoint}{@}
+
+\newoperator{Pick}  {\lozenge\Unique}
+\newoperator{When}  {\blacklozenge}
 
 
 %% Events %%
