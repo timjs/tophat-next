@@ -9,7 +9,7 @@
       & e    &::= & \lambda x:\tau.\ e   & – abstraction \\
       &      &\mid& e_1\ e_2             & – application \\
       &      &\mid& x                    & – variable \\
-      &      &\mid& s                    & – symbol \\
+      &      &\mid& z                    & – symbol \\
       &      &\mid& l                    & – location \\
       &      &\mid& c                    & – constant \\
     \addlinespace
@@ -122,7 +122,7 @@
   \begin{grammar}
     Values
       & v    &::= & \lambda x:\tau.\ e   & – abstraction \\
-      &      &\mid& s                    & – symbol \\
+      &      &\mid& z                    & – symbol \\
       &      &\mid& l                    & – location \\
     \addlinespace
       &      &\mid& \unit                & – unit \\
@@ -173,7 +173,7 @@
       &      &\mid& \IContinue S         & – continue with label \\
       &      &\mid& \IPick S             & – pick label \\
     Symbolic inputs
-      & \tilde{i}& ::=& \IEnter s        & – enter symbol \\
+      & \tilde{i}& ::=& \IEnter z        & – enter symbol \\
       &      &\mid& \IContinue S         & – continue with label \\
       &      &\mid& \IPick S             & – pick label \\
   \end{grammar}
@@ -183,7 +183,7 @@
   \begin{grammar}
     Predicates
       & \phi &::= & c                      & – constant \\
-      &      &\mid& s                      & – symbol \\
+      &      &\mid& z                      & – symbol \\
       &      &\mid& \unit                  & – unit \\
       &      &\mid& \tuple{\phi_1, \phi_2} & – pairs \\
       &      &\mid& [\ ]_\beta             & – nil \\
