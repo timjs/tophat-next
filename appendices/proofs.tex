@@ -8,7 +8,7 @@
   We prove \cref{thm:pres-eval} by induction on $e$:
 
   \case
-    {$e=v,e_1 e_2,\If{e_1}{e_2}{e_3},\tuple{e_1, e_2},\Fst\tuple{e_1, e_2},\Snd\tuple{e_1, e_2}, e_1 :: e_2, \Head e, \Tail e,\Share e, e_1 := e_2$}
+    {$e=v,e_1 e_2,\If{e_1}{e_2}{e_3},\tuple{e_1, e_2},\Fst\tuple{e_1, e_2},\Snd\tuple{e_1, e_2}, e_1 :: e_2, \Head e, \Tail e,\New e, e_1 := e_2$}
     {Preservation has been proven for these cases by \citet{DBLP:books/daglib/0005958}.}
 
 
@@ -75,14 +75,14 @@
      Therefore $\Gamma,\Sigma\infers t_1\Choose t_2:\Task\tau$.}
 
   \case
-    {$\userule{E-Share}$}
-    {Given that $\Gamma,\Sigma\infers \Share e : \Task\ (\Reference \beta)$, \refrule{T_Share} gives us that $\Gamma,\Sigma\infers e:\beta$.
+    {$\userule{E-New}$}
+    {Given that $\Gamma,\Sigma\infers \New e : \Task\ (\Reference \beta)$, \refrule{T_Share} gives us that $\Gamma,\Sigma\infers e:\beta$.
     By the induction hypothesis, we have that $e\eval v$ also preserves and thus $\Gamma,\Sigma\infers v:\beta$.
-    Therefore $\Gamma,\Sigma\infers \Share v:\Task \beta$.}
+    Therefore $\Gamma,\Sigma\infers \New v:\Task \beta$.}
 
   \case
     {$\userule{E-Assign}$}
-    {Given that $\Gamma,\Sigma\infers e_1 := e_2 :\Task \Unit$, \refrule{T-Share} gives us that $\Gamma,\Sigma\infers e_1:\Reference \beta$ and $\Gamma,\Sigma\infers e_2:\beta$.
+    {Given that $\Gamma,\Sigma\infers e_1 := e_2 :\Task \Unit$, \refrule{T-New} gives us that $\Gamma,\Sigma\infers e_1:\Reference \beta$ and $\Gamma,\Sigma\infers e_2:\beta$.
     By the induction hypothesis, we have that $e_1\eval l$ and $e_2\eval v$ also preserve and thus $\Gamma,\Sigma\infers l:\Reference \beta$ and $\Gamma,\Sigma\infers v:\beta$.
     Therefore $\Gamma,\Sigma\infers l:=v:\Task \Unit$.\todo{again, type is being erased} }
 
@@ -209,8 +209,8 @@ We prove \cref{thm:pres-norm} by induction on $e$:
   Therefore $\Gamma,\Sigma\infers t_1'\Pair t_2':\Task (\tau_1\times\tau_2)$.}
 
 \case
-  {$\userule{N-Share}$}
-  {Given that $\Gamma,\Sigma\infers \Share b:\Task\ (\Reference \beta)$ and $\Gamma,\Sigma\infers\sigma$.
+  {$\userule{N-New}$}
+  {Given that $\Gamma,\Sigma\infers \New b:\Task\ (\Reference \beta)$ and $\Gamma,\Sigma\infers\sigma$.
   ?????? \todo{fix}
   }
 

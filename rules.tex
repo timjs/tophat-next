@@ -141,9 +141,9 @@
   {\Gamma,\Sigma \infers \Forever e : \Task \tau'}
 
 
-\newrule{T-Share}
+\newrule{T-New}
   {\Gamma,\Sigma \infers e: \beta}
-  {\Gamma,\Sigma \infers \Share e : \Task\ (\Reference \beta)}
+  {\Gamma,\Sigma \infers \New e : \Task\ (\Reference \beta)}
 
 \newrule{T-Assign}
   {\Gamma,\Sigma \infers e_1 : \Reference \beta \Quad
@@ -263,9 +263,9 @@
   {\Forever e \eval \Forever t}
 
 
-\newrule{E-Share}
+\newrule{E-New}
   {e \eval v}
-  {\Share e \eval \Share v}
+  {\New e \eval \New v}
 
 \newrule{E-Assign}
   {e_1 \eval l \Quad
@@ -355,9 +355,9 @@
 
 %% Internal %%
 
-\newrule{N-Share}
+\newrule{N-New}
 	{l \not\in \mathrm{dom}(\sigma)}
-	{\Share b,\sigma \normalise \Done l,[l \mapsto b]\sigma,\nothing}
+	{\New b,\sigma \normalise \Done l,[l \mapsto b]\sigma,\nothing}
 
 \newrule{N-Assign}
 	{}
