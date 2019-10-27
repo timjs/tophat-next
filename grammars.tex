@@ -166,12 +166,24 @@
   \end{grammar}
 }
 
+\newmacro{G-Matches}{
+  \begin{grammar}
+    Matches
+      & m    & ::=& \_                     & – ignore \\
+      &      &\mid& x                      & – capture \\
+      &      &\mid& \tuple{\more{x = m_x}} & – rename \\
+      % &      &\mid& \tuple{\more{x}}       & – punned record \\
+      &      &\mid& \tuple{..}             & – unpack \\
+  \end{grammar}
+}
+
 \newmacro{G-Inputs}{
   \begin{grammar}
     Inputs
       & i    & ::=& \IEnter b            & – enter basic value \\
       &      &\mid& \IContinue S         & – continue with label \\
       &      &\mid& \IPick S             & – pick label \\
+    \addlinespace
     Symbolic inputs
       & \tilde{i}& ::=& \IEnter z        & – enter symbol \\
       &      &\mid& \IContinue S         & – continue with label \\
