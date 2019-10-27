@@ -211,6 +211,8 @@
   {\ensuremath{\{#1\}}}
 \newmacro{tuple}[1]
   {\ensuremath{\<#1\>}}
+\newmacro{sem}[1]
+  {\ensuremath{\llbracket#1\rrbracket}}
 
 
 %% Operators %%
@@ -286,8 +288,8 @@
 
 
 \newenvironment*{function}
-  {\begin{tabular}{@{}L@{\ \ }C@{\ \ }L@{}}}
-  {\end{tabular}}
+  {\begin{block}\begin{tabular}{@{}L@{\ \ }C@{\ \ }L@{}}}
+  {\end{tabular}\end{block}}
 \newmacro{signature}[1]
   {\multicolumn{3}{@{}L@{}}{#1}}
 \newmacro{inset}[1]

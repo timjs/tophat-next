@@ -1,5 +1,6 @@
 % !TEX root=main.tex
 
+%% Observations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newmacro{O-Value}{
   \begin{function}
@@ -133,5 +134,51 @@
   \addlinespace
     \Inputs(\Change l,\sigma)                         &=& \set{\IEnter b' \mid b':\beta} \quad\where\ \Change l : \Task\beta \\
     \Inputs(\Watch l,\sigma)                          &=& \nothing \\
+  \end{function}
+}
+
+
+
+%% Unrestrictions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newmacro{U-Statements}{
+  \begin{function}
+    \signature{\sem{\cdot} : \mathrm{Statements} \to \mathrm{Expressions}} \\
+    \sem{m \Gets r; s}
+      &=& \sem{r} \Step \lambda m. \sem{s} \\
+    % \sem{r}
+      % &=& \sem{r} \\
+  % \end{function}
+% }
+%
+% \newmacro{U-Restricted}{
+  % \begin{function}
+    % \signature{\sem{\cdot} : \mathrm{Restricted tasks} \to \mathrm{Expressions}} \\
+      \sem{\Enter S\ \beta}
+        &=& \Enter \beta \\
+      \sem{\Update S\ e}
+        &=& \Update e \\
+      \sem{\View S\ e}
+        &=& \View e \\
+      \sem{\Change S\ l}
+        &=& \Change l \\
+      \sem{\Watch S\ l}
+        &=& \Watch l \\
+      \sem{\Done e}
+        &=& \Done e\\
+      \sem{\Pair \set{\more{s_i}}}
+        &=& \sem{s_1} \Pair \ldots \Pair \sem{s_n} \\
+      \sem{\Choose \set{\more{s_i}}}
+        &=& \sem{s_1} \Choose \ldots \Choose \sem{s_n} \\
+      \sem{\When \set{\more{e_i \mapsto s_i}}}
+        &=& \If{e_1}{\sem{s_1}}{\ldots \If{e_n}{\sem{s_n}}{\Fail}}\\
+      \sem{\Pick \set{\more{S_i \shortmid e_i \mapsto s_i}}}
+        &=& \\
+      \sem{x_0\ \tuple{\more{x = e_x}}}
+        &=& x_0\ \tuple{\more{x = e_x}} \\
+      \sem{\New\ e}
+        &=& \New\ e \\
+      \sem{l := e}
+        &=& l := e \\
   \end{function}
 }
