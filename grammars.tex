@@ -228,7 +228,7 @@
       \Let{m = e_1}{e_2}
         &:=& (\lambda m. e_2)\ e_1 \\
       e.x
-        &:=& \Let{\tuple{x} = e}{x} \\
+        &:=& \Let{\tuple{x = x'} = e}{x'} \hint{where $x'$ is fresh} \\
     \addlinespace
       \Pair \set{\more{e_i}}
         &:=& e_1 \Pair\ (e_2 \Pair\ (\ldots \Pair e_n)) \hint{for $n \ge 2$} \\
