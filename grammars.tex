@@ -192,3 +192,28 @@
       &      &\mid& \phi_1\ o\ \phi_2      & – symbolic binary operation \\
   \end{grammar}
 }
+
+\newmacro{G-Restricted}{
+  \begin{grammar}
+    Statements
+      & s    &::= & m \Gets r; s         & – bind \\
+      &      &\mid& r                    & – execute \\
+    \addlinespace
+    Restricted tasks
+      & r    &::= & \Enter S\ \beta      & – unvalued editor \\
+      &      &\mid& \Update S\ e         & – valued editor \\
+      &      &\mid& \View S\ e           & – valued read-only editor \\
+      &      &\mid& \Change S\ l         & – shared editor \\
+      &      &\mid& \Watch S\ l          & – shared read-only editor \\
+      &      &\mid& \Done e              & – internal value \\
+    \addlinespace
+      &      &\mid& \Pair   \set{\more{s_i}}                            & – pairing \\
+      &      &\mid& \Choose \set{\more{s_i}}                            & – alternating \\
+      &      &\mid& \When   \set{\more{e_i \mapsto s_i}}                & – system choice \\
+      &      &\mid& \Pick   \set{\more{S_i \shortmid e_i \mapsto s_i}}  & – user choice \\
+    \addlinespace
+      &      &\mid& x_0\ \tuple{\more{x = e_x}} & – apply \\
+      &      &\mid& \New\ e                  & – new shared value \\
+      &      &\mid& l := e                   & – assignment \\
+  \end{grammar}
+}
