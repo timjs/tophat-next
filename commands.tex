@@ -11,10 +11,12 @@
 \newkeyword[THEN]{then}
 \newkeyword[ELSE]{else}
 
-\newkeyword[Let]{let}
-\newkeyword[In]{in}
+\newkeyword[LET]{let}
+\newkeyword[IN]{in}
 
 
+\newmacro{Let}[2]
+  {\LET #1 \IN #2}
 \newmacro{If}[3]
   {\IF #1 \THEN #2 \ELSE #3}
 
