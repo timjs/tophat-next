@@ -160,6 +160,33 @@
 
 
 
+%% Matching %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newmacro{RelationM}
+  {\infers m : \tau \To \Delta}
+
+
+\newrule{M-Ignore}
+  { }
+  {\infers \_ : \tau \To \nothing}
+
+\newrule{M-Capture}
+  { }
+  {\infers x : \tau \To \set{x : \tau}}
+
+\newrule{M-Rename}
+  {\text{for each $x$ with $x = y$} \Quad
+   \infers m_x : \tau_y \To \Delta_x}
+  {\infers \tuple{x = m_x\ ^{x \in X}} : \tuple{y : \tau_y\ ^{y \in Y}} \To \bigcup_x \Delta_x}
+  [X \subseteq Y]
+
+\newrule{M-Unpack}
+  {\text{for each $x$} \Quad
+   \infers x : \tau_x \To \Delta_x}
+  {\infers \tuple{..} : \tuple{\more{x : \tau_x}} \To \bigcup_x \Delta_x}
+
+
+
 %% Evaluating %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newmacro{RelationE}
