@@ -55,16 +55,13 @@
   \userule{T-Bool}      \Quad
   \userule{T-Int}       \Quad
   \userule{T-String}    \Quad
-  \userule{T-Unit}      \Break
+  \userule{T-Record}    \Break
   \userule{T-Var}       \Quad
   \userule{T-Abs}       \Quad
   \userule{T-App}       \Break
   \userule{T-Sym}       \Quad
   \userule{T-Loc}       \Quad
   \userule{T-If}        \Break
-  \userule{T-Tuple}     \Quad
-  \userule{T-First}     \Quad
-  \userule{T-Second}    \Break
   \userule{T-Nil}       \Quad
   \userule{T-Cons}      \Quad
   \userule{T-Head}      \Quad
@@ -79,10 +76,9 @@
   \userule{T-Fail}      \Break
   \userule{T-Trans}     \Quad
   \userule{T-Step}      \Break
-  \userule{T-Pick}      \Quad
   \userule{T-Forever}   \Quad
-  \userule{T-New}       \Break
-  \userule{T-Assign}    \Quad
+  \userule{T-New}       \Quad
+  \userule{T-Assign}    \Break
   \userule{T-Change}    \Quad
   \userule{T-Watch}
 \end{gather*}
@@ -111,20 +107,17 @@
 \begin{gather*}
   \boxed{\RelationE}  \Break
   \userule{E-Value}   \Quad
+  \userule{E-Record}  \Quad
   \userule{E-App}     \Break
   \userule{E-IfTrue}  \Quad
   \userule{E-IfFalse} \Break
-  \userule{E-Tuple}   \Quad
-  \userule{E-First}   \Quad
-  \userule{E-Second}  \Break
   \userule{E-Cons}    \Quad
   \userule{E-Head}    \Quad
   \userule{E-Tail}    \Break
                       \Break
   \userule{E-Enter}   \Quad
   \userule{E-Update}  \Quad
-  \userule{E-View}    \Quad
-  \userule{E-Pick}    \Break
+  \userule{E-View}    \Break
   \userule{E-Trans}   \Quad
   \userule{E-Step}    \Quad
   \userule{E-Forever} \Break
@@ -161,7 +154,7 @@
   \userule{N-Enter}       \Quad
   \userule{N-Update}      \Quad
   \userule{N-View}        \Break
-  \userule{N-Pick}        \Quad
+  % \userule{N-Pick}        \Quad
   \userule{N-Change}      \Quad
   \userule{N-Watch}       \Quad
   \userule{N-Fail}

@@ -40,9 +40,14 @@
   {\Gamma,\Sigma \infers l : \Reference \beta}
 
 
+% \newrule{T-Abs}
+%   {\Gamma \cdot x:\tau_1,\Sigma \infers e:\tau_2}
+%   {\Gamma,\Sigma \infers \lambda x : \tau_1 . e :\tau_1 \to \tau_2}
+%
 \newrule{T-Abs}
-  {\Gamma \cdot x:\tau_1,\Sigma \infers e:\tau_2}
-  {\Gamma,\Sigma \infers \lambda x : \tau_1 . e :\tau_1 \to \tau_2}
+  {\infers m : \tau_1 \To \Delta \Quad
+   \Gamma \cup \Delta,\Sigma \infers e:\tau_2}
+  {\Gamma,\Sigma \infers \lambda m : \tau_1 . e :\tau_1 \to \tau_2}
 
 \newrule{T-App}
   {\Gamma,\Sigma \infers e_1 : \tau_1 \to \tau_2 \Quad
@@ -57,6 +62,11 @@
   {\Gamma,\Sigma \infers \If{e_1}{e_2}{e_3} : \tau}
 
 
+\newrule{T-Record}
+    {\text{for each $x$} \Quad
+     \Gamma,\Sigma \infers e_x : \tau_x}
+    {\Gamma,\Sigma \infers \tuple{\more{x = e_x}} : \tuple{\more{x : \tau_x}}}
+
 \newrule{T-Tuple}
     {\Gamma,\Sigma \infers e_1 : \tau_1  \Quad
      \Gamma,\Sigma \infers e_2 : \tau_2}
@@ -66,9 +76,9 @@
   {\Gamma,\Sigma \infers e : \tau_1 \times \tau_2}
   {\Gamma,\Sigma \infers \Fst\ e : \tau_1}
 
-  \newrule{T-Second}
-    {\Gamma,\Sigma \infers e : \tau_1 \times \tau_2}
-    {\Gamma,\Sigma \infers \Snd\ e : \tau_2}
+\newrule{T-Second}
+  {\Gamma,\Sigma \infers e : \tau_1 \times \tau_2}
+  {\Gamma,\Sigma \infers \Snd\ e : \tau_2}
 
 
 \newrule{T-Nil}
@@ -214,6 +224,11 @@
    e_3 \eval v_3}
   {\If{e_1}{e_2}{e_3} \eval v_3}
 
+
+\newrule{E-Record}
+  {\text{for each $x$} \Quad
+   e_x \eval v_x}
+  {\tuple{\more{x = e_x}} \eval \tuple{\more{x = v_x}}}
 
 \newrule{E-Tuple}
   {e_1 \eval v_1 \Quad
