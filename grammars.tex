@@ -226,21 +226,21 @@
 \newmacro{G-Derived}{
   \begin{equations}
       \Let{m = e_1}{e_2}
-        &:=& (\lambda m. e_2)\ e_1 &\\
+        &:=& (\lambda m. e_2)\ e_1 \\
       e.x
-        &:=& \Let{\tuple{x} = e}{x} &\\
+        &:=& \Let{\tuple{x} = e}{x} \\
     \addlinespace
       \Pair \set{\more{e_i}}
-        &:=& e_1 \Pair\ (e_2 \Pair\ (\ldots \Pair e_n)) & for $n \ge 2$ \\
+        &:=& e_1 \Pair\ (e_2 \Pair\ (\ldots \Pair e_n)) \hint{for $n \ge 2$} \\
       \Choose \set{\more{e_i}}
-        &:=& e_1 \Choose\ (e_2 \Choose\ (\ldots \Choose e_n)) & for $n \ge 2$ \\
+        &:=& e_1 \Choose\ (e_2 \Choose\ (\ldots \Choose e_n)) \hint{for $n \ge 2$} \\
     \addlinespace
       \When \set{\more{e_i' \mapsto e_i}}
-        &:=& \If{e_1'}{e_1}{\ldots \If{e_n'}{e_n}{\Fail}}  &\\
+        &:=& \If{e_1'}{e_1}{\ldots \If{e_n'}{e_n}{\Fail}}  \\
       \Pick \set{\more{S_i \mapsto e_i}}
-        &:=& \Enter\Label\set{\more{S_i}} \Step \lambda x. \When \set{\more{x \equiv S_i \mapsto e_i}}  &\\
+        &:=& \Enter\Label\set{\more{S_i}} \Step \lambda x. \When \set{\more{x \equiv S_i \mapsto e_i}}  \\
       \Pick \set{\more{S_i \shortmid e_i' \mapsto e_i}}
-        &:=& \Pick \set{\more{S_i \mapsto \If{e_i'}{e_i}{\Fail}}}  &\\
-        &\cong& \Enter\Label\set{\more{S_i}} \Step \lambda x. \When \set{\more{x \equiv S_i \land e_i' \mapsto e_i}}  &\\
+        &:=& \Pick \set{\more{S_i \mapsto \If{e_i'}{e_i}{\Fail}}}  \\
+        &\cong& \Enter\Label\set{\more{S_i}} \Step \lambda x. \When \set{\more{x \equiv S_i \land e_i' \mapsto e_i}}  \\
   \end{equations}
 }

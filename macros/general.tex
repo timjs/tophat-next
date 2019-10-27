@@ -233,6 +233,10 @@
   % {2^{#1}}
   % {\mathcal{P}(#1)}
   {\mathbb{P}(#1)}
+\newmacro{id}[1]
+  {\mathit{#1}}
+\newmacro{lbl}[1]
+  {\mathsf{#1}}
 
 \newmathcommand{n}{\underline{n}}
 
@@ -260,7 +264,7 @@
 %% Hints and local definitions %%
 
 \newmacro{hint}[1]
-  {\quad\text{\{ #1 \}}}
+  {\quad\text{( #1 )}}
 
 \newmathcommand{when}[op]
   {\mathbf{when}}
@@ -307,7 +311,7 @@
 
 \newenvironment*{equations}
   %%NOTE: the `@{}` suppreses `\tabcolsep` before the first column
-  {\begin{block}\begin{tabular}{@{}RCLl}}
+  {\begin{block}\begin{tabular}{@{}RCL}}
   {\end{tabular}\end{block}}
 
 

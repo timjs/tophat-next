@@ -101,72 +101,79 @@
 
 \newrule{T-Done}
   {\Gamma,\Sigma \infers e : \tau}
-  {\Gamma,\Sigma \infers \Done e : \Task \tau}
+  {\Gamma,\Sigma \infers \Done e : \Task\ \tuple{\lbl{value} : \tau}}
 
 \newrule{T-Enter}
   {}
-  {\Gamma,\Sigma \infers \Enter \beta : \Task \beta}
+  {\Gamma,\Sigma \infers \Enter \beta : \Task\ \tuple{\lbl{value} : \beta}}
 
 \newrule{T-Update}
   {\Gamma,\Sigma \infers e : \beta}
-  {\Gamma,\Sigma \infers \Update e : \Task \beta}
+  {\Gamma,\Sigma \infers \Update e : \Task\ \tuple{\lbl{value} : \beta}}
 
 \newrule{T-View}
   {\Gamma,\Sigma \infers e : \beta}
-  {\Gamma,\Sigma \infers \View e : \Task \beta}
+  {\Gamma,\Sigma \infers \View e : \Task\ \tuple{\lbl{value} : \beta}}
 
-\newrule{T-Pick}
-  {\text{for each $i$} \Quad
-   \Gamma,\Sigma \infers e_i : \Task \tau}
-  {\Gamma,\Sigma \infers \Pick \set{\more{L_i \mapsto e_i}} : \Task \tau}
+% \newrule{T-Pick}
+%   {\text{for each $i$} \Quad
+%    \Gamma,\Sigma \infers e_i : \Task \tau}
+%   {\Gamma,\Sigma \infers \Pick \set{\more{L_i \mapsto e_i}} : \Task \tau}
 
 
 \newrule{T-Pair}
-  {\Gamma,\Sigma \infers e_1 : \Task \tau_1 \Quad
-   \Gamma,\Sigma \infers e_2 : \Task \tau_2}
-  {\Gamma,\Sigma \infers e_1 \Pair e_2 : \Task\ (\tau_1 \times \tau_2)}
+  {\Gamma,\Sigma \infers e_1 : \Task \rho_1 \Quad
+   \Gamma,\Sigma \infers e_2 : \Task \rho_2}
+  {\Gamma,\Sigma \infers e_1 \Pair e_2 : \Task\ (\rho_1 \uplus \rho_2)}
+  % [\rho_1 \cap \rho_2 = \nothing]
 
 \newrule{T-Choose}
-  {\Gamma,\Sigma \infers e_1 : \Task \tau \Quad
-   \Gamma,\Sigma \infers e_2 : \Task \tau}
-  {\Gamma,\Sigma \infers e_1 \Choose e_2 : \Task \tau}
+  {\Gamma,\Sigma \infers e_1 : \Task \rho_1 \Quad
+   \Gamma,\Sigma \infers e_2 : \Task \rho_2}
+  {\Gamma,\Sigma \infers e_1 \Choose e_2 : \Task\ (\rho_1 \cap \rho_2)}
+
+\newrule{T-When}
+  {\text{for each $i$} \Quad
+   \Gamma,\Sigma \infers e_i' : \Bool \Quad
+   \Gamma,\Sigma \infers e_i : \Task \rho_i}
+  {\Gamma,\Sigma \infers \When \set{\more{e_i' \mapsto e_i}} : \Task\ (\bigcap_i \rho_i)}
 
 \newrule{T-Fail}
   {}
-  {\Gamma,\Sigma \infers \Fail : \Task \tau'}
+  {\Gamma,\Sigma \infers \Fail : \Task \rho'}
 
 
 \newrule{T-Trans}
-  {\Gamma,\Sigma \infers e_1 : \tau_1 \to \tau_2 \Quad
-   \Gamma,\Sigma \infers e_2 : \Task \tau_1}
-  {\Gamma,\Sigma \infers e_1 \Trans e_2 : \Task \tau_2}
+  {\Gamma,\Sigma \infers e_1 : \rho_1 \to \rho_2 \Quad
+   \Gamma,\Sigma \infers e_2 : \Task \rho_1}
+  {\Gamma,\Sigma \infers e_1 \Trans e_2 : \Task \rho_2}
 
 \newrule{T-Step}
-  {\Gamma,\Sigma \infers e_1 : \Task \tau_1 \Quad
-   \Gamma,\Sigma \infers e_2 : \tau_1 \to \Task \tau_2}
-  {\Gamma,\Sigma \infers e_1 \Step e_2 : \Task \tau_2}
+  {\Gamma,\Sigma \infers e_1 : \Task \rho_1 \Quad
+   \Gamma,\Sigma \infers e_2 : \rho_1 \to \Task \rho_2}
+  {\Gamma,\Sigma \infers e_1 \Step e_2 : \Task \rho_2}
 
 \newrule{T-Forever}
-  {\Gamma,\Sigma \infers e : \Task \tau}
-  {\Gamma,\Sigma \infers \Forever e : \Task \tau'}
+  {\Gamma,\Sigma \infers e : \Task \rho}
+  {\Gamma,\Sigma \infers \Forever e : \Task \rho'}
 
 
 \newrule{T-New}
   {\Gamma,\Sigma \infers e: \beta}
-  {\Gamma,\Sigma \infers \New e : \Task\ (\Reference \beta)}
+  {\Gamma,\Sigma \infers \New e : \Task\ \tuple{\lbl{share} : \Reference \beta}}
 
 \newrule{T-Assign}
   {\Gamma,\Sigma \infers e_1 : \Reference \beta \Quad
    \Gamma,\Sigma \infers e_2 : \beta}
-  {\Gamma,\Sigma \infers e_1 := e_2 : \Task \Unit}
+  {\Gamma,\Sigma \infers e_1 := e_2 : \Task\ \tuple{}}
 
 \newrule{T-Change}
   {\Gamma,\Sigma \infers e : \Reference \beta}
-  {\Gamma,\Sigma \infers \Change e : \Task \beta}
+  {\Gamma,\Sigma \infers \Change e : \Task\ \tuple{\lbl{value}: \beta}}
 
 \newrule{T-Watch}
   {\Gamma,\Sigma \infers e : \Reference \beta}
-  {\Gamma,\Sigma \infers \Watch e : \Task \beta}
+  {\Gamma,\Sigma \infers \Watch e : \Task\ \tuple{\lbl{value}: \beta}}
 
 
 
