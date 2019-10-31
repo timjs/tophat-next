@@ -68,6 +68,9 @@
 
 \newmacro{G-Derived}{
   \begin{equations}
+      \Let{m = e_1}{e_2}
+        &:=& (\lambda m.\ e_2)\ e_1 &\\
+    \addlinespace
       \Pair \set{\more{e_i}}
         &:=& e_1 \Pair\ (e_2 \Pair\ (\ldots \Pair e_n)) & for $n \ge 2$ \\
       \Choose \set{\more{e_i}}
