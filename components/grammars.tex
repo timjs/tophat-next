@@ -1,7 +1,32 @@
 % !TEX root=../main.tex
 
 
-%% Language %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Types %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newmacro{G-Types}{
+  \begin{grammar}
+    Types
+      & \tau &::= & \tau_1 \to \tau_2    & – function type \\
+      &      &\mid& \Reference \tau      & – reference type \\
+      &      &\mid& \Task \tau           & – task type \\
+      &      &\mid& \Unit                & – unit type \\
+      &      &\mid& \tau_1 \times \tau_2 & – product type \\
+      &      &\mid& \pi                  & – primitive type \\
+    \addlinespace
+    Primitive types
+      & \pi  &::= & \Bool                & – boolean type \\
+      &      &\mid& \Int                 & – integer type \\
+      &      &\mid& \String              & – string type \\
+    \addlinespace
+    Basic types
+      & \beta &::= & \Unit                  & – unit type \\
+      &       &\mid& \beta_1 \times \beta_2 & – product type \\
+      &       &\mid& \pi                    & – primitive type \\
+  \end{grammar}
+}
+
+
+%% Expressions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newmacro{G-Expressions}{
   \begin{grammar}
@@ -27,21 +52,40 @@
   \end{grammar}
 }
 
-\newmacro{G-E-Operations}{
+\newmacro{G-Matches}{
   \begin{grammar}
-    Unary operations
-      & u    &::= & \lnot                & – not \\
-      &      &\mid& -                    & – negate \\
-      &      &\mid& \Len                 & – length \\
-      &      &\mid& \Uniq                & – unique \\
-    \addlinespace
-    Binary operations
-      & o    &::= & \land \Mid \lor                                     & – logical \\
-      &      &\mid& < \Mid \le \Mid \equiv \Mid \nequiv \Mid \ge \Mid > & – equational \\
-      &      &\mid& + \Mid - \Mid \times \Mid /                         & – numerical \\
-      &      &\mid& \pp \Mid \in                                        & – append, element \\
+    Matches
+      & m    & ::=& \_                     & – ignore \\
+      &      &\mid& x                      & – capture \\
+      &      &\mid& \tuple{m_1, m_2}       & – pair \\
+      &      &\mid& \unit                  & – unit \\
+      % &      &\mid& \tuple{\more{x = m_x}} & – rename \\
+      % &      &\mid& \tuple{\more{x}}       & – punned record \\
+      % &      &\mid& \tuple{..}             & – unpack \\
   \end{grammar}
 }
+
+\newmacro{G-Values}{
+  \begin{grammar}
+    Values
+      & v    &::= & \lambda m:\tau.\ e   & – abstraction \\
+      &      &\mid& l                    & – location \\
+    \addlinespace
+      &      &\mid& \unit                & – unit \\
+      &      &\mid& \tuple{v_1, v_2}     & – pair value \\
+    \addlinespace
+      &      &\mid& c                    & – basic value \\
+      &      &\mid& t                    & – task \\
+    \addlinespace
+    Basic values
+      & b    &::= & \unit                & – unit \\
+      &      &\mid& \tuple{b_1, b_2}     & – pair value \\
+      &      &\mid& c                    & – constant \\
+  \end{grammar}
+}
+
+
+%% Tasks %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newmacro{G-Pretasks}{
   \begin{grammar}
@@ -66,67 +110,6 @@
   \end{grammar}
 }
 
-\newmacro{G-Derived}{
-  \begin{equations}
-      \Let{m = e_1}{e_2}
-        &:=& (\lambda m.\ e_2)\ e_1 &\\
-    \addlinespace
-      \Pair \set{\more{e_i}}
-        &:=& e_1 \Pair\ (e_2 \Pair\ (\ldots \Pair e_n)) & for $n \ge 2$ \\
-      \Choose \set{\more{e_i}}
-        &:=& e_1 \Choose\ (e_2 \Choose\ (\ldots \Choose e_n)) & for $n \ge 2$ \\
-    \addlinespace
-      \When \set{\more{e_i' \mapsto e_i}}
-        &:=& \If{e_1'}{e_1}{\ldots \If{e_n'}{e_n}{\Fail}}  &\\
-      \Pick \set{\more{L_i \mapsto e_i}}
-        &:=& \Enter\Label\set{\more{L_i}} \Step \lambda x. \When \set{\more{x \equiv L_i \mapsto e_i}}  &\\
-      \Pick \set{\more{L_i \shortmid e_i' \mapsto e_i}}
-        &:=& \Pick \set{\more{L_i \mapsto \If{e_i'}{e_i}{\Fail}}}  &\\
-        &\cong& \Enter\Label\set{\more{L_i}} \Step \lambda x. \When \set{\more{x \equiv L_i \land e_i' \mapsto e_i}}  &\\
-  \end{equations}
-}
-
-\newmacro{G-Types}{
-  \begin{grammar}
-    Types
-      & \tau &::= & \tau_1 \to \tau_2    & – function type \\
-      &      &\mid& \Reference \tau      & – reference type \\
-      &      &\mid& \Task \tau           & – task type \\
-      &      &\mid& \Unit                & – unit type \\
-      &      &\mid& \tau_1 \times \tau_2 & – product type \\
-      &      &\mid& \pi                  & – primitive type \\
-    \addlinespace
-    Primitive types
-      & \pi  &::= & \Bool                & – boolean type \\
-      &      &\mid& \Int                 & – integer type \\
-      &      &\mid& \String              & – string type \\
-    \addlinespace
-    Basic types
-      & \beta &::= & \Unit                  & – unit type \\
-      &       &\mid& \beta_1 \times \beta_2 & – product type \\
-      &       &\mid& \pi                    & – primitive type \\
-  \end{grammar}
-}
-
-\newmacro{G-Values}{
-  \begin{grammar}
-    Values
-      & v    &::= & \lambda m:\tau.\ e   & – abstraction \\
-      &      &\mid& l                    & – location \\
-    \addlinespace
-      &      &\mid& \unit                & – unit \\
-      &      &\mid& \tuple{v_1, v_2}     & – pair value \\
-    \addlinespace
-      &      &\mid& c                    & – basic value \\
-      &      &\mid& t                    & – task \\
-    \addlinespace
-    Basic values
-      & b    &::= & \unit                & – unit \\
-      &      &\mid& \tuple{b_1, b_2}     & – pair value \\
-      &      &\mid& c                    & – constant \\
-  \end{grammar}
-}
-
 \newmacro{G-Tasks}{
   \begin{grammar}
     Tasks
@@ -145,99 +128,6 @@
     \addlinespace
       &      &\mid& \Change l            & – shared editor \\
       &      &\mid& \Watch l             & – shared read-only editor \\
-  \end{grammar}
-}
-
-\newmacro{G-Matches}{
-  \begin{grammar}
-    Matches
-      & m    & ::=& \_                     & – ignore \\
-      &      &\mid& x                      & – capture \\
-      &      &\mid& \tuple{m_1, m_2}       & – pair \\
-      &      &\mid& \unit                  & – unit \\
-      % &      &\mid& \tuple{\more{x = m_x}} & – rename \\
-      % &      &\mid& \tuple{\more{x}}       & – punned record \\
-      % &      &\mid& \tuple{..}             & – unpack \\
-  \end{grammar}
-}
-
-\newmacro{G-Inputs}{
-  \begin{grammar}
-    Inputs
-      & i    & ::=& \IEnter b            & – enter basic value \\
-      &      &\mid& \IContinue S         & – continue with label \\
-      &      &\mid& \IPick S             & – pick label \\
-  \end{grammar}
-}
-
-\newmacro{G-E-Predicates}{
-  \begin{grammar}
-    Predicates
-      & \phi &::= & c                      & – constant \\
-      &      &\mid& z                      & – symbol \\
-    \addlinespace
-      &      &\mid& \unit                  & – unit \\
-      &      &\mid& \tuple{\phi_1, \phi_2} & – pairs \\
-      &      &\mid& [\ ]_\beta             & – nil \\
-      &      &\mid& \phi_1 :: \phi2        & – cons \\
-    \addlinespace
-      &      &\mid& u\ \phi                & – symbolic unary operation \\
-      &      &\mid& \phi_1\ o\ \phi_2      & – symbolic binary operation \\
-  \end{grammar}
-}
-
-\newmacro{G-E-Types}{
-  \begin{grammar}
-    Types
-      & \tau &::= & \ldots               & \\
-      &      &\mid& \List \tau           & – list type\\
-    Primitive types
-      & \pi  &::= & \ldots               & \\
-      &      &\mid& \Label\set{\more{L_i}} & – label type \\
-    Basic types
-      & \beta &::= & \ldots              & \\
-      &       &\mid& \List \beta         & – list type\\
-  \end{grammar}
-}
-
-\newmacro{G-E-Expressions}{
-  \begin{grammar}
-    Expressions
-      & e    &::= & \ldots               & \\
-      &      &\mid& z                    & – symbol \\
-    \addlinespace
-      &      &\mid& u\ e_1               & – unary operation \\
-      &      &\mid& e_1\ o\ e_2          & – binary operation \\
-    \addlinespace
-      &      &\mid& [\ ]_\tau            & – nil \\
-      &      &\mid& e_1 :: e_2           & – cons \\
-      &      &\mid& \Head e              & – list head \\
-      &      &\mid& \Tail e              & – list tail \\
-  \end{grammar}
-}
-
-\newmacro{G-E-Values}{
-  \begin{grammar}
-    Values
-      & v    &::= & \ldots               & \\
-      &      &\mid& z                    & – symbol \\
-      &      &\mid& u\ v                 & – symbolic unary operation \\
-      &      &\mid& v_1\ o\ v_2          & – symbolic binary operation \\
-      &      &\mid& [\ ]_\beta           & – nil \\
-      &      &\mid& v_1 :: v_2           & – cons value \\
-    Basic values
-      & b    &::= & \ldots               & \\
-      &      &\mid& [\ ]_\beta           & – nil \\
-      &      &\mid& b_1 :: b_2           & – cons value \\
-  \end{grammar}
-}
-
-\newmacro{G-E-Inputs}{
-  \begin{grammar}
-    Symbolic inputs
-      & \tilde{\imath}& ::=& \IEnter z        & – enter symbol \\
-      &      &\mid& \IContinue S         & – continue with label \\
-      &      &\mid& \IPick S             & – pick label \\
   \end{grammar}
 }
 
@@ -263,5 +153,121 @@
       &      &\mid& x_0\ \tuple{\more{x = e_x}} & – application \\
       &      &\mid& \New\ e                  & – new shared value \\
       &      &\mid& l := e                   & – assignment \\
+  \end{grammar}
+}
+
+\newmacro{G-Derived}{
+  \begin{equations}
+      \Let{m = e_1}{e_2}
+        &:=& (\lambda m.\ e_2)\ e_1 &\\
+    \addlinespace
+      \Pair \set{\more{e_i}}
+        &:=& e_1 \Pair\ (e_2 \Pair\ (\ldots \Pair e_n)) & for $n \ge 2$ \\
+      \Choose \set{\more{e_i}}
+        &:=& e_1 \Choose\ (e_2 \Choose\ (\ldots \Choose e_n)) & for $n \ge 2$ \\
+    \addlinespace
+      \When \set{\more{e_i' \mapsto e_i}}
+        &:=& \If{e_1'}{e_1}{\ldots \If{e_n'}{e_n}{\Fail}}  &\\
+      \Pick \set{\more{L_i \mapsto e_i}}
+        &:=& \Enter\Label\set{\more{L_i}} \Step \lambda x. \When \set{\more{x \equiv L_i \mapsto e_i}}  &\\
+      \Pick \set{\more{L_i \shortmid e_i' \mapsto e_i}}
+        &:=& \Pick \set{\more{L_i \mapsto \If{e_i'}{e_i}{\Fail}}}  &\\
+        &\cong& \Enter\Label\set{\more{L_i}} \Step \lambda x. \When \set{\more{x \equiv L_i \land e_i' \mapsto e_i}}  &\\
+  \end{equations}
+}
+
+\newmacro{G-Inputs}{
+  \begin{grammar}
+    Inputs
+      & i    & ::=& \IEnter b            & – enter basic value \\
+      &      &\mid& \IContinue S         & – continue with label \\
+      &      &\mid& \IPick S             & – pick label \\
+  \end{grammar}
+}
+
+
+%% Extensions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newmacro{G-Lists}{
+  \begin{grammar}
+    Types
+      & \tau &::= & \ldots               & \\
+      &      &\mid& \List \tau           & – list type\\
+    Basic types
+      & \beta &::= & \ldots              & \\
+      &       &\mid& \List \beta         & – list type\\
+    \addlinespace
+    Expressions
+      & e    &::= & \ldots               & \\
+      &      &\mid& [\ ]_\tau            & – nil \\
+      &      &\mid& e_1 :: e_2           & – cons \\
+      &      &\mid& \Head e              & – list head \\
+      &      &\mid& \Tail e              & – list tail \\
+    \addlinespace
+    Values
+      & v    &::= & \ldots               & \\
+      &      &\mid& [\ ]_\tau            & – nil \\
+      &      &\mid& v_1 :: v_2           & – cons value \\
+    Basic values
+      & b    &::= & \ldots               & \\
+      &      &\mid& [\ ]_\beta           & – nil \\
+      &      &\mid& b_1 :: b_2           & – cons value \\
+  \end{grammar}
+}
+
+\newmacro{G-Operations}{
+  \begin{grammar}
+    Expressions
+      & e    &::= & \ldots               & \\
+      &      &\mid& u\ e_1               & – unary operation \\
+      &      &\mid& e_1\ o\ e_2          & – binary operation \\
+    \addlinespace
+    Unary operations
+      & u    &::= & \lnot                & – not \\
+      &      &\mid& -                    & – negate \\
+      &      &\mid& \Len                 & – length \\
+      &      &\mid& \Uniq                & – unique \\
+    \addlinespace
+    Binary operations
+      & o    &::= & \land \Mid \lor                                     & – logical \\
+      &      &\mid& < \Mid \le \Mid \equiv \Mid \nequiv \Mid \ge \Mid > & – equational \\
+      &      &\mid& + \Mid - \Mid \times \Mid /                         & – numerical \\
+      &      &\mid& \pp \Mid \in                                        & – append, element \\
+  \end{grammar}
+}
+
+\newmacro{G-Symbols}{
+  \begin{grammar}
+    Expressions
+      & e    &::= & \ldots               & \\
+      &      &\mid& z                    & – symbol \\
+    \addlinespace
+    Values
+      & v    &::= & \ldots               & \\
+      &      &\mid& z                    & – symbol \\
+      &      &\mid& u\ v                 & – symbolic unary operation \\
+      &      &\mid& v_1\ o\ v_2          & – symbolic binary operation \\
+    \addlinespace
+    Symbolic inputs
+      & \tilde{\imath}
+             & ::=& \IEnter z            & – enter symbol \\
+      &      &\mid& \IContinue S         & – continue with label \\
+      &      &\mid& \IPick S             & – pick label \\
+  \end{grammar}
+}
+
+\newmacro{G-Predicates}{
+  \begin{grammar}
+    Predicates
+      & \phi &::= & c                      & – constant \\
+      &      &\mid& z                      & – symbol \\
+    \addlinespace
+      &      &\mid& \unit                  & – unit \\
+      &      &\mid& \tuple{\phi_1, \phi_2} & – pairs \\
+      &      &\mid& [\ ]_\beta             & – nil \\
+      &      &\mid& \phi_1 :: \phi2        & – cons \\
+    \addlinespace
+      &      &\mid& u\ \phi                & – symbolic unary operation \\
+      &      &\mid& \phi_1\ o\ \phi_2      & – symbolic binary operation \\
   \end{grammar}
 }
