@@ -173,7 +173,7 @@
       \sem{\When \set{\more{e_i \mapsto s_i}}}
         &=& \If{e_1}{\sem{s_1}}{\ldots \If{e_n}{\sem{s_n}}{\Fail}}\\
       \sem{\Pick \set{\more{S_i \shortmid e_i \mapsto s_i}}}
-        &=& \\
+        &=& \Enter\Label\set{\more{S_i}} \Step \lambda x. \sem{\When \set{\more{x \equiv S_i \land e_i \mapsto s_i}}} \\
       \sem{x_0\ \tuple{\more{x = e_x}}}
         &=& x_0\ \tuple{\more{x = e_x}} \\
       \sem{\New\ e}
