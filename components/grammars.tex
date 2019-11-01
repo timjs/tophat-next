@@ -78,11 +78,11 @@
     \addlinespace
       \When \set{\more{e_i' \mapsto e_i}}
         &:=& \If{e_1'}{e_1}{\ldots \If{e_n'}{e_n}{\Fail}}  &\\
-      \Pick \set{\more{S_i \mapsto e_i}}
-        &:=& \Enter\Label\set{\more{S_i}} \Step \lambda x. \When \set{\more{x \equiv S_i \mapsto e_i}}  &\\
-      \Pick \set{\more{S_i \shortmid e_i' \mapsto e_i}}
-        &:=& \Pick \set{\more{S_i \mapsto \If{e_i'}{e_i}{\Fail}}}  &\\
-        &\cong& \Enter\Label\set{\more{S_i}} \Step \lambda x. \When \set{\more{x \equiv S_i \land e_i' \mapsto e_i}}  &\\
+      \Pick \set{\more{L_i \mapsto e_i}}
+        &:=& \Enter\Label\set{\more{L_i}} \Step \lambda x. \When \set{\more{x \equiv L_i \mapsto e_i}}  &\\
+      \Pick \set{\more{L_i \shortmid e_i' \mapsto e_i}}
+        &:=& \Pick \set{\more{L_i \mapsto \If{e_i'}{e_i}{\Fail}}}  &\\
+        &\cong& \Enter\Label\set{\more{L_i}} \Step \lambda x. \When \set{\more{x \equiv L_i \land e_i' \mapsto e_i}}  &\\
   \end{equations}
 }
 
@@ -100,7 +100,6 @@
       & \pi  &::= & \Bool                & – boolean type \\
       &      &\mid& \Int                 & – integer type \\
       &      &\mid& \String              & – string type \\
-      &      &\mid& \Label\set{\more{S_i}} & – label type \\
     \addlinespace
     Basic types
       & \beta &::= & \Unit                  & – unit type \\
@@ -190,8 +189,11 @@
 \newmacro{G-E-Types}{
   \begin{grammar}
     Types
-      & \tau &::= & \ldots               & type \\
+      & \tau &::= & \ldots               & \\
       &      &\mid& \List \tau           & – list type\\
+    Primitive types
+      & \pi  &::= & \ldots               & \\
+      &      &\mid& \Label\set{\more{L_i}} & – label type \\
     Basic types
       & \beta &::= & \ldots              & \\
       &       &\mid& \List \beta         & – list type\\
@@ -256,7 +258,7 @@
       &      &\mid& \Pair   \set{\more{s_i}}                            & – pairing \\
       &      &\mid& \Choose \set{\more{s_i}}                            & – alternating \\
       &      &\mid& \When   \set{\more{e_i \mapsto s_i}}                & – system choice \\
-      &      &\mid& \Pick   \set{\more{S_i \shortmid e_i \mapsto s_i}}  & – user choice \\
+      &      &\mid& \Pick   \set{\more{L_i \shortmid e_i \mapsto s_i}}  & – user choice \\
     \addlinespace
       &      &\mid& x_0\ \tuple{\more{x = e_x}} & – application \\
       &      &\mid& \New\ e                  & – new shared value \\

@@ -467,17 +467,22 @@
 \newrule{H-Enter}
   { }
   {\Enter \beta,\sigma \handle{\IEnter b'} \Update b',\sigma,\nothing}
-  [b':\beta]
+  [b' : \beta]
+
+% \newrule{H-Pick}
+%   { }
+%   {\Enter \Label\set{\more{S_i}},\sigma \handle{\IPick S} \Update S,\sigma,\nothing}
+%   [S \in \more{S_i}]
 
 \newrule{H-Update}
   { }
   {\Update b,\sigma \handle{\IEnter b'} \Update b',\sigma,\nothing}
-  [b,b':\beta]
+  [b,b' : \beta]
 
 \newrule{H-Change}
   { }
   {\Change l,\sigma \handle{\IEnter b'} \Change l,\sigma[l \mapsto b'],\set{l}}
-  [\sigma(l),b':\beta]
+  [\sigma(l),b' : \beta]
 
 
 %% Pick %%

@@ -95,7 +95,7 @@
     % \Picks(\Enter \beta)                       &=& \nothing \\
     % \Picks(\Update b)                          &=& \nothing \\
     % \Picks(\View b)                            &=& \nothing \\
-    \Picks(\Pick \set{\more{L_i \mapsto t_i}}) &=& \set{L^n_i \mid \lnot\Failing(t_i), i \in I} \\
+    \Picks(\Pick \set{\more{L_i \mapsto t_i}}) &=& \set{S^n_i \mid \lnot\Failing(t_i), i \in I} \\
   \addlinespace
     % \Picks(\Done b)                            &=& \nothing \\
     % \Picks(t_1 \Pair t_2)                      &=& \nothing \\
@@ -129,7 +129,7 @@
     \Inputs(\Fail,\sigma)                             &=& \nothing \\
   \addlinespace
     \Inputs(e_1 \Trans t_2,\sigma)                    &=& \Inputs(t_2,\sigma) \\
-    \Inputs(t_1 \Step e_2,\sigma)                     &=& \Inputs(t_1,\sigma) \cup \set{\IContinue L_i \mid \Value(t_1,\sigma) = v_1, e_2\ v_1 \eval t_2, L^n_i \in \Picks(t_2) } \\
+    \Inputs(t_1 \Step e_2,\sigma)                     &=& \Inputs(t_1,\sigma) \cup \set{\IContinue L_i \mid \Value(t_1,\sigma) = v_1, e_2\ v_1 \eval t_2, S^n_i \in \Picks(t_2) } \\
     \Inputs(\Forever t)                               &=& \Inputs(t,\sigma) \\
   \addlinespace
     \Inputs(\Change l,\sigma)                         &=& \set{\IEnter b' \mid b':\beta} \quad\where\ \Change l : \Task\beta \\
@@ -171,9 +171,10 @@
       \sem{\Choose \set{\more{s_i}}}
         &=& \sem{s_1} \Choose \ldots \Choose \sem{s_n} \\
       \sem{\When \set{\more{e_i \mapsto s_i}}}
-        &=& \If{e_1}{\sem{s_1}}{\ldots \If{e_n}{\sem{s_n}}{\Fail}}\\
-      \sem{\Pick \set{\more{S_i \shortmid e_i \mapsto s_i}}}
-        &=& \Enter\Label\set{\more{S_i}} \Step \lambda x. \sem{\When \set{\more{x \equiv S_i \land e_i \mapsto s_i}}} \\
+        &=& \If{e_1}{\sem{s_1}}{\ldots \If{e_n}{\sem{s_n}}{\Fail}} \\
+      \sem{\Pick \set{\more{L_i \shortmid e_i \mapsto s_i}}}
+        &=& \Pick \set{\more{L_i \mapsto \If{e_i}{\sem{s_i}}{\Fail}}} \\
+        % &=& \Enter\Label\set{\more{L_i}} \Step \lambda x. \sem{\When \set{\more{x \equiv L_i \land e_i \mapsto s_i}}} \\
       \sem{x_0\ \tuple{\more{x = e_x}}}
         &=& x_0\ \tuple{\more{x = e_x}} \\
       \sem{\New\ e}
