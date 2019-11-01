@@ -155,15 +155,15 @@
   % \begin{function}
     % \signature{\sem{\cdot} : \mathrm{Restricted tasks} \to \mathrm{Expressions}} \\
       \sem{\Enter S\ \beta}
-        &=& \Enter \beta \\
+        &=& \View S \Pair \Enter \beta \\
       \sem{\Update S\ e}
-        &=& \Update e \\
+        &=& \View S \Pair \Update e \\
       \sem{\View S\ e}
-        &=& \View e \\
+        &=& \View S \Pair \View e \\
       \sem{\Change S\ l}
-        &=& \Change l \\
+        &=& \View S \Pair \Change l \\
       \sem{\Watch S\ l}
-        &=& \Watch l \\
+        &=& \View S \Pair \Watch l \\
       \sem{\Done e}
         &=& \Done e\\
       \sem{\Pair \set{\more{s_i}}}
