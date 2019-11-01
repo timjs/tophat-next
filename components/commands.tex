@@ -128,13 +128,20 @@
 \newmacro{interact}[1]
   {\;\xRightarrow{#1}\;}
   % {\;\overset{#1}{\Rightarrow}\;}
-\newmacro{extract}
+\newmathcommand{extract}[rel]
   % {\;\underset{#1}{\leadsto}\;}
   {\;\leadsto\;}
-\newmacro{simulate}
+\newmathcommand{simulate}[rel]
   % {\;\leadsto\makebox[0pt]{\raisebox{+0.5ex}{$\leadsto$}}\;}
   % {\;\underset{#1}{\raisebox{-0.25ex}{$\leadsto$}\mathllap{\raisebox{+0.25ex}{$\leadsto$}}}\;}
-  {\;\mathrel{\raisebox{-0.25ex}{$\leadsto$}\mathllap{\raisebox{+0.25ex}{$\leadsto$}}}\;}
+  % {\;\mathrel{\raisebox{-0.25ex}{$\leadsto$}\mathllap{\raisebox{+0.25ex}{$\leadsto$}}}\;}
+  {\;\raisebox{-0.25ex}{$\leadsto$}\mathllap{\raisebox{+0.25ex}{$\leadsto$}}^*\;}
+  % {\;\raisebox{-0.4ex}{$\leadsto$}\mathllap{\raisebox{+0.4ex}{$\leadsto$}}\kern-0.4ex\circ
+  % \approx\!\!>\!\!\circ\;}
+  % {\;\bullet\!\!\!\Rightarrow\;\wr\!\!\!\Rightarrow\;}
+  % {\;\Longmapsto\;}
+  % {\;\wr\!\!\!\Rightarrow\;}
+
 
 \newmathcommand{Simulate}[it]
   {simulate}
@@ -157,6 +164,8 @@
   {U}
 \newmathcommand{Sat}[cal]
   {S}
+\newmathcommand{Hints}[cal]
+  {H}
 
 
 
