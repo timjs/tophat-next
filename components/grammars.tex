@@ -154,6 +154,8 @@
     Matches
       & m    & ::=& \_                     & – ignore \\
       &      &\mid& x                      & – capture \\
+      &      &\mid& \tuple{m_1, m_2}       & – pair \\
+      &      &\mid& \unit                  & – unit \\
       % &      &\mid& \tuple{\more{x = m_x}} & – rename \\
       % &      &\mid& \tuple{\more{x}}       & – punned record \\
       % &      &\mid& \tuple{..}             & – unpack \\
@@ -217,7 +219,7 @@
       &      &\mid& b_1 :: b_2           & – cons value \\
     \addlinespace
     Symbolic inputs
-      & \tilde{i}& ::=& \IEnter z        & – enter symbol \\
+      & \tilde{\imath}& ::=& \IEnter z        & – enter symbol \\
       &      &\mid& \IContinue S         & – continue with label \\
       &      &\mid& \IPick S             & – pick label \\
   \end{grammar}

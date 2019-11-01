@@ -41,8 +41,9 @@
 
 
 \newrule{T-Abs}
-  {\Gamma \cdot x:\tau_1,\Sigma \infers e:\tau_2}
-  {\Gamma,\Sigma \infers \lambda x : \tau_1 . e :\tau_1 \to \tau_2}
+  {\infers m : \tau \To \Delta \Quad
+   \Gamma \cup \Delta,\Sigma \infers e:\tau'}
+  {\Gamma,\Sigma \infers \lambda m : \tau . e :\tau \to \tau'}
 
 \newrule{T-App}
   {\Gamma,\Sigma \infers e_1 : \tau_1 \to \tau_2 \Quad
@@ -174,6 +175,15 @@
   { }
   {\infers x : \tau \To \set{x : \tau}}
 
+\newrule{M-Pair}
+  {\infers m_1 : \tau_1 \To \Delta_1 \Quad
+   \infers m_2 : \tau_2 \To \Delta_2}
+  {\infers \tuple{m_1, m_2} : \tau_1 \times \tau_2\To \Delta_1 \cup \Delta_2}
+
+\newrule{M-Unit}
+  { }
+  {\infers \unit : \Unit \To \nothing}
+
 \newrule{M-Rename}
   {\text{for each $x$ with $x = y$} \Quad
    \infers m_x : \tau_y \To \Delta_x}
@@ -198,7 +208,7 @@
   {v  \eval v}
 
 \newrule{E-App}
-  {e_1 \eval \lambda x:\tau.e_1' \Quad
+  {e_1 \eval \lambda m:\tau.e_1' \Quad
    e_2 \eval v_2 \Quad
    [x \mapsto v_2]e_1' \eval v_1}
   {e_1 e_2 \eval v_1}
