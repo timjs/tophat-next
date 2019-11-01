@@ -27,7 +27,7 @@
   \end{grammar}
 }
 
-\newmacro{G-Operations}{
+\newmacro{G-E-Operations}{
   \begin{grammar}
     Unary operations
       & u    &::= & \lnot                & – not \\
@@ -171,21 +171,23 @@
   \end{grammar}
 }
 
-\newmacro{G-Predicates}{
+\newmacro{G-E-Predicates}{
   \begin{grammar}
     Predicates
       & \phi &::= & c                      & – constant \\
       &      &\mid& z                      & – symbol \\
+    \addlinespace
       &      &\mid& \unit                  & – unit \\
       &      &\mid& \tuple{\phi_1, \phi_2} & – pairs \\
       &      &\mid& [\ ]_\beta             & – nil \\
       &      &\mid& \phi_1 :: \phi2        & – cons \\
+    \addlinespace
       &      &\mid& u\ \phi                & – symbolic unary operation \\
       &      &\mid& \phi_1\ o\ \phi_2      & – symbolic binary operation \\
   \end{grammar}
 }
 
-\newmacro{G-Extensions}{
+\newmacro{G-E-Types}{
   \begin{grammar}
     Types
       & \tau &::= & \ldots               & type \\
@@ -193,7 +195,11 @@
     Basic types
       & \beta &::= & \ldots              & \\
       &       &\mid& \List \beta         & – list type\\
-    \addlinespace
+  \end{grammar}
+}
+
+\newmacro{G-E-Expressions}{
+  \begin{grammar}
     Expressions
       & e    &::= & \ldots               & \\
       &      &\mid& z                    & – symbol \\
@@ -205,7 +211,11 @@
       &      &\mid& e_1 :: e_2           & – cons \\
       &      &\mid& \Head e              & – list head \\
       &      &\mid& \Tail e              & – list tail \\
-    \addlinespace
+  \end{grammar}
+}
+
+\newmacro{G-E-Values}{
+  \begin{grammar}
     Values
       & v    &::= & \ldots               & \\
       &      &\mid& z                    & – symbol \\
@@ -217,7 +227,11 @@
       & b    &::= & \ldots               & \\
       &      &\mid& [\ ]_\beta           & – nil \\
       &      &\mid& b_1 :: b_2           & – cons value \\
-    \addlinespace
+  \end{grammar}
+}
+
+\newmacro{G-E-Inputs}{
+  \begin{grammar}
     Symbolic inputs
       & \tilde{\imath}& ::=& \IEnter z        & – enter symbol \\
       &      &\mid& \IContinue S         & – continue with label \\
